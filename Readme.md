@@ -1,7 +1,7 @@
 # Личный проект «TaskForce»
 
 * Студент: [Salavat Imaev](https://up.htmlacademy.ru/nodejs-2/2/user/1332863).
-* Наставник: `Неизвестно`.
+* Наставник: [Семён Якушев](https://htmlacademy.ru/profile/id1118791).
 
 ---
 
