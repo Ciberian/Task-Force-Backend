@@ -13,6 +13,10 @@ export class ContractorEntity implements UserInterface {
   public avatar?: string;
   public birthDate: Date;
 
+  constructor(user: UserInterface) {
+    this.fillEntity(user);
+  }
+
   public toObject() {
     return {...this};
   }

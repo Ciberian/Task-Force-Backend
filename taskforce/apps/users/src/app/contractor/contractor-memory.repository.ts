@@ -22,6 +22,17 @@ export class ContractorMemoryRepository implements CRUDRepositoryInterface<Contr
     return null;
   }
 
+  public async findByEmail(email: string): Promise<UserInterface> {
+    const existUser = Object.values(this.repository)
+      .find((userItem) => userItem.email === email);
+
+    if (!existUser) {
+      return null;
+    }
+
+    return {...existUser};
+  }
+
   public async update(id: string, item: ContractorEntity): Promise<UserInterface> {
     this.repository[id] = {...item.toObject(), _id: id};
     return this.findById(id);

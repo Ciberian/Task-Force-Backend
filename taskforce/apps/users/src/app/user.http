@@ -1,0 +1,14 @@
+# Register user
+POST http://localhost:3333/api/user/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "asfasd@mail.ru",
+  "city": "St.Petersburg",
+  "password": "12345",
+  "birthDate": "2000-02-02",
+  "role": "contractor",
+  "name": "adsadsfasd"
+}
+
+###
