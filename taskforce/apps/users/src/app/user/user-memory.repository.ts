@@ -36,10 +36,7 @@ export class UserMemoryRepository
     return { ...existUser };
   }
 
-  public async update(
-    id: string,
-    item: UserEntity
-  ): Promise<UserInterface> {
+  public async update(id: string, item: UserEntity): Promise<UserInterface> {
     this.repository[id] = { ...item.toObject(), _id: id };
     return this.findById(id);
   }
