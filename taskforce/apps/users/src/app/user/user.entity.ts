@@ -1,13 +1,13 @@
-import { UserInterface, UserRole } from '@taskforce/shared-types'
+import { City, UserInterface, UserRole } from '@taskforce/shared-types'
 import { genSalt, compare, hash } from 'bcrypt';
 
 const SALT_ROUNDS = 10;
 
-export class ContractorEntity implements UserInterface {
+export class UserEntity implements UserInterface {
   public _id: string;
   public name: string;
   public email: string;
-  public city: string;
+  public city: City;
   public passwordHash: string;
   public role: UserRole;
   public avatar?: string;
@@ -32,7 +32,7 @@ export class ContractorEntity implements UserInterface {
     this.birthDate = contractor.birthDate
   }
 
-  public async setPassword(password: string): Promise<ContractorEntity> {
+  public async setPassword(password: string): Promise<UserEntity> {
     const salt = await genSalt(SALT_ROUNDS);
     this.passwordHash = await hash(password, salt);
     return this;

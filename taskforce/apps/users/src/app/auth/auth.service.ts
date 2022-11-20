@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { UserInterface } from '@taskforce/shared-types';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ContractorMemoryRepository } from '../contractor/contractor-memory.repository';
+import { UserMemoryRepository } from '../user/user-memory.repository';
+import { UserEntity } from '../user/user.entity';
 import * as dayjs from 'dayjs';
-import { ContractorEntity } from '../contractor/contractor.entity';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userMemoryRepository: ContractorMemoryRepository) {}
+  constructor(
+    private readonly userMemoryRepository: UserMemoryRepository
+  ) {}
 
   async register(dto: CreateUserDto) {
-    const {email, city, password, birthDate, role, name} = dto;
+    const { email, city, password, birthDate, role, name } = dto;
     const user: UserInterface = {
       _id: '',
       email,
@@ -20,7 +22,7 @@ export class AuthService {
       role,
       name,
       avatar: dto?.avatar || '',
-    }
+    };
 
     const existUser = await this.userMemoryRepository.findByEmail(email);
 
@@ -28,7 +30,7 @@ export class AuthService {
       throw new Error('User already exists!');
     }
 
-    const userEntity = await new ContractorEntity(user).setPassword(password);
+    const userEntity = await new UserEntity(user).setPassword(password);
 
     return this.userMemoryRepository.create(userEntity);
   }

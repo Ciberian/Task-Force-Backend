@@ -1,8 +1,8 @@
-import { UserRole } from '@taskforce/shared-types';
+import { City, UserRole } from '@taskforce/shared-types';
 
 export class CreateUserDto {
   public email: string;
-  public city: string;
+  public city: City;
   public password: string;
   public birthDate: string;
   public role: UserRole;
