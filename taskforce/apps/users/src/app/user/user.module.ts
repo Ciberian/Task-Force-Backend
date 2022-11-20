@@ -6,4 +6,4 @@ import { UserMemoryRepository } from './user-memory.repository';
   providers: [UserMemoryRepository],
   exports: [UserMemoryRepository],
 })
-export class ContractorModule {}
+export class UserModule {}

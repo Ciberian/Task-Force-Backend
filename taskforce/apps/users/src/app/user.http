@@ -3,12 +3,12 @@ POST http://localhost:3333/api/user/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "asfasd@mail.ru",
+  "email": "asfas@mail.ru",
   "city": "Владивосток",
   "password": "12345",
-  "birthDate": "2000-02-02",
+  "birthDate": "2002-02-02",
   "role": "Исполнитель",
-  "name": "adsadsfasd"
+  "name": "Adsadsfasd"
 }
 
 ###

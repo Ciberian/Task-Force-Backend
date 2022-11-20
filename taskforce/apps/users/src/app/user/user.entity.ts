@@ -1,4 +1,4 @@
-import { City, UserInterface, UserRole } from '@taskforce/shared-types'
+import { City, UserInterface, UserRole } from '@taskforce/shared-types';
 import { genSalt, compare, hash } from 'bcrypt';
 
 const SALT_ROUNDS = 10;
@@ -18,18 +18,18 @@ export class UserEntity implements UserInterface {
   }
 
   public toObject() {
-    return {...this};
+    return { ...this };
   }
 
-  public fillEntity(contractor: UserInterface) {
-    this._id = contractor._id
-    this.name = contractor.name
-    this.email = contractor.email
-    this.city = contractor.city
-    this.passwordHash = contractor.passwordHash
-    this.role = contractor.role
-    this.avatar = contractor?.avatar
-    this.birthDate = contractor.birthDate
+  public fillEntity(user: UserInterface) {
+    this._id = user._id;
+    this.name = user.name;
+    this.email = user.email;
+    this.city = user.city;
+    this.passwordHash = user.passwordHash;
+    this.role = user.role;
+    this.avatar = user?.avatar;
+    this.birthDate = user.birthDate;
   }
 
   public async setPassword(password: string): Promise<UserEntity> {
