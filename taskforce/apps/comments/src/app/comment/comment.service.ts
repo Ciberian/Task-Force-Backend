@@ -32,16 +32,13 @@ export class CommentService {
   }
 
   async deleteComment(id: string) {
-    console.log('ID-----------------------', id);
     return this.commentMemoryRepository.delete(id);
   }
 
   async deleteTaskComments(taskId: string) {
     const allComments = await this.commentMemoryRepository.find();
     const taskComments = allComments.filter((comment) => comment.taskId === taskId);
-    taskComments.forEach(async (comment) => await this.deleteComment(comment._id));
-
-    return `Comments for task with ID - ${taskId}, has been deleted`;
+    taskComments.forEach((comment) => this.deleteComment(comment._id));
   }
 }
 

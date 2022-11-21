@@ -5,6 +5,8 @@ import { TaskInterface, TaskStatus } from '@taskforce/shared-types';
 import { TaskMemoryRepository } from '../task/task-memory.repository';
 import { TaskEntity } from '../task/task.entity';
 
+const TASKS_COUNT = 25;
+
 @Injectable()
 export class ApiService {
   constructor(private readonly taskMemoryRepository: TaskMemoryRepository) {}
@@ -30,7 +32,11 @@ export class ApiService {
   }
 
   async getTasks() {
-    return this.taskMemoryRepository.find();
+    const allTasks = await this.taskMemoryRepository.find();
+    
+    return allTasks
+      .filter((task) => task.status === TaskStatus.New)
+      .slice(0, TASKS_COUNT);
   }
 
   async getTask(id: string) {

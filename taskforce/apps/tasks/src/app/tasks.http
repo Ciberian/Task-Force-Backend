@@ -18,11 +18,11 @@ GET http://localhost:3333/api/tasks/ HTTP/1.1
 
 ###
 # Get task info
-GET http://localhost:3333/api/tasks/2fbe0d32-84e1-4725-bd10-cdd60248b042 HTTP/1.1
+GET http://localhost:3333/api/tasks/3aabd8cf-4d97-4111-9e99-e06913aa216f HTTP/1.1
 
 ###
 # Update task
-PATCH http://localhost:3333/api/tasks/2fbe0d32-84e1-4725-bd10-cdd60248b042 HTTP/1.1
+PATCH http://localhost:3333/api/tasks/3aabd8cf-4d97-4111-9e99-e06913aa216f HTTP/1.1
 Content-Type: application/json
 
 {
@@ -33,4 +33,4 @@ Content-Type: application/json
 
 ###
 # Delete task
-DELETE http://localhost:3333/api/tasks/2fbe0d32-84e1-4725-bd10-cdd60248b042 HTTP/1.1
+DELETE http://localhost:3333/api/tasks/3aabd8cf-4d97-4111-9e99-e06913aa216f HTTP/1.1

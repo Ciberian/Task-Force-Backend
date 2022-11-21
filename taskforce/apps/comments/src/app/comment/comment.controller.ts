@@ -25,6 +25,8 @@ export class CommentController {
 
   @Delete(':taskId/comments')
   async show(@Param('taskId') taskId: string) {
-    this.commentService.deleteTaskComments(taskId);
+    await this.commentService.deleteTaskComments(taskId);
+
+    return `Comments for task with ID - ${taskId}, has been deleted`;
   }
 }

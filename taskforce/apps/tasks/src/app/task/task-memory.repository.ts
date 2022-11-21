@@ -4,8 +4,6 @@ import { TaskEntity } from './task.entity';
 import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 
-const TASKS_COUNT = 25;
-
 @Injectable()
 export class TaskMemoryRepository implements CRUDRepositoryInterface<TaskEntity, string, TaskInterface> {
   private repository: { [key: string]: TaskInterface } = {};
@@ -17,9 +15,7 @@ export class TaskMemoryRepository implements CRUDRepositoryInterface<TaskEntity,
   }
 
   public async find(): Promise<TaskInterface[]> {
-    const allTasks = Object.values(this.repository);
-    const newTasks = allTasks.filter((task) => task.status === TaskStatus.New).slice(0, TASKS_COUNT);
-    return newTasks;
+    return Object.values(this.repository);
   }
 
   public async findById(id: string): Promise<TaskInterface> {
