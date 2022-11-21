@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ApiModule } from './api/api.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
-  imports: [],
+  imports: [ApiModule, TaskModule],
   controllers: [],
   providers: [],
 })

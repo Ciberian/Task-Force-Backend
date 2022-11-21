@@ -5,9 +5,7 @@ import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 
 @Injectable()
-export class UserMemoryRepository
-  implements CRUDRepositoryInterface<UserEntity, string, UserInterface>
-{
+export class UserMemoryRepository implements CRUDRepositoryInterface<UserEntity, string, UserInterface> {
   private repository: { [key: string]: UserInterface } = {};
 
   public async create(item: UserEntity): Promise<UserInterface> {
