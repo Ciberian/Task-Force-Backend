@@ -2,8 +2,12 @@ import { plainToInstance, ClassConstructor } from 'class-transformer';
 import { MongooseModuleAsyncOptions } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 
-export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
-  plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
+export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) => {
+  console.log('Original object, with correct ID----------------------------------', plainObject)
+  const obj = plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
+  console.log('Changed object, with wrong ID----------------------------------------', obj);
+  return obj;
+}
 
 export function getMongoConnectionString({username, password, host, port, databaseName, authDatabase}): string {
   return `mongodb://${username}:${password}@${host}:${port}/${databaseName}?authSource=${authDatabase}`;

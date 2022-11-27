@@ -3,7 +3,7 @@ POST http://localhost:3333/api/user/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "asfa111@mail.ru",
+  "email": "asfa2@mail.ru",
   "city": "Владивосток",
   "password": "123456",
   "birthDate": "2002-02-02",
@@ -17,10 +17,10 @@ POST http://localhost:3333/api/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "asfa111@mail.ru",
+  "email": "asfa@mail.ru",
   "password": "123456"
 }
 
 ###
 # Get user info
-GET http://localhost:3333/api/user/42d448f8-9111-4ad7-ac70-2b6dd34af252 HTTP/1.1
+GET http://localhost:3333/api/user/638348b04f5f6091439ea5b0 HTTP/1.1

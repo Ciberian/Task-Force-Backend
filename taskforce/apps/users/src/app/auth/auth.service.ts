@@ -14,7 +14,6 @@ export class AuthService {
   async register(dto: CreateUserDto) {
     const {email, city, password, birthDate, role, name} = dto;
     const user: UserInterface = {
-      _id: '',
       email,
       city,
       passwordHash: '',
