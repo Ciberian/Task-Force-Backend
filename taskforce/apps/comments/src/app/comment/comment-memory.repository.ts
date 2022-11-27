@@ -18,7 +18,7 @@ export class CommentMemoryRepository implements CRUDRepositoryInterface<CommentE
     return Object.values(this.repository);
   }
 
-  public async findById(id: string): Promise<CommentInterface> {
+  public async findById(id: string): Promise<CommentInterface | null> {
     if (this.repository[id]) {
       return { ...this.repository[id] };
     }

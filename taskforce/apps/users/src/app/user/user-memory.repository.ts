@@ -14,7 +14,7 @@ export class UserMemoryRepository implements CRUDRepositoryInterface<UserEntity,
     return { ...entry };
   }
 
-  public async findById(id: string): Promise<UserInterface> {
+  public async findById(id: string): Promise<UserInterface | null> {
     if (this.repository[id]) {
       return { ...this.repository[id] };
     }
@@ -22,7 +22,7 @@ export class UserMemoryRepository implements CRUDRepositoryInterface<UserEntity,
     return null;
   }
 
-  public async findByEmail(email: string): Promise<UserInterface> {
+  public async findByEmail(email: string): Promise<UserInterface | null> {
     const existUser = Object.values(this.repository).find(
       (userItem) => userItem.email === email
     );

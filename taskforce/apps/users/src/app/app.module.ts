@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { getMongoDbConfig } from '@taskforce/core';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { ConfigModule } from '@nestjs/config';
 import { ENV_FILE_PATH } from './app.constant';
 import databaseConfig from '../config/database.config';
 import envSchema from './env.schema';
@@ -15,6 +17,9 @@ import envSchema from './env.schema';
       load: [databaseConfig],
       validationSchema: envSchema
     }),
+    MongooseModule.forRootAsync(
+      getMongoDbConfig()
+    ),
     AuthModule,
     UserModule
   ],

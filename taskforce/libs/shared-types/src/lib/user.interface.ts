@@ -2,7 +2,7 @@ import { City } from './city.enum';
 import { UserRole } from './user-role.enum';
 
 export interface UserInterface {
-  _id: string;
+  _id?: string;
   name: string;
   email: string;
   city: City;
