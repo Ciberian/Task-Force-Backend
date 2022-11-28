@@ -11,6 +11,5 @@ import { CommentService } from './comment.service';
   ])],
   controllers: [CommentController],
   providers: [CommentService, CommentRepository],
-  exports: [CommentRepository],
 })
 export class CommentsModule {}

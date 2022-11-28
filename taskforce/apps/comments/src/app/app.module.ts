@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoDbConfig } from '@taskforce/core';
-import { CommentController } from './comment/comment.controller';
-import { CommentService } from './comment/comment.service';
 import { CommentsModule } from './comment/comment.module';
 import { ENV_FILE_PATH } from './app.constant';
 import databaseConfig from '../config/database.config';
@@ -23,7 +21,7 @@ import envSchema from './env.schema';
     ),
     CommentsModule
   ],
-  controllers: [CommentController],
-  providers: [CommentService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
