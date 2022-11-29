@@ -1,15 +1,19 @@
 # Create comment
-POST http://localhost:3333/api/tasks/2fbe0d32-84e1-4725-bd10-cdd60248b042 HTTP/1.1
+POST http://localhost:3333/api/tasks/638589d7798f4804ac8ecfd0 HTTP/1.1
 Content-Type: application/json
 
 {
-  "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo. Vestibulum aliquam hendrerit molestie. Mauris malesuada nisi sit amet augue accumsan tincidunt #2"
+  "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo. Vestibulum aliquam hendrerit molestie. Mauris malesuada nisi sit amet augue accumsan tincidunt #123"
 }
 
 ###
 # Get task comments
-GET http://localhost:3333/api/tasks/2fbe0d32-84e1-4725-bd10-cdd60248b042/comments HTTP/1.1
+GET http://localhost:3333/api/tasks/638589d7798f4804ac8ecfd0/comments HTTP/1.1
 
 ###
-# Delete task
-DELETE http://localhost:3333/api/tasks/2fbe0d32-84e1-4725-bd10-cdd60248b042/comments HTTP/1.1
+# Delete task comments
+DELETE http://localhost:3333/api/tasks/638589d7798f4804ac8ecfd0/comments HTTP/1.1
+
+###
+# Delete one comment
+DELETE http://localhost:3333/api/tasks/638589d7798f4804ac8ecfd0/comments/6385a740ef5314f09909a5d4 HTTP/1.1

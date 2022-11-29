@@ -1,5 +1,5 @@
 export interface CommentInterface {
-  _id: string;
+  _id?: string;
   taskId: string;
   text: string;
 }
