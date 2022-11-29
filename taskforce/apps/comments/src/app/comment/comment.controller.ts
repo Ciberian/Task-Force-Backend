@@ -49,7 +49,7 @@ export class CommentController {
   @Delete(':taskId/comments/:commentId')
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Comments were successfully deleted'
+    description: 'Comment was successfully deleted'
   })
   async deleteOneComment(@Param('commentId') commentId: string) {
     await this.commentService.deleteComment(commentId);
