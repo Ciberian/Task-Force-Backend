@@ -13,7 +13,6 @@ export class CommentService {
   async create(taskId: string, dto: CreateCommentDto) {
     const {text} = dto;
     const comment: CommentInterface = {
-      _id: '',
       taskId,
       text,
     };
@@ -30,12 +29,11 @@ export class CommentService {
   }
 
   async deleteComment(id: string) {
-    return this.commentRepository.delete(id);
+    await this.commentRepository.delete(id);
   }
 
   async deleteTaskComments(taskId: string) {
-    const taskComments = await this.commentRepository.find(taskId);
-    taskComments.forEach((comment) => this.deleteComment(comment._id));
+    await this.commentRepository.deleteMany(taskId);
   }
 }
 

@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { City, UserRole } from '@taskforce/shared-types';
 
@@ -7,6 +7,7 @@ export class UserRdo {
     description: 'The uniq user ID',
     example: '638348b04f5f6091439ea5b2'
   })
+  @Transform((value) => value.obj._id.toString())
   @Expose({ name: '_id'})
   public id: string;
 

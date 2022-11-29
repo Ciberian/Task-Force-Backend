@@ -19,7 +19,7 @@ export class UserRepository implements CRUDRepositoryInterface<UserEntity, strin
 
   public async findById(id: string): Promise<UserInterface | null> {
     return this.UserModel
-      .findOne({id})
+      .findById(id)
       .exec();
   }
 

@@ -25,7 +25,7 @@ export class CommentRepository implements CRUDRepositoryInterface<CommentEntity,
 
   public async findById(id: string): Promise<CommentInterface | null> {
     return this.CommentModel
-      .findOne({id})
+      .findOne({_id: id})
       .exec();
   }
 
@@ -36,6 +36,10 @@ export class CommentRepository implements CRUDRepositoryInterface<CommentEntity,
   }
 
   public async delete(id: string): Promise<void> {
-    this.CommentModel.deleteOne({id});
+    await this.CommentModel.deleteOne({_id: id});
+  }
+
+  public async deleteMany(taskId: string): Promise<void> {
+    await this.CommentModel.deleteMany({taskId});
   }
 }
