@@ -19,9 +19,9 @@ model Task {
  address        String
  tegs           String[]
  status         String
+ userId         String
  createdAt      DateTime @default(now())
  publishAt      DateTime @default(now())
- userId         String
 }
 
 model Category {

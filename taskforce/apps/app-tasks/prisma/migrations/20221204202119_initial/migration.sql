@@ -9,6 +9,7 @@ CREATE TABLE "Task" (
     "address" TEXT NOT NULL,
     "tegs" TEXT[],
     "status" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "publishAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
