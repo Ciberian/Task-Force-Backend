@@ -21,6 +21,7 @@ model Task {
  status         String
  createdAt      DateTime @default(now())
  publishAt      DateTime @default(now())
+ userId         String
 }
 
 model Category {
