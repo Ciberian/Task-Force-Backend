@@ -3,8 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CommentRdo {
   @ApiProperty({
-    description: 'The uniq user ID',
-    example: '42d448f8-9111-4ad7-ac70-2b6dd34af25'
+    description: 'The uniq comment ID',
+    example: '638e291cd88ef99f1bf241bb'
   })
   @Transform((value) => value.obj._id.toString())
   @Expose({name: '_id'})
@@ -12,7 +12,7 @@ export class CommentRdo {
 
   @ApiProperty({
     description: 'The uniq task ID',
-    example: '24b448c8-9111-4da7-ca70-2b6dd34af52'
+    example: '638589d7798f4804ac8ecfd0'
   })
   @Expose()
   taskId: string;
@@ -23,4 +23,11 @@ export class CommentRdo {
   })
   @Expose()
   text: string;
+
+  @ApiProperty({
+    description: 'Comment created date',
+    example: '2022-12-05T17:23:40.400Z'
+  })
+  @Expose()
+  createdAt: string;
 }
