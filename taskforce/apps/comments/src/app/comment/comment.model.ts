@@ -18,6 +18,9 @@ export class CommentModel extends Document implements CommentInterface {
     maxlength: [MAX_COMMENT_LENGTH, 'Max length for the comment is 300 simbols']
   })
   text: string;
+
+  @Prop()
+  createdAt: Date;
 }
 
 export const CommentSchema = SchemaFactory.createForClass(CommentModel);

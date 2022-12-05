@@ -4,6 +4,7 @@ export class CommentEntity implements CommentInterface {
   public _id: string;
   public taskId: string;
   public text: string;
+  public createdAt: Date;
 
   constructor(comment: CommentInterface) {
     this.fillEntity(comment);
@@ -17,5 +18,6 @@ export class CommentEntity implements CommentInterface {
     this._id = comment._id;
     this.taskId = comment.taskId;
     this.text = comment.text;
+    this.createdAt = new Date();
   }
 }

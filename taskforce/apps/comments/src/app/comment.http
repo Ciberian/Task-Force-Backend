@@ -16,4 +16,4 @@ DELETE http://localhost:3333/api/tasks/638589d7798f4804ac8ecfd0/comments HTTP/1.
 
 ###
 # Delete one comment
-DELETE http://localhost:3333/api/tasks/638589d7798f4804ac8ecfd0/comments/6385a740ef5314f09909a5d4 HTTP/1.1
+DELETE http://localhost:3333/api/tasks/638589d7798f4804ac8ecfd0/comments/638e27b94fe67ab3e91d9037 HTTP/1.1
