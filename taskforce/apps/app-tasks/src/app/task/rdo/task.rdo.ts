@@ -72,4 +72,10 @@ export class TaskRdo {
   })
   @Expose()
   public status: TaskStatus;
+
+  @ApiProperty({
+    description: 'User Id',
+    example: '6385aaacc05cd5e757d37764'
+  })
+  public userId: string;
 }

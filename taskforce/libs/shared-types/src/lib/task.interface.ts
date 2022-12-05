@@ -11,4 +11,5 @@ export interface TaskInterface {
   address?: string;
   tegs?: string[];
   status: TaskStatus;
+  userId: string;
 }

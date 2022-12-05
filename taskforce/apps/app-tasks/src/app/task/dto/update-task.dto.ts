@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateTaskDto {
+export class UpdateTaskDto {
   @ApiProperty({
     description: 'Task title',
     example: 'Создать работающий экземпляр термоядерной установки'
@@ -48,4 +48,10 @@ export class CreateTaskDto {
     example: 'Изичная задача, Задача на раз плюнуть'
   })
   public tegs?: string[];
+
+  @ApiProperty({
+    description: 'User Id',
+    example: '6385aaacc05cd5e757d37764'
+  })
+  public userId: string;
 }

@@ -32,11 +32,11 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "tasks:build"
+        "buildTarget": "app-tasks:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "tasks:build:production"
+          "buildTarget": "app-tasks:build:production"
         }
       }
     },
