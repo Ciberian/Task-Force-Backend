@@ -13,6 +13,7 @@ async function fillDb() {
           {
             title: 'Перевезти груз на новое место',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo. Vestibulum aliquam hendrerit molestie.',
+            category: 'Грузоперевозки',
             price: '18750',
             deadline: '2022-12-12',
             image: 'asdfsadfsadf.png',
@@ -35,6 +36,7 @@ async function fillDb() {
           {
             title: 'Перевести войну и мир на клингонский',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo. Vestibulum aliquam hendrerit molestie.',
+            category: 'Переводы',
             price: '7500',
             deadline: '2022-12-22',
             image: 'asdfsadf.png',
