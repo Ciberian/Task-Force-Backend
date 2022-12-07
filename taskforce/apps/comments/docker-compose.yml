@@ -11,7 +11,7 @@ services:
     ports:
       - 27018:27017
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongodb-comments mongodb-comments:27018/test --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27018/taskforce-comments --quiet
       interval: 10s
       timeout: 10s
       retries: 5
