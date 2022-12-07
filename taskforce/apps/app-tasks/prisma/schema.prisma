@@ -12,20 +12,22 @@ model Task {
  id             Int @id @default(autoincrement())
  title          String
  description    String
- categories     Category[]
- price          String
- deadline       String
- image          String
- address        String
+ category       String
+ price          String?
+ deadline       String?
+ image          String?
+ address        String?
  tegs           String[]
- status         String
+ status         TaskStatus @default(New)
  userId         String
  createdAt      DateTime @default(now())
  publishAt      DateTime @default(now())
 }
 
-model Category {
-  id           Int @id @default(autoincrement())
-  title        String
-  tasks        Task[]
+enum TaskStatus {
+  New
+  Cancelled
+  AtWork
+  Completed
+  Failed
 }

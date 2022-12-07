@@ -29,7 +29,7 @@ export class CreateTaskDto {
     description: 'Task deadline',
     example: '2022-12-22'
   })
-  public deadline?: Date;
+  public deadline?: string;
 
   @ApiProperty({
     description: 'Task image',
@@ -50,7 +50,7 @@ export class CreateTaskDto {
   public tegs?: string[];
 
   @ApiProperty({
-    description: 'User Id',
+    description: 'The uniq user ID',
     example: '6385aaacc05cd5e757d37764'
   })
   public userId: string;

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { TaskStatus } from '@taskforce/shared-types';
 
 export class UpdateTaskDto {
   @ApiProperty({
@@ -29,7 +30,7 @@ export class UpdateTaskDto {
     description: 'Task deadline',
     example: '2022-12-22'
   })
-  public deadline?: Date;
+  public deadline?: string;
 
   @ApiProperty({
     description: 'Task image',
@@ -50,7 +51,13 @@ export class UpdateTaskDto {
   public tegs?: string[];
 
   @ApiProperty({
-    description: 'User Id',
+    description: 'Task status',
+    example: 'New'
+  })
+  public status: TaskStatus;
+
+  @ApiProperty({
+    description: 'The uniq user ID',
     example: '6385aaacc05cd5e757d37764'
   })
   public userId: string;

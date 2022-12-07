@@ -1,12 +1,12 @@
 import { TaskStatus } from './task-status.enum';
 
 export interface TaskInterface {
-  _id: string;
+  id?: number;
   title: string;
   description: string;
   category: string;
   price?: string;
-  deadline?: Date;
+  deadline?: string;
   image?: string;
   address?: string;
   tegs?: string[];

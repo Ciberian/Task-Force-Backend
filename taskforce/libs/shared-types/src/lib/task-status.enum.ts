@@ -1,7 +1,9 @@
-export enum TaskStatus {
-  New = 'Новое',
-  Сancelled = 'Отменено',
-  AtWork = 'В работе',
-  Сompleted = 'Завершено',
-  Failed = 'Провалено',
-}
+export let TaskStatus: {
+  New: 'New',
+  Cancelled: 'Cancelled',
+  AtWork: 'AtWork',
+  Completed: 'Completed',
+  Failed: 'Failed'
+};
+
+export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
