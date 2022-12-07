@@ -38,7 +38,7 @@ export class TaskController {
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async destroy(@Param('id') id: string) {
-    const postId = parseInt(id, 10);
-    this.taskService.deleteTask(postId);
+    const taskId = parseInt(id, 10);
+    this.taskService.deleteTask(taskId);
   }
 }
