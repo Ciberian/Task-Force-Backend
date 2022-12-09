@@ -4,10 +4,10 @@ import { TaskStatus } from '@taskforce/shared-types';
 
 export class TaskRdo {
   @ApiProperty({
-    description: 'The uniq user ID',
-    example: '42d448f8-9111-4ad7-ac70-2b6dd34af25'
+    description: 'The uniq task ID',
+    example: '6385aaacc05cd5e757d37764'
   })
-  @Expose({name: '_id'})
+  @Expose()
   public id: string;
 
   @ApiProperty({
@@ -68,8 +68,14 @@ export class TaskRdo {
 
   @ApiProperty({
     description: 'Task status',
-    example: 'Провалено'
+    example: 'Failed'
   })
   @Expose()
   public status: TaskStatus;
+
+  @ApiProperty({
+    description: 'The uniq user ID',
+    example: '6385aaacc05cd5e757d37764'
+  })
+  public userId: string;
 }

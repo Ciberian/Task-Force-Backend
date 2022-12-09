@@ -15,6 +15,7 @@ export class CommentService {
     const comment: CommentInterface = {
       taskId,
       text,
+      createdAt: new Date(),
     };
 
     const commentEntity = new CommentEntity(comment);
