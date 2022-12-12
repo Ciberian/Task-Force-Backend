@@ -15,7 +15,7 @@ GET http://localhost:3333/api/tasks/ HTTP/1.1
 
 ###
 # Get task info
-GET http://localhost:3333/api/tasks/1 HTTP/1.1
+GET http://localhost:3333/api/tasks/4 HTTP/1.1
 
 ###
 # Update task
@@ -24,9 +24,10 @@ Content-Type: application/json
 
 {
   "title": "Перевезти войну и мир на планету Клингон",
+  "deadline": "2032-01-21",
   "category": "Перевозки",
-  "price": "500000000",
-  "status": "AtWork"
+  "price": "5000",
+  "status": "Completed"
 }
 
 ###

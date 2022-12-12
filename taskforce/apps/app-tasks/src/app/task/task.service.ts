@@ -23,7 +23,12 @@ export class TaskService {
   }
 
   async updateTask(id: number, dto: UpdateTaskDto): Promise<TaskInterface> {
-    const taskEntity = new TaskEntity({...dto});
+    const taskBeforeUpdate = await this.taskRepository.findById(id);
+    if (!taskBeforeUpdate) {
+      throw new Error(`Task with id ${id}, does not exist`);
+    }
+
+    const taskEntity = new TaskEntity({...taskBeforeUpdate, ...dto});
     return this.taskRepository.update(id, taskEntity);
   }
 
