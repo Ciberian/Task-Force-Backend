@@ -1,11 +1,17 @@
+import * as dayjs from 'dayjs';
 import { Injectable } from '@nestjs/common';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserInterface } from '@taskforce/shared-types';
 import { UserRepository } from '../user/user.repository';
-import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from './auth.constant';
 import { UserEntity } from '../user/user.entity';
-import * as dayjs from 'dayjs';
+import {
+  AGE_OF_MAJORITY,
+  AUTH_USER_EXISTS,
+  AUTH_USER_NOT_FOUND,
+  AUTH_USER_PASSWORD_WRONG,
+  AUTH_USER_NOT_LEGAL_AGE
+} from './auth.constant';
 
 @Injectable()
 export class AuthService {
@@ -23,8 +29,12 @@ export class AuthService {
       avatar: dto?.avatar || '',
     };
 
-    const existUser = await this.userRepository.findByEmail(email);
+    const userAge = dayjs().diff(user.birthDate, 'year');
+    if (userAge < AGE_OF_MAJORITY) {
+      throw new Error(AUTH_USER_NOT_LEGAL_AGE);
+    }
 
+    const existUser = await this.userRepository.findByEmail(email);
     if (existUser) {
       throw new Error(AUTH_USER_EXISTS);
     }
