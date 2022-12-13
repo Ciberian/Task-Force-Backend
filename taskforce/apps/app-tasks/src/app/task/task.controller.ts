@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, ParseIntPipe } from '@nestjs/common';
 import { fillDTO } from '@taskforce/core';
 import { TaskService } from './task.service';
 import { TaskRdo } from './rdo/task.rdo';
@@ -16,9 +16,8 @@ export class TaskController {
   }
 
   @Get('/:id')
-  async show(@Param('id') id: string) {
-    const taskId = parseInt(id, 10);
-    const task = await this.taskService.getTask(taskId);
+  async show(@Param('id', ParseIntPipe) id: number) {
+    const task = await this.taskService.getTask(id);
     return fillDTO(TaskRdo, task);
   }
 
@@ -29,16 +28,14 @@ export class TaskController {
   }
 
   @Patch('/:id')
-  async update(@Param('id') id: string, @Body() dto: UpdateTaskDto) {
-    const taskId = parseInt(id, 10);
-    const updatedTask = await this.taskService.updateTask(taskId, dto);
+  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateTaskDto) {
+    const updatedTask = await this.taskService.updateTask(id, dto);
     return fillDTO(TaskRdo, updatedTask)
   }
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async destroy(@Param('id') id: string) {
-    const taskId = parseInt(id, 10);
-    this.taskService.deleteTask(taskId);
+  async destroy(@Param('id', ParseIntPipe) id: number) {
+    this.taskService.deleteTask(id);
   }
 }
