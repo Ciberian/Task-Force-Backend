@@ -13,7 +13,7 @@ model Task {
  title          String
  description    String
  category       String
- price          String?
+ price          Int?
  deadline       String?
  image          String?
  address        String?

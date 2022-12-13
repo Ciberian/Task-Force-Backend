@@ -4,13 +4,18 @@ import { TaskEntity } from './task.entity';
 import { TaskRepository } from './task.repository';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { formatTegs } from '@taskforce/core';
 
 @Injectable()
 export class TaskService {
   constructor(private readonly taskRepository: TaskRepository) {}
 
   async createTask(dto: CreateTaskDto): Promise<TaskInterface> {
-    const taskEntity = new TaskEntity({...dto, status: "New"});
+    const taskEntity = new TaskEntity({
+      ...dto,
+      status: "New",
+      tegs: formatTegs(dto?.tegs)
+    });
     return this.taskRepository.create(taskEntity);
   }
 
@@ -28,7 +33,11 @@ export class TaskService {
       throw new Error(`Task with id ${id}, does not exist`);
     }
 
-    const taskEntity = new TaskEntity({...taskBeforeUpdate, ...dto});
+    const taskEntity = new TaskEntity({
+      ...taskBeforeUpdate,
+      ...dto,
+      tegs: formatTegs(dto?.tegs)
+    });
     return this.taskRepository.update(id, taskEntity);
   }
 

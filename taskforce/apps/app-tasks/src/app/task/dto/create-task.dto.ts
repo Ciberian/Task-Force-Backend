@@ -1,20 +1,27 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsString,
   IsOptional,
-  IsArray,
   IsMongoId,
-  Length,
+  IsISO8601,
+  IsString,
   Matches,
+  MaxLength,
+  MinLength,
+  IsArray,
+  Length,
   IsNumber,
   Min,
-  IsISO8601,
+  ArrayMaxSize,
 } from 'class-validator';
 import {
   TASK_TITLE_NOT_VALID,
   TASK_DESCRIPTION_NOT_VALID,
   TEGS_NOT_VALID,
   DEADLINE_DATE_NOT_VALID,
+  MAX_TEGS_COUNT,
+  MIN_TEG_LENGTH,
+  MAX_TEG_LENGTH,
+  TEGS_СONTAIN_INVALID_SIMBOLS
 } from '../task.constant';
 
 export class CreateTaskDto {
@@ -74,6 +81,7 @@ export class CreateTaskDto {
     description: 'Task address',
     example: 'Москва, Кремль, дом 1',
   })
+  @IsOptional()
   @IsString()
   public address?: string;
 
@@ -83,7 +91,11 @@ export class CreateTaskDto {
   })
   @IsOptional()
   @IsArray()
-  @IsString({ each: true, message: TEGS_NOT_VALID })
+  @ArrayMaxSize(MAX_TEGS_COUNT)
+  @MinLength(MIN_TEG_LENGTH, {each: true})
+  @MaxLength(MAX_TEG_LENGTH, {each: true})
+  @IsString({each: true, message: TEGS_NOT_VALID})
+  @Matches(/^[a-zа-яё][a-zа-яё0-9-]+$/i, {each: true, message: TEGS_СONTAIN_INVALID_SIMBOLS})
   public tegs?: string[];
 
   @ApiProperty({

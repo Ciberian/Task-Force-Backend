@@ -4,7 +4,7 @@ export class TaskEntity implements TaskInterface {
   public title: string;
   public description: string;
   public category: string;
-  public price?: string;
+  public price?: number;
   public deadline?: string;
   public image?: string;
   public address?: string;

@@ -5,7 +5,7 @@ export interface TaskInterface {
   title: string;
   description: string;
   category: string;
-  price?: string;
+  price?: number;
   deadline?: string;
   image?: string;
   address?: string;

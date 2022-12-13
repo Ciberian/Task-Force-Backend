@@ -25,3 +25,9 @@ export function getMongoDbConfig(): MongooseModuleAsyncOptions {
     inject: [ConfigService]
   }
 }
+
+export function formatTegs(tegs: string[] = []): string[] {
+  return tegs
+    .map((teg) => teg.toLowerCase())
+    .filter((teg, index, arr) => index === arr.indexOf(teg))
+}

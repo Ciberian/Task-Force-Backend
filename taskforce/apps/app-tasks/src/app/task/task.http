@@ -7,7 +7,7 @@ Content-Type: application/json
   "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo.",
   "category": "Переводы",
   "userId": "6385bbbcc05cd5e757d37764",
-  "tegs": ["Переводы", "Translate", 4123423]
+  "tegs": ["Пе-р23во2", "TRA54NS32", "TRA54NS32"]
 }
 
 ###
@@ -27,8 +27,9 @@ Content-Type: application/json
   "title": "Перевезти войну и мир на планету Клингон",
   "deadline": "2032-01-21",
   "category": "Перевозки",
-  "price": "5000",
-  "status": "Completed"
+  "price": 5000,
+  "status": "Completed",
+  "tegs": ["Перевод", "TRA54", "TRA54"]
 }
 
 ###
