@@ -1,11 +1,12 @@
 import { Controller, Post, Get, Body, Param, HttpStatus, UnauthorizedException } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
 import { fillDTO } from '@taskforce/core';
 import { UserRdo } from './rdo/user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
-import { AuthService } from './auth.service';
+import { MongoidValidationPipe } from '@taskforce/shared-types';
 
 @ApiTags('user')
 @Controller('user')
@@ -50,7 +51,7 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'User found'
   })
-  public async show(@Param('id') id: string) {
+  public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
     return fillDTO(UserRdo, existUser);
   }
