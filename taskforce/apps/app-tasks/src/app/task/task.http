@@ -6,7 +6,8 @@ Content-Type: application/json
   "title": "Перевести войну и мир на клингонский",
   "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo.",
   "category": "Переводы",
-  "userId": "6385bbbcc05cd5e757d37764"
+  "userId": "6385bbbcc05cd5e757d37764",
+  "tegs": ["Переводы", "Translate", 4123423]
 }
 
 ###

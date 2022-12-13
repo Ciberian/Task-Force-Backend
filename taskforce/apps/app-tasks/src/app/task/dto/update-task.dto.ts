@@ -6,12 +6,16 @@ import {
   IsMongoId,
   IsEnum,
   IsISO8601,
-  Length
+  Length,
+  Matches,
+  IsNumber,
+  Min
 } from 'class-validator';
 import {
   TASK_TITLE_NOT_VALID,
   TASK_DESCRIPTION_NOT_VALID,
-  DEADLINE_DATE_NOT_VALID
+  DEADLINE_DATE_NOT_VALID,
+  TEGS_NOT_VALID
 } from '../task.constant';
 
 enum TaskStatus {
@@ -29,6 +33,7 @@ export class UpdateTaskDto {
   })
   @IsOptional()
   @IsString()
+  @Matches(/\S/)
   @Length(20, 50, {message: TASK_TITLE_NOT_VALID})
   public title?: string;
 
@@ -38,6 +43,7 @@ export class UpdateTaskDto {
   })
   @IsOptional()
   @IsString()
+  @Matches(/\S/)
   @Length(100, 1024, {message: TASK_DESCRIPTION_NOT_VALID})
   public description?: string;
 
@@ -47,6 +53,7 @@ export class UpdateTaskDto {
   })
   @IsOptional()
   @IsString()
+  @Matches(/\S/)
   public category?: string;
 
   @ApiProperty({
@@ -54,7 +61,8 @@ export class UpdateTaskDto {
     example: '100500'
   })
   @IsOptional()
-  @IsString()
+  @IsNumber()
+  @Min(0)
   public price?: string;
 
   @ApiProperty({
@@ -77,6 +85,7 @@ export class UpdateTaskDto {
     description: 'Task address',
     example: 'Москва, Кремль, дом 1'
   })
+  @IsString()
   public address?: string;
 
   @ApiProperty({
@@ -85,6 +94,7 @@ export class UpdateTaskDto {
   })
   @IsOptional()
   @IsArray()
+  @IsString({ each: true, message: TEGS_NOT_VALID })
   public tegs?: string[];
 
   @ApiProperty({
