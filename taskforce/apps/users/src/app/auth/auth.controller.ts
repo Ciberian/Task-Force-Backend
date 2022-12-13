@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Param, HttpStatus, UnauthorizedException } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, HttpStatus, UnauthorizedException, UsePipes } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { fillDTO } from '@taskforce/core';
@@ -6,7 +6,7 @@ import { UserRdo } from './rdo/user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
-import { MongoidValidationPipe } from '@taskforce/shared-types';
+import { MongoidValidationPipe, TrimBodyValuesPipe } from '@taskforce/shared-types';
 
 @ApiTags('user')
 @Controller('user')
@@ -19,6 +19,7 @@ export class AuthController {
     status: HttpStatus.CREATED,
     description: 'The new user has been successfully created.'
   })
+  @UsePipes(new TrimBodyValuesPipe())
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
     return fillDTO(UserRdo, newUser);
