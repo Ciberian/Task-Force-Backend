@@ -6,8 +6,9 @@ Content-Type: application/json
   "title": "Перевести войну и мир на клингонский",
   "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo.",
   "category": "Переводы",
+  "address": "Санкт-Петербург, Тверская ул, дом 1",
   "userId": "6385bbbcc05cd5e757d37764",
-  "tegs": ["Пе-р23во2", "TRA54NS32", "TRA54NS32"]
+  "tegs": ["перевод", "translate"]
 }
 
 ###

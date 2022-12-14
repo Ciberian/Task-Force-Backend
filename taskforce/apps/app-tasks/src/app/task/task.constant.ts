@@ -7,5 +7,7 @@ export const MAX_TEGS_COUNT = 5;
 export const MIN_TEG_LENGTH = 3;
 export const MAX_TEG_LENGTH = 10;
 
-export const DEFAULT_POST_COUNT_LIMIT = 25;
+export const DEFAULT_PAGE = 1;
+export const DEFAULT_TASK_COUNT_LIMIT = 25;
 export const DEFAULT_SORT_DIRECTION = 'desc';
+export const DEFAULT_SORT_TYPE = 'createdAt';

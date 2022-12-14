@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, ParseIntPipe } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Query, Body, Patch, Post, ParseIntPipe } from '@nestjs/common';
 import { fillDTO } from '@taskforce/core';
 import { TaskService } from './task.service';
 import { TaskRdo } from './rdo/task.rdo';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { TaskQuery } from './query/task.query';
 
 @Controller('tasks')
 export class TaskController {
@@ -22,8 +23,8 @@ export class TaskController {
   }
 
   @Get('/')
-  async index() {
-    const tasks = await this.taskService.getTasks();
+  async index(@Query() query: TaskQuery) {
+    const tasks = await this.taskService.getTasks(query);
     return fillDTO(TaskRdo, tasks);
   }
 
