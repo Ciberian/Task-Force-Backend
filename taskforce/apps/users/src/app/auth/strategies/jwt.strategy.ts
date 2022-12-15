@@ -6,9 +6,7 @@ import { UserInterface } from '@taskforce/shared-types';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    private readonly configService: ConfigService,
-  ) {
+  constructor(configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -16,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate({ email, avatar, role }: Pick<UserInterface, 'email' | 'role' | 'avatar'>) {
-    return { email, avatar, role };
+  async validate({ email, role, name }: Pick<UserInterface, 'email' | 'role' | 'name'>) {
+    return {email, role, name};
   }
 }
