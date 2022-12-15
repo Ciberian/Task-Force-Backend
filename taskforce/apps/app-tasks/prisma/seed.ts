@@ -12,7 +12,7 @@ async function fillDb() {
       deadline: '2022-12-12',
       image: 'asdfsadfsadf.png',
       address: 'Санкт-Петербург, Центральный район',
-      tegs: ['грузоперевозки'],
+      tags: ['грузоперевозки'],
       status: 'New',
       userId: '6385aaacc05cd5e757d37764'
     },
@@ -27,7 +27,7 @@ async function fillDb() {
         deadline: '2022-12-22',
         image: 'asdfsadf.png',
         address: 'Санкт-Петербург, Центральный район',
-        tegs: ['переводы'],
+        tags: ['переводы'],
         status: 'AtWork',
         userId: '6385aaacc05cd5e757d37764'
       },

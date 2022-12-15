@@ -21,7 +21,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
     });
   }
 
-  public async find({limit, page, sortDirection, sortType, category, tegs, city}: TaskQuery): Promise<TaskInterface[]> {
+  public async find({limit, page, sortDirection, sortType, category, tags, city}: TaskQuery): Promise<TaskInterface[]> {
     if (sortType === 'createdAt') {
       if (category && city) {
         return this.prisma.task.findMany({
@@ -39,12 +39,12 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         });
       }
 
-      if (category && tegs) {
+      if (category && tags) {
         return this.prisma.task.findMany({
           where: {
             AND: [
               {category: category},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           orderBy: [
@@ -55,12 +55,12 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         });
       }
 
-      if (city && tegs) {
+      if (city && tags) {
         return this.prisma.task.findMany({
           where: {
             AND: [
               {address: {contains: city}},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           orderBy: [
@@ -71,13 +71,13 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         });
       }
 
-      if (category && city && tegs) {
+      if (category && city && tags) {
         return this.prisma.task.findMany({
           where: {
             AND: [
               {category: category},
               {address: {contains: city}},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           orderBy: [
@@ -88,13 +88,13 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         });
       }
 
-      if (category || city || tegs) {
+      if (category || city || tags) {
         return this.prisma.task.findMany({
           where: {
             OR: [
               {category: category},
               {address: {contains: city}},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           orderBy: [
@@ -134,12 +134,12 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         return tasks.sort((taskA, taskB) => taskB.commentsCount - taskA.commentsCount);
       }
 
-      if (category && tegs) {
+      if (category && tags) {
         const tasks = await this.prisma.task.findMany({
           where: {
             AND: [
               {category: category},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           take: limit,
@@ -153,12 +153,12 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         return tasks.sort((taskA, taskB) => taskB.commentsCount - taskA.commentsCount);
       }
 
-      if (city && tegs) {
+      if (city && tags) {
         const tasks = await this.prisma.task.findMany({
           where: {
             AND: [
               {address: {contains: city}},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           take: limit,
@@ -172,13 +172,13 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         return tasks.sort((taskA, taskB) => taskB.commentsCount - taskA.commentsCount);
       }
 
-      if (category && city && tegs) {
+      if (category && city && tags) {
         const tasks = await this.prisma.task.findMany({
           where: {
             AND: [
               {category: category},
               {address: {contains: city}},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           take: limit,
@@ -192,13 +192,13 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         return tasks.sort((taskA, taskB) => taskB.commentsCount - taskA.commentsCount);
       }
 
-      if (category || city || tegs) {
+      if (category || city || tags) {
         const tasks = await this.prisma.task.findMany({
           where: {
             OR: [
               {category: category},
               {address: {contains: city}},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           take: limit,
@@ -241,12 +241,12 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
       }
 
-      if (category && tegs) {
+      if (category && tags) {
         const tasks = await this.prisma.task.findMany({
           where: {
             AND: [
               {category: category},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           take: limit,
@@ -260,12 +260,12 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
       }
 
-      if (city && tegs) {
+      if (city && tags) {
         const tasks = await this.prisma.task.findMany({
           where: {
             AND: [
               {address: {contains: city}},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           take: limit,
@@ -279,13 +279,13 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
       }
 
-      if (category && city && tegs) {
+      if (category && city && tags) {
         const tasks = await this.prisma.task.findMany({
           where: {
             AND: [
               {category: category},
               {address: {contains: city}},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           take: limit,
@@ -299,13 +299,13 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
       }
 
-      if (category || city || tegs) {
+      if (category || city || tags) {
         const tasks = await this.prisma.task.findMany({
           where: {
             OR: [
               {category: category},
               {address: {contains: city}},
-              {tegs: {hasSome: tegs}}
+              {tags: {hasSome: tags}}
             ]
           },
           take: limit,

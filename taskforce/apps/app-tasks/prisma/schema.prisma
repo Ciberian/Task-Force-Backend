@@ -18,7 +18,7 @@ model Task {
  deadline       String?
  image          String?
  address        String?
- tegs           String[] @default([])
+ tags           String[] @default([])
  status         TaskStatus @default(New)
  createdAt      DateTime @default(now())
  publishAt      DateTime @default(now())

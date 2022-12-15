@@ -16,12 +16,12 @@ import {
 import {
   TASK_TITLE_NOT_VALID,
   TASK_DESCRIPTION_NOT_VALID,
-  TEGS_NOT_VALID,
   DEADLINE_DATE_NOT_VALID,
-  MAX_TEGS_COUNT,
-  MIN_TEG_LENGTH,
-  MAX_TEG_LENGTH,
-  TEGS_СONTAIN_INVALID_SIMBOLS
+  TAGS_NOT_VALID,
+  MAX_TAGS_COUNT,
+  MIN_TAG_LENGTH,
+  MAX_TAG_LENGTH,
+  TAGS_СONTAIN_INVALID_SIMBOLS
 } from '../task.constant';
 
 export class CreateTaskDto {
@@ -86,17 +86,17 @@ export class CreateTaskDto {
   public address?: string;
 
   @ApiProperty({
-    description: 'Task tegs',
+    description: 'Task tags',
     example: 'Изичная задача, Задача на раз плюнуть',
   })
   @IsOptional()
   @IsArray()
-  @ArrayMaxSize(MAX_TEGS_COUNT)
-  @MinLength(MIN_TEG_LENGTH, {each: true})
-  @MaxLength(MAX_TEG_LENGTH, {each: true})
-  @IsString({each: true, message: TEGS_NOT_VALID})
-  @Matches(/^[a-zа-яё][a-zа-яё0-9-]+$/i, {each: true, message: TEGS_СONTAIN_INVALID_SIMBOLS})
-  public tegs?: string[];
+  @ArrayMaxSize(MAX_TAGS_COUNT)
+  @MinLength(MIN_TAG_LENGTH, {each: true})
+  @MaxLength(MAX_TAG_LENGTH, {each: true})
+  @IsString({each: true, message: TAGS_NOT_VALID})
+  @Matches(/^[a-zа-яё][a-zа-яё0-9-]+$/i, {each: true, message: TAGS_СONTAIN_INVALID_SIMBOLS})
+  public tags?: string[];
 
   @ApiProperty({
     description: 'The uniq user ID',

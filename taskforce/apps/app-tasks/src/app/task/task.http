@@ -8,13 +8,13 @@ Content-Type: application/json
   "category": "Перевозки",
   "address": "Владивосток, Тверская ул, дом 1",
   "userId": "6385bbbcc05cd5e757d37764",
-  "tegs": ["перевозки"],
+  "tags": ["перевозки"],
   "commentsCount": 2
 }
 
 ###
 # Get tasks
-GET http://localhost:3333/api/tasks/?tegs=перевозки&sortType=responsesCount&sortDirection=asc HTTP/1.1
+GET http://localhost:3333/api/tasks/?tags=перевозки&sortType=responsesCount&sortDirection=asc HTTP/1.1
 
 ###
 # Get task info

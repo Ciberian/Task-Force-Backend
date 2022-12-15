@@ -26,10 +26,10 @@ export class TaskQuery {
   @IsOptional()
   public category?: string;
 
-  @Transform(({value}) => value.split(',').map((teg) => teg))
+  @Transform(({value}) => value.split(',').map((tag) => tag))
   @IsArray({})
   @IsOptional()
-  public tegs?: string[];
+  public tags?: string[];
 
   @IsEnum(City)
   @IsOptional()

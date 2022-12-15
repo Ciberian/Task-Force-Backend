@@ -4,7 +4,7 @@ import { TaskEntity } from './task.entity';
 import { TaskRepository } from './task.repository';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { formatTegs } from '@taskforce/core';
+import { formatTags } from '@taskforce/core';
 import { TaskQuery } from './query/task.query';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class TaskService {
     const taskEntity = new TaskEntity({
       ...dto,
       status: "New",
-      tegs: formatTegs(dto?.tegs)
+      tags: formatTags(dto?.tags)
     });
     return this.taskRepository.create(taskEntity);
   }
@@ -64,7 +64,7 @@ export class TaskService {
     const taskEntity = new TaskEntity({
       ...taskBeforeUpdate,
       ...dto,
-      tegs: formatTegs(dto?.tegs)
+      tags: formatTags(dto?.tags)
     });
 
     return this.taskRepository.update(id, taskEntity);

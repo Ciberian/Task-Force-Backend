@@ -26,8 +26,8 @@ export function getMongoDbConfig(): MongooseModuleAsyncOptions {
   }
 }
 
-export function formatTegs(tegs: string[] = []): string[] {
-  return tegs
-    .map((teg) => teg.toLowerCase())
-    .filter((teg, index, arr) => index === arr.indexOf(teg))
+export function formatTags(tags: string[] = []): string[] {
+  return tags
+    .map((tag) => tag.toLowerCase())
+    .filter((tag, index, arr) => index === arr.indexOf(tag))
 }

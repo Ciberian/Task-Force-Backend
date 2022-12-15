@@ -9,7 +9,7 @@ export interface TaskInterface {
   deadline?: string;
   image?: string;
   address?: string;
-  tegs?: string[];
+  tags?: string[];
   status: TaskStatus;
   userId: string;
   commentsCount?: number;

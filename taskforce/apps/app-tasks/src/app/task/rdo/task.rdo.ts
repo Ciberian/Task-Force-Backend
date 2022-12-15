@@ -60,11 +60,11 @@ export class TaskRdo {
   public address: string;
 
   @ApiProperty({
-    description: 'Task tegs',
+    description: 'Task tags',
     example: ['перевозки']
   })
   @Expose()
-  public tegs: string[];
+  public tags: string[];
 
   @ApiProperty({
     description: 'Task status',
