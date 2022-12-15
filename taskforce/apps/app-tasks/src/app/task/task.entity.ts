@@ -11,6 +11,8 @@ export class TaskEntity implements TaskInterface {
   public tegs?: string[];
   public status: TaskStatus;
   public userId: string;
+  public commentsCount: number;
+  public responsesCount: number;
 
   constructor(task: TaskInterface) {
     this.fillEntity(task);
@@ -31,5 +33,7 @@ export class TaskEntity implements TaskInterface {
     this.tegs = task.tegs;
     this.status = task.status;
     this.userId = task.userId;
+    this.commentsCount = task.commentsCount
+    this.responsesCount = task.responsesCount
   }
 }

@@ -3,36 +3,29 @@ POST http://localhost:3333/api/tasks/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Перевести войну и мир на клингонский",
+  "title": "Переехать в даль туманную",
   "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo.",
-  "category": "Переводы",
-  "address": "Санкт-Петербург, Тверская ул, дом 1",
+  "category": "Перевозки",
+  "address": "Владивосток, Тверская ул, дом 1",
   "userId": "6385bbbcc05cd5e757d37764",
-  "tegs": ["перевод", "translate"]
+  "tegs": ["перевозки"],
+  "commentsCount": 2
 }
 
 ###
 # Get tasks
-GET http://localhost:3333/api/tasks/ HTTP/1.1
+GET http://localhost:3333/api/tasks/?tegs=перевозки&sortType=responsesCount&sortDirection=asc HTTP/1.1
 
 ###
 # Get task info
-GET http://localhost:3333/api/tasks/4 HTTP/1.1
+GET http://localhost:3333/api/tasks/2 HTTP/1.1
 
 ###
 # Update task
-PATCH http://localhost:3333/api/tasks/3 HTTP/1.1
+PATCH http://localhost:3333/api/tasks/9?updateType=incCommentsCount HTTP/1.1
 Content-Type: application/json
 
-{
-  "title": "Перевезти войну и мир на планету Клингон",
-  "deadline": "2032-01-21",
-  "category": "Перевозки",
-  "price": 5000,
-  "status": "Completed",
-  "tegs": ["Перевод", "TRA54", "TRA54"]
-}
 
 ###
 # Delete task
-DELETE http://localhost:3333/api/tasks/3 HTTP/1.1
+DELETE http://localhost:3333/api/tasks/7 HTTP/1.1

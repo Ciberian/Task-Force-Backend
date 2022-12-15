@@ -13,15 +13,17 @@ model Task {
  title          String
  description    String
  category       String
+ userId         String
  price          Int?
  deadline       String?
  image          String?
  address        String?
- tegs           String[]
+ tegs           String[] @default([])
  status         TaskStatus @default(New)
- userId         String
  createdAt      DateTime @default(now())
  publishAt      DateTime @default(now())
+ responsesCount Int @default(0)
+ commentsCount  Int @default(0)
 }
 
 enum TaskStatus {

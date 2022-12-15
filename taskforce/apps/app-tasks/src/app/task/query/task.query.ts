@@ -20,7 +20,7 @@ export class TaskQuery {
 
   @IsString()
   @IsOptional()
-  public sortType?: 'createdAt' | 'commentIds' | 'responses' = DEFAULT_SORT_TYPE;
+  public sortType?: 'createdAt' | 'commentsCount' | 'responsesCount' = DEFAULT_SORT_TYPE;
 
   @IsString()
   @IsOptional()

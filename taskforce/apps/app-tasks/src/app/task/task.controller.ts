@@ -29,8 +29,12 @@ export class TaskController {
   }
 
   @Patch('/:id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateTaskDto) {
-    const updatedTask = await this.taskService.updateTask(id, dto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateTaskDto,
+    @Query() query: {updateType: string}
+  ) {
+    const updatedTask = await this.taskService.updateTask(id, dto, query);
     return fillDTO(TaskRdo, updatedTask)
   }
 

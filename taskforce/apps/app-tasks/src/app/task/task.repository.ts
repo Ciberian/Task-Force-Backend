@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CRUDRepositoryInterface } from '@taskforce/core';
-import { City, TaskInterface } from '@taskforce/shared-types';
+import { TaskInterface } from '@taskforce/shared-types';
 import { TaskEntity } from './task.entity';
 import { TaskQuery } from './query/task.query';
 
@@ -21,27 +21,318 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
     });
   }
 
-  // WIP: Тут нужно будет как-то реализовать сортировку по условию, взависимости от значения sortType:
-  // т.е. по дате создания(createdAt), или по количеству комментариев (commentIds), или по количеству отзывов (responses)
-  // Пока сортировка всегда выполняется по полю createdAt
-  public find({limit, page, sortDirection, sortType, category, tegs, city = City.Moscow}: TaskQuery): Promise<TaskInterface[]> {
-    return this.prisma.task.findMany({
-      where: {
-        OR: [
-          {category: category},
-          {address: {contains: city}},
-          {tegs: {hasSome: tegs}}
-        ]
-      },
-      orderBy: [
-        {createdAt: sortDirection},
-      ],
-      take: limit,
-      skip: page > 0 ? limit * (page - 1) : undefined,
-    });
+  public async find({limit, page, sortDirection, sortType, category, tegs, city}: TaskQuery): Promise<TaskInterface[]> {
+    if (sortType === 'createdAt') {
+      if (category && city) {
+        return this.prisma.task.findMany({
+          where: {
+            AND: [
+              {category: category},
+              {address: {contains: city}}
+            ]
+          },
+          orderBy: [
+            {createdAt: sortDirection},
+          ],
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+      }
+
+      if (category && tegs) {
+        return this.prisma.task.findMany({
+          where: {
+            AND: [
+              {category: category},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          orderBy: [
+            {createdAt: sortDirection},
+          ],
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+      }
+
+      if (city && tegs) {
+        return this.prisma.task.findMany({
+          where: {
+            AND: [
+              {address: {contains: city}},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          orderBy: [
+            {createdAt: sortDirection},
+          ],
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+      }
+
+      if (category && city && tegs) {
+        return this.prisma.task.findMany({
+          where: {
+            AND: [
+              {category: category},
+              {address: {contains: city}},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          orderBy: [
+            {createdAt: sortDirection},
+          ],
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+      }
+
+      if (category || city || tegs) {
+        return this.prisma.task.findMany({
+          where: {
+            OR: [
+              {category: category},
+              {address: {contains: city}},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          orderBy: [
+            {createdAt: sortDirection},
+          ],
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+      }
+
+      return this.prisma.task.findMany({
+        orderBy: [
+          {createdAt: sortDirection},
+        ],
+        take: limit,
+        skip: page > 0 ? limit * (page - 1) : undefined,
+      });
+    }
+
+    if (sortType === 'commentsCount') {
+      if (category && city) {
+        const tasks = await this.prisma.task.findMany({
+          where: {
+            AND: [
+              {category: category},
+              {address: {contains: city}}
+            ]
+          },
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+
+        if (sortDirection === 'asc') {
+          return tasks.sort((taskA, taskB) => taskA.commentsCount - taskB.commentsCount);
+        }
+
+        return tasks.sort((taskA, taskB) => taskB.commentsCount - taskA.commentsCount);
+      }
+
+      if (category && tegs) {
+        const tasks = await this.prisma.task.findMany({
+          where: {
+            AND: [
+              {category: category},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+
+        if (sortDirection === 'asc') {
+          return tasks.sort((taskA, taskB) => taskA.commentsCount - taskB.commentsCount);
+        }
+
+        return tasks.sort((taskA, taskB) => taskB.commentsCount - taskA.commentsCount);
+      }
+
+      if (city && tegs) {
+        const tasks = await this.prisma.task.findMany({
+          where: {
+            AND: [
+              {address: {contains: city}},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+
+        if (sortDirection === 'asc') {
+          return tasks.sort((taskA, taskB) => taskA.commentsCount - taskB.commentsCount);
+        }
+
+        return tasks.sort((taskA, taskB) => taskB.commentsCount - taskA.commentsCount);
+      }
+
+      if (category && city && tegs) {
+        const tasks = await this.prisma.task.findMany({
+          where: {
+            AND: [
+              {category: category},
+              {address: {contains: city}},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+
+        if (sortDirection === 'asc') {
+          return tasks.sort((taskA, taskB) => taskA.commentsCount - taskB.commentsCount);
+        }
+
+        return tasks.sort((taskA, taskB) => taskB.commentsCount - taskA.commentsCount);
+      }
+
+      if (category || city || tegs) {
+        const tasks = await this.prisma.task.findMany({
+          where: {
+            OR: [
+              {category: category},
+              {address: {contains: city}},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+
+        if (sortDirection === 'asc') {
+          return tasks.sort((taskA, taskB) => taskA.commentsCount - taskB.commentsCount);
+        }
+
+        return tasks.sort((taskA, taskB) => taskB.commentsCount - taskA.commentsCount);
+      }
+
+      return this.prisma.task.findMany({
+        orderBy: [
+          {createdAt: sortDirection},
+        ],
+        take: limit,
+        skip: page > 0 ? limit * (page - 1) : undefined,
+      });
+    }
+
+    if (sortType === 'responsesCount') {
+      if (category && city) {
+        const tasks = await this.prisma.task.findMany({
+          where: {
+            AND: [
+              {category: category},
+              {address: {contains: city}}
+            ]
+          },
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+
+        if (sortDirection === 'asc') {
+          return tasks.sort((taskA, taskB) => taskA.responsesCount - taskB.responsesCount);
+        }
+
+        return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
+      }
+
+      if (category && tegs) {
+        const tasks = await this.prisma.task.findMany({
+          where: {
+            AND: [
+              {category: category},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+
+        if (sortDirection === 'asc') {
+          return tasks.sort((taskA, taskB) => taskA.responsesCount - taskB.responsesCount);
+        }
+
+        return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
+      }
+
+      if (city && tegs) {
+        const tasks = await this.prisma.task.findMany({
+          where: {
+            AND: [
+              {address: {contains: city}},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+
+        if (sortDirection === 'asc') {
+          return tasks.sort((taskA, taskB) => taskA.responsesCount - taskB.responsesCount);
+        }
+
+        return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
+      }
+
+      if (category && city && tegs) {
+        const tasks = await this.prisma.task.findMany({
+          where: {
+            AND: [
+              {category: category},
+              {address: {contains: city}},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+
+        if (sortDirection === 'asc') {
+          return tasks.sort((taskA, taskB) => taskA.responsesCount - taskB.responsesCount);
+        }
+
+        return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
+      }
+
+      if (category || city || tegs) {
+        const tasks = await this.prisma.task.findMany({
+          where: {
+            OR: [
+              {category: category},
+              {address: {contains: city}},
+              {tegs: {hasSome: tegs}}
+            ]
+          },
+          take: limit,
+          skip: page > 0 ? limit * (page - 1) : undefined,
+        });
+
+        if (sortDirection === 'asc') {
+          return tasks.sort((taskA, taskB) => taskA.responsesCount - taskB.responsesCount);
+        }
+
+        return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
+      }
+
+      const tasks = await this.prisma.task.findMany({
+        take: limit,
+        skip: page > 0 ? limit * (page - 1) : undefined,
+      });
+
+      if (sortDirection === 'asc') {
+        return tasks.sort((taskA, taskB) => taskA.responsesCount - taskB.responsesCount);
+      }
+
+      return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
+    }
   }
 
-  public update(id: number, item: TaskEntity): Promise<TaskInterface> {
+  public async update(id: number, item: TaskEntity): Promise<TaskInterface> {
     return this.prisma.task.update({
       where: {id},
       data: {...item}

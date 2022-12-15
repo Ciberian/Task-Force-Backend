@@ -12,4 +12,6 @@ export interface TaskInterface {
   tegs?: string[];
   status: TaskStatus;
   userId: string;
+  commentsCount?: number;
+  responsesCount?: number;
 }
