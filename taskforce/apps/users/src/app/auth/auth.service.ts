@@ -1,10 +1,11 @@
 import * as dayjs from 'dayjs';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserInterface } from '@taskforce/shared-types';
 import { UserRepository } from '../user/user.repository';
 import { UserEntity } from '../user/user.entity';
+import { JwtService } from '@nestjs/jwt';
 import {
   AGE_OF_MAJORITY,
   AUTH_USER_EXISTS,
@@ -15,7 +16,7 @@ import {
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository, private readonly jwtService: JwtService,) {}
 
   async register(dto: CreateUserDto) {
     const {email, city, password, birthDate, role, name} = dto;
@@ -49,15 +50,28 @@ export class AuthService {
     const existUser = await this.userRepository.findByEmail(email);
 
     if (!existUser) {
-      throw new Error(AUTH_USER_NOT_FOUND);
+      throw new UnauthorizedException(AUTH_USER_NOT_FOUND);
     }
 
     const userEntity = new UserEntity(existUser);
     if (! await userEntity.comparePassword(password)) {
-      throw new Error(AUTH_USER_PASSWORD_WRONG);
+      throw new UnauthorizedException(AUTH_USER_PASSWORD_WRONG);
     }
 
     return userEntity.toObject();
+  }
+
+  async loginUser(user: UserInterface) {
+    const payload = {
+      sub: user._id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+    };
+
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 
   async getUser(id: string) {

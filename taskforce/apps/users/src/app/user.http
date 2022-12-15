@@ -3,7 +3,7 @@ POST http://localhost:3333/api/user/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "jaadhsssf@mail.com",
+  "email": "aad321f@mail.com",
   "city": "Владивосток",
   "password": "12456ghf",
   "birthDate": "2002-01-01",
@@ -25,3 +25,5 @@ Content-Type: application/json
 ###
 # Get user info
 GET http://localhost:3333/api/user/638e28558e1ce37dfc494611 HTTP/1.1
+
+Authorization: Bearer eeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzhlMjg1NThlMWNlMzdkZmM0OTQ2MTEiLCJlbWFpbCI6InF3ZXJ0eTEyQG1haWwucnUiLCJyb2xlIjoi0JjRgdC_0L7Qu9C90LjRgtC10LvRjCIsIm5hbWUiOiJBZHNhZHNmYXNkIiwiaWF0IjoxNjcxMTA1ODQwLCJleHAiOjE2NzExMDU5MDB9.aDsCGZZlJayZlM9o3VK8tiOF_QY1p1CbmCcw5hRlarE

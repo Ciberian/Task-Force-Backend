@@ -1,5 +1,6 @@
-import { Controller, Post, Get, Body, Param, HttpStatus, UnauthorizedException, UsePipes } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, HttpStatus, UsePipes, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthService } from './auth.service';
 import { fillDTO } from '@taskforce/core';
 import { UserRdo } from './rdo/user.rdo';
@@ -36,16 +37,11 @@ export class AuthController {
     description: 'Password or Login is wrong.',
   })
   public async login(@Body() dto: LoginUserDto) {
-    const verifiedUser = await this.authService.verifyUser(dto);
-
-    if(!verifiedUser) {
-      // WIP: потом доработаю, видимо в будущем объяснять как работать с фильтрами исключений. Пока возвращается стандартный ответ при возникновении ошибки.
-      throw new UnauthorizedException();
-    }
-
-    return fillDTO(LoggedUserRdo, verifiedUser);
+    const user = await this.authService.verifyUser(dto);
+    return this.authService.loginUser(user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiResponse({
     type: UserRdo,
