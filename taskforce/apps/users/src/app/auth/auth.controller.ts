@@ -1,11 +1,13 @@
-import { Controller, Post, Get, Body, Param, HttpStatus, UnauthorizedException } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, HttpStatus, UsePipes, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { AuthService } from './auth.service';
 import { fillDTO } from '@taskforce/core';
 import { UserRdo } from './rdo/user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
-import { AuthService } from './auth.service';
+import { MongoidValidationPipe, TrimBodyValuesPipe } from '@taskforce/shared-types';
 
 @ApiTags('user')
 @Controller('user')
@@ -18,6 +20,7 @@ export class AuthController {
     status: HttpStatus.CREATED,
     description: 'The new user has been successfully created.'
   })
+  @UsePipes(new TrimBodyValuesPipe())
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
     return fillDTO(UserRdo, newUser);
@@ -34,23 +37,18 @@ export class AuthController {
     description: 'Password or Login is wrong.',
   })
   public async login(@Body() dto: LoginUserDto) {
-    const verifiedUser = await this.authService.verifyUser(dto);
-
-    if(!verifiedUser) {
-      // WIP: потом доработаю, видимо в будущем объяснять как работать с фильтрами исключений. Пока возвращается стандартный ответ при возникновении ошибки.
-      throw new UnauthorizedException();
-    }
-
-    return fillDTO(LoggedUserRdo, verifiedUser);
+    const user = await this.authService.verifyUser(dto);
+    return this.authService.loginUser(user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
     description: 'User found'
   })
-  public async show(@Param('id') id: string) {
+  public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
     return fillDTO(UserRdo, existUser);
   }

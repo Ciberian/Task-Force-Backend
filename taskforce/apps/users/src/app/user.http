@@ -3,12 +3,13 @@ POST http://localhost:3333/api/user/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "qwerty12@mail.ru",
+  "email": "asgfgff@mail.com",
   "city": "Владивосток",
-  "password": "123456",
-  "birthDate": "2002-02-02",
+  "password": "12456ghf",
+  "birthDate": "2002-01-01",
   "role": "Исполнитель",
-  "name": "Adsadsfasd"
+  "avatar": "my-avatar.png",
+  "name": "Aasdfsadf"
 }
 
 ###
@@ -17,10 +18,11 @@ POST http://localhost:3333/api/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "qwerty12@mail.ru",
-  "password": "123456"
+  "email": "asgfgff@mail.com",
+  "password": "12456ghf"
 }
 
 ###
 # Get user info
-GET http://localhost:3333/api/user/638e28558e1ce37dfc494611 HTTP/1.1
+GET http://localhost:3333/api/user/639b8e3909152e267821184e HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzliOGUzOTA5MTUyZTI2NzgyMTE4NGUiLCJlbWFpbCI6ImFzZ2ZnZmZAbWFpbC5jb20iLCJyb2xlIjoi0JjRgdC_0L7Qu9C90LjRgtC10LvRjCIsIm5hbWUiOiJBYXNkZnNhZGYiLCJpYXQiOjE2NzEyMjAxMzAsImV4cCI6MTY3MTIyMDczMH0.5kV3HZAXGYiuRyJxdle-OomWMfffCxrlLSjBPAk8nKg

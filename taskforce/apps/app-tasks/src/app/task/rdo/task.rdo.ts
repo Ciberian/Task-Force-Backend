@@ -60,11 +60,11 @@ export class TaskRdo {
   public address: string;
 
   @ApiProperty({
-    description: 'Task tegs',
-    example: 'Изичная задача, Задача на раз плюнуть'
+    description: 'Task tags',
+    example: ['перевозки']
   })
   @Expose()
-  public tegs: string;
+  public tags: string[];
 
   @ApiProperty({
     description: 'Task status',
@@ -78,4 +78,25 @@ export class TaskRdo {
     example: '6385aaacc05cd5e757d37764'
   })
   public userId: string;
+
+  @ApiProperty({
+    description: 'Task created date',
+    example: '2022-12-22'
+  })
+  @Expose()
+  public createdAt: string;
+
+  @ApiProperty({
+    description: 'Временное решение, для проверки сортировки.',
+    example: 100500
+  })
+  @Expose()
+  public commentsCount: number;
+
+  @ApiProperty({
+    description: 'Временное решение, для проверки сортировки.',
+    example: 100500
+  })
+  @Expose()
+  public responsesCount: number;
 }

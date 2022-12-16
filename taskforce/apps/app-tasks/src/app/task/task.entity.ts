@@ -4,13 +4,15 @@ export class TaskEntity implements TaskInterface {
   public title: string;
   public description: string;
   public category: string;
-  public price?: string;
+  public price?: number;
   public deadline?: string;
   public image?: string;
   public address?: string;
-  public tegs?: string[];
+  public tags?: string[];
   public status: TaskStatus;
   public userId: string;
+  public commentsCount: number;
+  public responsesCount: number;
 
   constructor(task: TaskInterface) {
     this.fillEntity(task);
@@ -28,8 +30,10 @@ export class TaskEntity implements TaskInterface {
     this.deadline = task.deadline;
     this.image = task?.image;
     this.address = task.address;
-    this.tegs = task.tegs;
+    this.tags = task.tags;
     this.status = task.status;
     this.userId = task.userId;
+    this.commentsCount = task.commentsCount
+    this.responsesCount = task.responsesCount
   }
 }

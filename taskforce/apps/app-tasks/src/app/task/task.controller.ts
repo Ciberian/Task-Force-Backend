@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Query, Body, Patch, Post, ParseIntPipe } from '@nestjs/common';
 import { fillDTO } from '@taskforce/core';
 import { TaskService } from './task.service';
 import { TaskRdo } from './rdo/task.rdo';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { TaskQuery } from './query/task.query';
 
 @Controller('tasks')
 export class TaskController {
@@ -16,29 +17,30 @@ export class TaskController {
   }
 
   @Get('/:id')
-  async show(@Param('id') id: string) {
-    const taskId = parseInt(id, 10);
-    const task = await this.taskService.getTask(taskId);
+  async show(@Param('id', ParseIntPipe) id: number) {
+    const task = await this.taskService.getTask(id);
     return fillDTO(TaskRdo, task);
   }
 
   @Get('/')
-  async index() {
-    const tasks = await this.taskService.getTasks();
+  async index(@Query() query: TaskQuery) {
+    const tasks = await this.taskService.getTasks(query);
     return fillDTO(TaskRdo, tasks);
   }
 
   @Patch('/:id')
-  async update(@Param('id') id: string, @Body() dto: UpdateTaskDto) {
-    const taskId = parseInt(id, 10);
-    const updatedTask = await this.taskService.updateTask(taskId, dto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateTaskDto,
+    @Query() query: {updateType: string}
+  ) {
+    const updatedTask = await this.taskService.updateTask(id, dto, query);
     return fillDTO(TaskRdo, updatedTask)
   }
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async destroy(@Param('id') id: string) {
-    const taskId = parseInt(id, 10);
-    this.taskService.deleteTask(taskId);
+  async destroy(@Param('id', ParseIntPipe) id: number) {
+    this.taskService.deleteTask(id);
   }
 }

@@ -4,13 +4,19 @@ import { TaskEntity } from './task.entity';
 import { TaskRepository } from './task.repository';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { formatTags } from '@taskforce/core';
+import { TaskQuery } from './query/task.query';
 
 @Injectable()
 export class TaskService {
   constructor(private readonly taskRepository: TaskRepository) {}
 
   async createTask(dto: CreateTaskDto): Promise<TaskInterface> {
-    const taskEntity = new TaskEntity({...dto, status: "New"});
+    const taskEntity = new TaskEntity({
+      ...dto,
+      status: "New",
+      tags: formatTags(dto?.tags)
+    });
     return this.taskRepository.create(taskEntity);
   }
 
@@ -18,12 +24,49 @@ export class TaskService {
     return this.taskRepository.findById(id);
   }
 
-  async getTasks(): Promise<TaskInterface[]> {
-    return this.taskRepository.find();
+  async getTasks(query: TaskQuery): Promise<TaskInterface[]> {
+    return this.taskRepository.find(query);
   }
 
-  async updateTask(id: number, dto: UpdateTaskDto): Promise<TaskInterface> {
-    const taskEntity = new TaskEntity({...dto});
+  async updateTask(id: number, dto: UpdateTaskDto, {updateType}: {updateType: string}): Promise<TaskInterface> {
+    const taskBeforeUpdate = await this.taskRepository.findById(id);
+    if (!taskBeforeUpdate) {
+      throw new Error(`Task with id ${id}, does not exist`);
+    }
+
+    if (updateType === 'incCommentsCount') {
+      const taskEntity = new TaskEntity({
+        ...taskBeforeUpdate,
+        ...dto,
+        commentsCount: taskBeforeUpdate.commentsCount + 1})
+
+      return this.taskRepository.update(id, taskEntity)
+    }
+
+    if (updateType === 'decCommentsCount') {
+      const taskEntity = new TaskEntity({
+        ...taskBeforeUpdate,
+        ...dto,
+        commentsCount: taskBeforeUpdate.commentsCount - 1})
+
+      return this.taskRepository.update(id, taskEntity)
+    }
+
+    if (updateType === 'incResponsesCount') {
+      const taskEntity = new TaskEntity({
+        ...taskBeforeUpdate,
+        ...dto,
+        responsesCount: taskBeforeUpdate.responsesCount + 1})
+
+      return this.taskRepository.update(id, taskEntity)
+    }
+
+    const taskEntity = new TaskEntity({
+      ...taskBeforeUpdate,
+      ...dto,
+      tags: formatTags(dto?.tags)
+    });
+
     return this.taskRepository.update(id, taskEntity);
   }
 
