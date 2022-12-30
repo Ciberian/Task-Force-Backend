@@ -7,3 +7,4 @@ export * from './lib/comment.interface';
 export * from './lib/category.interface';
 export * from './lib/pipes/mongoid-validation.pipe';
 export * from './lib/pipes/trim-body-values.pipe';
+export * from './lib/subscriber.interface';
