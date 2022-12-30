@@ -24,6 +24,7 @@ services:
 
   mongodb:
       image: mongo
+      restart: always
       container_name: mongdb-notify
       environment:
         MONGO_INITDB_ROOT_USERNAME: admin
