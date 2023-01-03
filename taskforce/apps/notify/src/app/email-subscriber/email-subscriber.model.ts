@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { Subscriber } from '@taskforce/shared-types';
+import { SubscriberInterface } from '@taskforce/shared-types';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 const SUBSCRIBERS_COLLECTION_NAME = 'email-subscribers';
@@ -8,7 +8,7 @@ const SUBSCRIBERS_COLLECTION_NAME = 'email-subscribers';
   collection: SUBSCRIBERS_COLLECTION_NAME,
   timestamps: true,
 })
-export class EmailSubscriberModel extends Document implements  Subscriber {
+export class EmailSubscriberModel extends Document implements  SubscriberInterface {
   @Prop({
     required: true,
     unique: true,

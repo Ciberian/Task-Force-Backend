@@ -1,4 +1,4 @@
-export interface Subscriber {
+export interface SubscriberInterface {
   id?: string;
   email: string;
   name: string;

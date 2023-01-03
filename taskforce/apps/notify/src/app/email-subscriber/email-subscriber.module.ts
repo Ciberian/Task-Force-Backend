@@ -4,12 +4,14 @@ import { EmailSubscriberController } from './email-subscriber.controller';
 import { EmailSubscriberService } from './email-subscriber.service';
 import { EmailSubscriberRepository } from './email-subscriber.repository';
 import { EmailSubscriberModel, EmailSubscriberSchema } from './email-subscriber.model';
+import { SmtpModule } from '../smtp/smtp.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       {name: EmailSubscriberModel.name, schema: EmailSubscriberSchema}
-    ])
+    ]),
+    SmtpModule
   ],
   controllers: [
     EmailSubscriberController

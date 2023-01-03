@@ -1,13 +1,13 @@
 import { Entity } from '@taskforce/core';
-import { Subscriber } from '@taskforce/shared-types';
+import { SubscriberInterface } from '@taskforce/shared-types';
 
-export class EmailSubscriberEntity implements Entity<EmailSubscriberEntity>, Subscriber {
+export class EmailSubscriberEntity implements Entity<EmailSubscriberEntity>, SubscriberInterface {
   public id: string;
   public email: string;
   public name: string;
   public userId: string;
 
-  constructor(emailSubscriber: Subscriber) {
+  constructor(emailSubscriber: SubscriberInterface) {
     this.fillEntity(emailSubscriber);
   }
 
