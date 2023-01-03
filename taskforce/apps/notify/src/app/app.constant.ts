@@ -3,6 +3,9 @@ export const ENV_FILE_PATH = 'environments/.notify.env';
 export enum EnvValidationMessage {
   SMTPHostRequired = 'SMTP host is required',
   SMTPPortRequired = 'SMTP port is required',
+  SMTPServerUserNameRequired = 'SMTP Server user name is required',
+  SMTPServerPasswordRequired = 'SMTP Server password is required',
+  SMTPServerDefaultFromRequired = 'Default value for mail from field is required',
   RMQHostRequired = 'RabbitMQ host is required',
   RMQUserRequired = 'RabbitMQ user is required',
   RMQPasswordRequired = 'RabbitMQ password is required',

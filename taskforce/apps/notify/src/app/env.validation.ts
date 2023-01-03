@@ -7,12 +7,21 @@ const MAX_PORT = 65535;
 
 class EnvironmentsConfig {
   @IsString({message: EnvValidationMessage.SMTPHostRequired})
-  public SMTP_SERVER: string;
+  public MAIL_SMTP_HOST: string;
 
   @IsNumber({}, {message: EnvValidationMessage.SMTPPortRequired})
   @Min(MIN_PORT)
   @Max(MAX_PORT)
-  public SMTP_SERVER_PORT: number;
+  public MAIL_SMTP_PORT: number;
+
+  @IsString({message: EnvValidationMessage.SMTPServerUserNameRequired})
+  public MAIL_USER_NAME: string;
+
+  @IsString({message: EnvValidationMessage.SMTPServerPasswordRequired})
+  public MAIL_USER_PASSWORD: string;
+
+  @IsString({message: EnvValidationMessage.SMTPServerDefaultFromRequired})
+  public MAIL_FROM: string;
 
 
   @IsString({message: EnvValidationMessage.RMQUserRequired})
