@@ -25,7 +25,7 @@ services:
   mongodb:
       image: mongo
       restart: always
-      container_name: mongdb-notify
+      container_name: mongodb-notify
       environment:
         MONGO_INITDB_ROOT_USERNAME: admin
         MONGO_INITDB_ROOT_PASSWORD: test
@@ -43,6 +43,7 @@ services:
 
   mongodb-express:
     image: mongo-express
+    restart: always
     container_name: mongo-express-notify
     ports:
       - 8084:8081
