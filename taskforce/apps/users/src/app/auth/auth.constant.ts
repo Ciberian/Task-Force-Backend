@@ -7,3 +7,4 @@ export const AUTH_USER_EMAIL_NOT_VALID = 'The email is not valid';
 export const AUTH_USER_PASSWORD_NOT_VALID = 'Password min length is 6, max is 12';
 export const AUTH_USER_BIRTH_DATE_NOT_VALID = 'The user date birth is not valid';
 export const AUTH_USER_NAME_NOT_VALID = 'Name min length is 3, max is 50';
+export const RABBITMQ_SERVICE = Symbol('RABBITMQ_SERVICE');
