@@ -3,7 +3,7 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserInterface, CommandEvent } from '@taskforce/shared-types';
+import { UserInterface, CommandEvent, UserRole } from '@taskforce/shared-types';
 import { UserRepository } from '../user/user.repository';
 import { UserEntity } from '../user/user.entity';
 import { JwtService } from '@nestjs/jwt';
@@ -49,7 +49,8 @@ export class AuthService {
     const userEntity = await new UserEntity(user).setPassword(password);
     const createdUser = await this.userRepository.create(userEntity);
 
-    this.rabbitClient.emit(
+    if (createdUser.role === UserRole.Contractor) {
+      this.rabbitClient.emit(
       {
         cmd: CommandEvent.AddSubscriber
       },
@@ -57,9 +58,9 @@ export class AuthService {
         email: createdUser.email,
         name: createdUser.name,
         userId: createdUser._id.toString(),
-      }
-    );
-
+      });
+    }
+    
     return createdUser;
   }
 
