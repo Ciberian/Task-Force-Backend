@@ -4,6 +4,7 @@ import { EmailSubscriberRepository } from './email-subscriber.repository';
 import { EMAIL_SUBSCRIBER_EXISTS } from './email-subscriber.constant';
 import { EmailSubscriberEntity } from './email-subscriber.entity';
 import { SmtpService } from '../smtp/smtp.service';
+import { NewTasksDto } from './dto/new-tasks.dto';
 
 @Injectable()
 export class EmailSubscriberService {
@@ -24,5 +25,9 @@ export class EmailSubscriberService {
 
     return this.emailSubscriberRepository
       .create(new EmailSubscriberEntity(subscriber));
+  }
+
+  public async sendNewTasks(newTasks: NewTasksDto) {
+    this.smtpService.sendNewTasks(newTasks);
   }
 }

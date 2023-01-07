@@ -11,3 +11,6 @@ export const DEFAULT_PAGE = 1;
 export const DEFAULT_TASK_COUNT_LIMIT = 25;
 export const DEFAULT_SORT_DIRECTION = 'desc';
 export const DEFAULT_SORT_TYPE = 'createdAt';
+
+export const RABBITMQ_SERVICE = Symbol('RABBITMQ_SERVICE');
+export const AUTH_USER_EMAIL_NOT_VALID = 'The email is not valid';
