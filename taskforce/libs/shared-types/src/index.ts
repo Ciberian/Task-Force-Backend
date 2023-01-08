@@ -9,3 +9,4 @@ export * from './lib/pipes/mongoid-validation.pipe';
 export * from './lib/pipes/trim-body-values.pipe';
 export * from './lib/subscriber.interface';
 export * from './lib/command-event.enum';
+export * from './lib/comments-count-update-type.enum'

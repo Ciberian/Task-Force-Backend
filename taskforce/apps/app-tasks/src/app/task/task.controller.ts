@@ -6,6 +6,9 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { NotifyUserDto } from './dto/notify-user.dto';
 import { TaskQuery } from './query/task.query';
+import { EventPattern } from '@nestjs/microservices';
+import { CommandEvent } from '@taskforce/shared-types';
+import { UpdateCommentsCountDto } from './dto/update-comments-count.dto';
 
 @Controller('tasks')
 export class TaskController {
@@ -37,10 +40,9 @@ export class TaskController {
   @Patch('/:id')
   public async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateTaskDto,
-    @Query() query: {updateType: string}
+    @Body() dto: UpdateTaskDto
   ) {
-    const updatedTask = await this.taskService.updateTask(id, dto, query);
+    const updatedTask = await this.taskService.updateTask(id, dto);
     return fillDTO(TaskRdo, updatedTask)
   }
 
@@ -48,5 +50,10 @@ export class TaskController {
   @HttpCode(HttpStatus.NO_CONTENT)
   public async destroy(@Param('id', ParseIntPipe) id: number) {
     this.taskService.deleteTask(id);
+  }
+
+  @EventPattern({cmd: CommandEvent.ChangeCommentsCount})
+  public async changeCommentsCountField(dto: UpdateCommentsCountDto) {
+    return this.taskService.changeCommentsCount(dto.id, dto.updateType);
   }
 }

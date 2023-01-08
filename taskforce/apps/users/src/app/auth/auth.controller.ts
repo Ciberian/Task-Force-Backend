@@ -12,7 +12,6 @@ import { MongoidValidationPipe, TrimBodyValuesPipe } from '@taskforce/shared-typ
 @ApiTags('user')
 @Controller('user')
 export class AuthController {
-
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
@@ -23,6 +22,7 @@ export class AuthController {
   @UsePipes(new TrimBodyValuesPipe())
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
+
     return fillDTO(UserRdo, newUser);
   }
 
@@ -38,6 +38,7 @@ export class AuthController {
   })
   public async login(@Body() dto: LoginUserDto) {
     const user = await this.authService.verifyUser(dto);
+
     return this.authService.loginUser(user);
   }
 
@@ -50,6 +51,7 @@ export class AuthController {
   })
   public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
+
     return fillDTO(UserRdo, existUser);
   }
 }
