@@ -17,7 +17,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
 
   public async findById(id: number): Promise<TaskInterface | null> {
     return this.prisma.task.findFirst({
-      where: {id}
+      where: {id: Number(id)}
     });
   }
 
@@ -332,9 +332,16 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
     }
   }
 
+  public async findNewTasks() {
+    return this.prisma.task.findMany({
+      where: {status: 'New'},
+      select: {title: true}
+    });
+  }
+
   public async update(id: number, item: TaskEntity): Promise<TaskInterface> {
     return this.prisma.task.update({
-      where: {id},
+      where: {id: Number(id)},
       data: {...item}
     })
   }

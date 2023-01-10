@@ -1,2 +1,0 @@
-# Send mail
-GET http://localhost:3333/api/notify/ HTTP/1.1

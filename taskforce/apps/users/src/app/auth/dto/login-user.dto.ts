@@ -7,10 +7,7 @@ export class LoginUserDto {
     description: 'User unique email',
     example: 'user@user.ru'
   })
-  @IsEmail(
-    {},
-    {message: AUTH_USER_EMAIL_NOT_VALID}
-  )
+  @IsEmail({}, {message: AUTH_USER_EMAIL_NOT_VALID})
   public email: string;
 
   @ApiProperty({

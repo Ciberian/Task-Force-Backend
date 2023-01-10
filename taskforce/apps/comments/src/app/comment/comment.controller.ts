@@ -8,7 +8,6 @@ import { CommentRdo } from './rdo/comment.rdo';
 @ApiTags('comments')
 @Controller('tasks')
 export class CommentController {
-
   constructor(private readonly commentService: CommentService) {}
 
   @Post(':taskId')
