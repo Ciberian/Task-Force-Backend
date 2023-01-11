@@ -7,6 +7,8 @@ import { UserRdo } from './rdo/user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
+import { CreateReviewDto } from './dto/create-review.dto';
+import { ReviewRdo } from './rdo/review.rdo';
 import { MongoidValidationPipe, TrimBodyValuesPipe } from '@taskforce/shared-types';
 
 @ApiTags('user')
@@ -53,5 +55,17 @@ export class AuthController {
     const existUser = await this.authService.getUser(id);
 
     return fillDTO(UserRdo, existUser);
+  }
+
+  @Post('review/:id')
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The new review has been successfully created.'
+  })
+  @UsePipes(new TrimBodyValuesPipe())
+  public async createReview(@Param('id', MongoidValidationPipe) id: string, @Body() dto: CreateReviewDto) {
+    const newReview = await this.authService.createReview(id, dto);
+
+    return fillDTO(ReviewRdo, newReview);
   }
 }

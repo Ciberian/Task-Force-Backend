@@ -28,3 +28,16 @@ Content-Type: application/json
 # Get user info
 GET http://localhost:3350/api/user/63a5469e47be0d7f42e4f9d9 HTTP/1.1
 Authorization: Bearer {{authToken}}
+
+###
+# Create user review
+POST http://localhost:3350/api/user/review/63a5469e47be0d7f42e4f9d9 HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "taskId": 4,
+  "reviewText": "He did such a great job and were quick and efficient. Also, our backyard is cleaner now than it was before they came!
+  We would definitely recommend to anyone looking to have their roof replaced.",
+  "reviewRating": 5
+}

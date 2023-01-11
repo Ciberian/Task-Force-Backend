@@ -10,4 +10,6 @@ export interface UserInterface {
   role: UserRole;
   avatar?: string;
   birthDate: Date;
+  rating?: number;
+  failuresCount?: number;
 }

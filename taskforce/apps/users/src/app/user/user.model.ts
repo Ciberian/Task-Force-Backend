@@ -53,6 +53,17 @@ export class UserModel extends Document implements UserInterface {
     min: AGE_OF_MAJORITY
   })
   public birthDate: Date;
+
+  @Prop({
+    min: 0,
+    max: 5
+  })
+  public rating: number;
+
+  @Prop({
+    min: 0
+  })
+  public failuresCount: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);
