@@ -57,14 +57,14 @@ export class AuthController {
     return fillDTO(UserRdo, existUser);
   }
 
-  @Post('review/:id')
+  @UseGuards(JwtAuthGuard)
+  @Post('/review')
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new review has been successfully created.'
   })
-  @UsePipes(new TrimBodyValuesPipe())
-  public async createReview(@Param('id', MongoidValidationPipe) id: string, @Body() dto: CreateReviewDto) {
-    const newReview = await this.authService.createReview(id, dto);
+  public async createReview(@Body() dto: CreateReviewDto) {
+    const newReview = await this.authService.createReview(dto);
 
     return fillDTO(ReviewRdo, newReview);
   }

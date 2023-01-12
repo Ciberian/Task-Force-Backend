@@ -8,6 +8,20 @@ import {
 
 export class CreateReviewDto {
   @ApiProperty({
+    description: 'The ID of the user who created the task',
+    example: '77de8656897358c0e03747e9',
+  })
+  @IsString()
+  public customerId!: string;
+
+  @ApiProperty({
+    description: 'The ID of the user who completed the task',
+    example: '63bf8649406358c0e03747e4',
+  })
+  @IsString()
+  public contractorId!: string;
+
+  @ApiProperty({
     description: 'Task unique id',
     example: 100500,
   })

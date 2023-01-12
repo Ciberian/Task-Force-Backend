@@ -52,4 +52,25 @@ export class UserRdo {
   })
   @Expose()
   public birthDate: string;
+
+  @ApiProperty({
+    description: 'User rating',
+    example: 4.8
+  })
+  @Expose()
+  public rating: number;
+
+  @ApiProperty({
+    description: 'User failed tasks count',
+    example: 4
+  })
+  @Expose()
+  public failedTasksCount: number;
+
+  @ApiProperty({
+    description: 'User completed tasks count',
+    example: 12
+  })
+  @Expose()
+  public completedTasksCount: number;
 }

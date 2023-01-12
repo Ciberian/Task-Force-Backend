@@ -63,7 +63,12 @@ export class UserModel extends Document implements UserInterface {
   @Prop({
     min: 0
   })
-  public failuresCount: number;
+  public failedTasksCount: number;
+
+  @Prop({
+    min: 0
+  })
+  public completedTasksCount: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);

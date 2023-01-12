@@ -10,10 +10,12 @@ import { AuthService } from './auth.service';
 import { UserModule } from '../user/user.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { RABBITMQ_SERVICE } from './auth.constant';
+import { ReviewModule } from '../review/review.module';
 
 @Module({
   imports: [
     UserModule,
+    ReviewModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

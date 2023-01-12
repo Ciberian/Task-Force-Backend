@@ -8,9 +8,7 @@ import { UserModel } from './user.model';
 
 @Injectable()
 export class UserRepository implements CRUDRepositoryInterface<UserEntity, string, UserInterface> {
-  constructor(
-    @InjectModel(UserModel.name) private readonly UserModel: Model<UserModel>) {
-  }
+  constructor(@InjectModel(UserModel.name) private readonly UserModel: Model<UserModel>) {}
 
   public async create(item: UserEntity): Promise<UserInterface> {
     const newUser = new this.UserModel(item);

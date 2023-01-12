@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 
 export class ReviewEntity implements ReviewInterface {
   public _id: string;
-  public userId: mongoose.Types.ObjectId;
+  public customerId: mongoose.Types.ObjectId;
+  public contractorId: mongoose.Types.ObjectId;
   public taskId: number;
   public reviewText: string;
   public reviewRating: number;
@@ -18,7 +19,8 @@ export class ReviewEntity implements ReviewInterface {
 
   public fillEntity(review: ReviewInterface) {
     this._id = review._id;
-    this.userId = review.userId;
+    this.customerId = review.customerId;
+    this.contractorId = review.contractorId;
     this.taskId = review.taskId;
     this.reviewText = review.reviewText;
     this.reviewRating = review.reviewRating;

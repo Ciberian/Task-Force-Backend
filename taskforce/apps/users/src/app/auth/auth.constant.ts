@@ -15,6 +15,6 @@ export const REVIEW_TEXT_NOT_VALID =
   'Min length for review text is 50 simbols, max is 500';
 export const MIN_REVIEW_RATING_NOT_VALID = 'Minimal value for user rating is 1';
 export const MAX_REVIEW_RATING_NOT_VALID = 'Maximum value for user rating is 5';
-export const REVIEW_ALREADY_EXISTS = 'Review for this user already exists';
+export const REVIEW_ALREADY_EXISTS = 'Review for this task is already exists';
 
 export const RABBITMQ_SERVICE = Symbol('RABBITMQ_SERVICE');

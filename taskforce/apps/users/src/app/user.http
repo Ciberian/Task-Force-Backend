@@ -3,13 +3,12 @@ POST http://localhost:3350/api/user/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "test100500@gmail.com",
+  "email": "test100@gmail.com",
   "city": "Москва",
   "password": "abcdefg",
   "birthDate": "2002-01-01",
   "role": "Исполнитель",
-  "avatar": "my-avatar.png",
-  "name": "BigBoss"
+  "name": "MrBoombastick"
 }
 
 ###
@@ -18,7 +17,7 @@ POST http://localhost:3350/api/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "test100500@gmail.com",
+  "email": "test100@gmail.com",
   "password": "abcdefg"
 }
 
@@ -26,18 +25,19 @@ Content-Type: application/json
 @authToken = {{login.response.body.access_token}}
 
 # Get user info
-GET http://localhost:3350/api/user/63a5469e47be0d7f42e4f9d9 HTTP/1.1
+GET http://localhost:3350/api/user/63bf8649406358c0e03747e4 HTTP/1.1
 Authorization: Bearer {{authToken}}
 
 ###
 # Create user review
-POST http://localhost:3350/api/user/review/63a5469e47be0d7f42e4f9d9 HTTP/1.1
+POST http://localhost:3350/api/user/review HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
+  "customerId": "44dc1549485246c0e75315a9",
+  "contractorId": "63bf8649406358c0e03747e4",
   "taskId": 4,
-  "reviewText": "He did such a great job and were quick and efficient. Also, our backyard is cleaner now than it was before they came!
-  We would definitely recommend to anyone looking to have their roof replaced.",
+  "reviewText": "He did such a great job and were quick and efficient. Also, our backyard is cleaner now than it was before they came! We would definitely recommend to anyone looking to have their roof replaced.",
   "reviewRating": 5
 }

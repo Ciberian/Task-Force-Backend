@@ -1,6 +1,5 @@
 import { Expose, Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { City, UserRole } from '@taskforce/shared-types';
 
 export class ReviewRdo {
   @ApiProperty({
@@ -12,44 +11,39 @@ export class ReviewRdo {
   public id: string;
 
   @ApiProperty({
-    description: 'User name',
-    example: 'Вася'
+    description: 'The uniq customer ID',
+    example: '638348b04f5f6091439ea5b2'
   })
+  @Transform((value) => value.obj.customerId.toString())
   @Expose()
-  public name: string;
+  public customerId: string;
 
   @ApiProperty({
-    description: 'User email',
-    example: 'user@user.ru'
+    description: 'The uniq contractor ID',
+    example: '638348b04f5f6091439ea5b2'
   })
+  @Transform((value) => value.obj.contractorId.toString())
   @Expose()
-  public email: string;
+  public contractorId: string;
 
   @ApiProperty({
-    description: 'City name',
-    example: 'Москва'
+    description: 'The uniq task ID',
+    example: 777
   })
   @Expose()
-  public city: City;
+  public taskId: number;
 
   @ApiProperty({
-    description: 'User role',
-    example: 'Заказчик'
+    description: 'Review text',
+    example: 'He did such a great job and were quick and efficient.'
   })
   @Expose()
-  public role: UserRole;
+  public reviewText: string;
 
   @ApiProperty({
-    description: 'User avatar',
-    example: 'my-awesome-avatar.png'
+    description: 'Review rating',
+    example: 4
   })
   @Expose()
-  public avatar: string;
-
-  @ApiProperty({
-    description: 'User birth date',
-    example: '2002-02-20'
-  })
-  @Expose()
-  public birthDate: string;
+  public reviewRating: number;
 }

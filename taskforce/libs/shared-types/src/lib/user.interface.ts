@@ -11,5 +11,6 @@ export interface UserInterface {
   avatar?: string;
   birthDate: Date;
   rating?: number;
-  failuresCount?: number;
+  failedTasksCount?: number;
+  completedTasksCount?: number;
 }

@@ -13,7 +13,8 @@ export class UserEntity implements UserInterface {
   public avatar?: string;
   public birthDate: Date;
   public rating?: number;
-  public failuresCount?: number;
+  public failedTasksCount?: number;
+  public completedTasksCount?: number;
 
   constructor(user: UserInterface) {
     this.fillEntity(user);
@@ -33,7 +34,8 @@ export class UserEntity implements UserInterface {
     this.avatar = user?.avatar;
     this.birthDate = user.birthDate;
     this.rating = user?.rating;
-    this.failuresCount = user.failuresCount;
+    this.failedTasksCount = user.failedTasksCount;
+    this.completedTasksCount = user.completedTasksCount;
   }
 
   public async setPassword(password: string): Promise<UserEntity> {

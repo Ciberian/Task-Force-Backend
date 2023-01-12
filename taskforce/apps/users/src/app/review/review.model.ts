@@ -7,10 +7,13 @@ const MAX_REVIEW_TEXT_LENGTH = 500;
 const MIN_REVIEW_RATING = 1;
 const MAX_REVIEW_RATING = 5;
 
-@Schema({collection: 'users'})
+@Schema({collection: 'reviews'})
 export class ReviewModel extends Document implements ReviewInterface {
   @Prop({required: true})
-  public userId: mongoose.Types.ObjectId;
+  public customerId: mongoose.Types.ObjectId;
+
+  @Prop({required: true})
+  public contractorId: mongoose.Types.ObjectId;
 
   @Prop({required: true})
   public taskId: number;

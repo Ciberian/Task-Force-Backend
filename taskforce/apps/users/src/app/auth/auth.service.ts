@@ -41,7 +41,8 @@ export class AuthService {
       name,
       avatar: dto?.avatar || '',
       rating: 0,
-      failuresCount: 0,
+      failedTasksCount: 0,
+      completedTasksCount: 0,
     };
 
     const userAge = dayjs().diff(user.birthDate, 'year');
@@ -105,10 +106,11 @@ export class AuthService {
     return this.userRepository.findById(id);
   }
 
-  async createReview(userId: string, dto: CreateReviewDto) {
-    const {taskId, reviewText, reviewRating} = dto;
+  async createReview(dto: CreateReviewDto) {
+    const {customerId, contractorId, taskId, reviewText, reviewRating} = dto;
     const review: ReviewInterface = {
-      userId: new mongoose.Types.ObjectId(userId),
+      customerId: new mongoose.Types.ObjectId(customerId),
+      contractorId: new mongoose.Types.ObjectId(contractorId),
       taskId,
       reviewText,
       reviewRating
@@ -121,13 +123,13 @@ export class AuthService {
 
     const reviewEntity = await new ReviewEntity(review);
     const createdReview = await this.reviewRepository.create(reviewEntity);
-    const userReviews = await this.reviewRepository.findUserReviews(review.userId);
-    const user = await this.userRepository.findById(userId);
+    const userReviews = await this.reviewRepository.findUserReviews(review.contractorId);
+    const user = await this.userRepository.findById(contractorId);
     const userRatingSum = userReviews.reduce((sum, review) => sum += review.reviewRating, 0);
-    const userAverageRating = userRatingSum/(userReviews.length + user.failuresCount);
+    const userAverageRating = Number((userRatingSum/(userReviews.length + user.failedTasksCount)).toFixed(1));
     const userEntity = await new UserEntity({...user, rating: userAverageRating});
 
-    this.userRepository.update(userId, userEntity)
+    this.userRepository.update(contractorId, userEntity)
 
     return createdReview;
   }
