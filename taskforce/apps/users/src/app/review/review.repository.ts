@@ -23,8 +23,8 @@ export class ReviewRepository implements CRUDRepositoryInterface<ReviewEntity, s
     return this.ReviewModel.findOne({taskId}).exec();
   }
 
-  public async findUserReviews(userId: mongoose.Types.ObjectId): Promise<ReviewInterface[] | null> {
-    return this.ReviewModel.find({userId}).exec();
+  public async findUserReviews(contractorId: mongoose.Types.ObjectId): Promise<ReviewInterface[] | null> {
+    return this.ReviewModel.find({contractorId}).exec();
   }
 
   public async update(id: string, item: ReviewEntity): Promise<ReviewInterface> {

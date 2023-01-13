@@ -10,6 +10,12 @@ export interface UserInterface {
   role: UserRole;
   avatar?: string;
   birthDate: Date;
+  registrationDate?: Date;
+  personalInfo?: string;
+  createdTasks?: number;
+  newTasks?: number;
+  specialization?: string;
+  rank?: number;
   rating?: number;
   failedTasksCount?: number;
   completedTasksCount?: number;

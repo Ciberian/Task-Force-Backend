@@ -32,18 +32,34 @@ export class AuthService {
 
   async register(dto: CreateUserDto) {
     const {email, city, password, birthDate, role, name} = dto;
-    const user: UserInterface = {
+    let user: UserInterface = {
+      name,
       email,
       city,
       passwordHash: '',
-      birthDate: dayjs(birthDate).toDate(),
       role,
-      name,
       avatar: dto?.avatar || '',
-      rating: 0,
-      failedTasksCount: 0,
-      completedTasksCount: 0,
+      birthDate: dayjs(birthDate).toDate(),
+      registrationDate: new Date(),
+      personalInfo: '',
     };
+
+    if (user.role === UserRole.Customer) {
+      user = {
+        ...user,
+        createdTasks: 0,
+        newTasks: 0
+      }
+    } else {
+      user = {
+        ...user,
+        specialization: '',
+        rank: 0,
+        rating: 0,
+        failedTasksCount: 0,
+        completedTasksCount: 0,
+      }
+    }
 
     const userAge = dayjs().diff(user.birthDate, 'year');
     if (userAge < AGE_OF_MAJORITY) {
@@ -121,15 +137,21 @@ export class AuthService {
       throw new Error(REVIEW_ALREADY_EXISTS);
     }
 
-    const reviewEntity = await new ReviewEntity(review);
+    const reviewEntity = new ReviewEntity(review);
     const createdReview = await this.reviewRepository.create(reviewEntity);
-    const userReviews = await this.reviewRepository.findUserReviews(review.contractorId);
-    const user = await this.userRepository.findById(contractorId);
-    const userRatingSum = userReviews.reduce((sum, review) => sum += review.reviewRating, 0);
-    const userAverageRating = Number((userRatingSum/(userReviews.length + user.failedTasksCount)).toFixed(1));
-    const userEntity = await new UserEntity({...user, rating: userAverageRating});
 
-    this.userRepository.update(contractorId, userEntity)
+    const contractorReviews = await this.reviewRepository.findUserReviews(review.contractorId);
+    const contractor = await this.userRepository.findById(contractorId);
+    const contractorRatingSum = contractorReviews.reduce((sum, review) => sum += review.reviewRating, 0);
+    const contractorAverageRating = Number((contractorRatingSum/(contractorReviews.length + contractor.failedTasksCount)).toFixed(1));
+
+    const userEntity_1 = new UserEntity({...contractor, rating: contractorAverageRating});
+    await this.userRepository.update(contractorId, userEntity_1);
+
+    const allContractors = await this.userRepository.findContractors();
+    const contractorIndex = allContractors.findIndex((contractor) => String(contractor._id) === contractorId);
+    const userEntity_2 = new UserEntity({...allContractors[contractorIndex], rank: contractorIndex + 1});
+    await this.userRepository.update(contractorId, userEntity_2);
 
     return createdReview;
   }

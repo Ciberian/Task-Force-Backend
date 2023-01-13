@@ -3,12 +3,12 @@ POST http://localhost:3350/api/user/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "test100@gmail.com",
+  "email": "test300@gmail.com",
   "city": "Москва",
   "password": "abcdefg",
   "birthDate": "2002-01-01",
   "role": "Исполнитель",
-  "name": "MrBoombastick"
+  "name": "Иванов Зигмунд Иванович"
 }
 
 ###
@@ -25,7 +25,7 @@ Content-Type: application/json
 @authToken = {{login.response.body.access_token}}
 
 # Get user info
-GET http://localhost:3350/api/user/63bf8649406358c0e03747e4 HTTP/1.1
+GET http://localhost:3350/api/user/63c0ceff91de41c6d4dfe942 HTTP/1.1
 Authorization: Bearer {{authToken}}
 
 ###
@@ -36,8 +36,8 @@ Content-Type: application/json
 
 {
   "customerId": "44dc1549485246c0e75315a9",
-  "contractorId": "63bf8649406358c0e03747e4",
-  "taskId": 4,
+  "contractorId": "63c0cfd891de41c6d4dfe95b",
+  "taskId": 7,
   "reviewText": "He did such a great job and were quick and efficient. Also, our backyard is cleaner now than it was before they came! We would definitely recommend to anyone looking to have their roof replaced.",
-  "reviewRating": 5
+  "reviewRating": 1
 }

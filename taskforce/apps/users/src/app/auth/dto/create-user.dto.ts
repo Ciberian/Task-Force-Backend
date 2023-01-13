@@ -18,6 +18,14 @@ import {
 
 export class CreateUserDto {
   @ApiProperty({
+    description: 'User name',
+    example: 'Вася'
+  })
+  @IsString()
+  @Length(3, 50, {message: AUTH_USER_NAME_NOT_VALID})
+  public name!: string;
+
+  @ApiProperty({
     description: 'User unique email',
     example: 'user@user.ru'
   })
@@ -40,26 +48,11 @@ export class CreateUserDto {
   public password!: string;
 
   @ApiProperty({
-    description: 'User birth date',
-    example: '2002-02-20'
-  })
-  @IsISO8601({message: AUTH_USER_BIRTH_DATE_NOT_VALID})
-  public birthDate!: string;
-
-  @ApiProperty({
     description: 'User role',
     example: 'Заказчик'
   })
   @IsEnum(UserRole)
   public role!: UserRole;
-
-  @ApiProperty({
-    description: 'User name',
-    example: 'Вася'
-  })
-  @IsString()
-  @Length(3, 50, {message: AUTH_USER_NAME_NOT_VALID})
-  public name!: string;
 
   @ApiProperty({
     description: 'User avatar',
@@ -68,4 +61,11 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   public avatar?: string;
+
+  @ApiProperty({
+    description: 'User birth date',
+    example: '2002-02-20'
+  })
+  @IsISO8601({message: AUTH_USER_BIRTH_DATE_NOT_VALID})
+  public birthDate!: string;
 }

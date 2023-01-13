@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserInterface } from '@taskforce/shared-types';
+import { UserInterface, UserRole } from '@taskforce/shared-types';
 import { CRUDRepositoryInterface } from '@taskforce/core';
 import { UserEntity } from './user.entity';
 import { UserModel } from './user.model';
@@ -24,6 +24,13 @@ export class UserRepository implements CRUDRepositoryInterface<UserEntity, strin
   public async findByEmail(email: string): Promise<UserInterface | null> {
     return this.UserModel
       .findOne({email})
+      .exec();
+  }
+
+  public async findContractors(): Promise<UserInterface[] | null> {
+    return this.UserModel
+      .find({role: UserRole.Contractor})
+      .sort({rating: 'desc'})
       .exec();
   }
 
