@@ -4,7 +4,7 @@ import { City, UserInterface, UserRole } from '@taskforce/shared-types';
 
 const MIN_NAME_LENGTH = 3;
 const MAX_NAME_LENGTH = 50;
-const AGE_OF_MAJORITY = 18;
+const MAX_PERSONAL_INFO_LENGTH = 300;
 
 @Schema({collection: 'users'})
 export class UserModel extends Document implements UserInterface {
@@ -50,25 +50,47 @@ export class UserModel extends Document implements UserInterface {
 
   @Prop({
     required: true,
-    min: AGE_OF_MAJORITY
   })
   public birthDate: Date;
+
+  @Prop()
+  public registrationDate: string;
+
+  @Prop({
+    maxlength: [MAX_PERSONAL_INFO_LENGTH, 'Max length for the name is 300 simbols'],
+  })
+  public personalInfo: string;
+
+  @Prop()
+  public createdTasks?: number;
+
+  @Prop()
+  public newTasks?: number;
+
+  @Prop()
+  public specialization?: string;
 
   @Prop({
     min: 0,
     max: 5
   })
-  public rating: number;
+  public rank?: number;
+
+  @Prop({
+    min: 0,
+    max: 5
+  })
+  public rating?: number;
 
   @Prop({
     min: 0
   })
-  public failedTasksCount: number;
+  public failedTasksCount?: number;
 
   @Prop({
     min: 0
   })
-  public completedTasksCount: number;
+  public completedTasksCount?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);

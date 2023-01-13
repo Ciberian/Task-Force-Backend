@@ -2,7 +2,7 @@ import { Expose, Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { City, UserRole } from '@taskforce/shared-types';
 
-export class UserRdo {
+export class CustomerRdo {
   @ApiProperty({
     description: 'The uniq user ID',
     example: '638348b04f5f6091439ea5b2'
@@ -40,37 +40,37 @@ export class UserRdo {
   public role: UserRole;
 
   @ApiProperty({
-    description: 'User avatar',
-    example: 'my-awesome-avatar.png'
-  })
-  @Expose()
-  public avatar: string;
-
-  @ApiProperty({
     description: 'User birth date',
-    example: '2002-02-20'
+    example: 22
   })
   @Expose()
-  public birthDate: string;
+  public age: number;
 
   @ApiProperty({
-    description: 'User rating',
-    example: 4.8
+    description: 'User registration date',
+    example: ''
   })
   @Expose()
-  public rating: number;
+  public registrationDate: string;
 
   @ApiProperty({
-    description: 'User failed tasks count',
+    description: 'User personal information',
+    example: 'I am the customer. I give people jobs so they can make a lot of dough'
+  })
+  @Expose()
+  public personalInfo: string;
+
+  @ApiProperty({
+    description: 'User created tasks count',
     example: 4
   })
   @Expose()
-  public failedTasksCount: number;
+  public createdTasks: number;
 
   @ApiProperty({
-    description: 'User completed tasks count',
-    example: 12
+    description: 'User new tasks count',
+    example: 4
   })
   @Expose()
-  public completedTasksCount: number;
+  public newTasks: number;
 }

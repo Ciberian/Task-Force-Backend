@@ -3,12 +3,12 @@ POST http://localhost:3350/api/user/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "test300@gmail.com",
+  "email": "test700@gmail.com",
   "city": "Москва",
   "password": "abcdefg",
-  "birthDate": "2002-01-01",
-  "role": "Исполнитель",
-  "name": "Иванов Зигмунд Иванович"
+  "birthDate": "1950-01-01",
+  "role": "Заказчик",
+  "name": "Зыгмунд Зыгмунтович"
 }
 
 ###
@@ -25,7 +25,7 @@ Content-Type: application/json
 @authToken = {{login.response.body.access_token}}
 
 # Get user info
-GET http://localhost:3350/api/user/63c0ceff91de41c6d4dfe942 HTTP/1.1
+GET http://localhost:3350/api/user/63c0e5a18f8ad680e8686ba8 HTTP/1.1
 Authorization: Bearer {{authToken}}
 
 ###

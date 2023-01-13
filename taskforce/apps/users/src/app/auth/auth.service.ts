@@ -32,7 +32,7 @@ export class AuthService {
 
   async register(dto: CreateUserDto) {
     const {email, city, password, birthDate, role, name} = dto;
-    let user: UserInterface = {
+    const user: UserInterface = {
       name,
       email,
       city,
@@ -40,26 +40,16 @@ export class AuthService {
       role,
       avatar: dto?.avatar || '',
       birthDate: dayjs(birthDate).toDate(),
-      registrationDate: new Date(),
+      registrationDate: new Date().toISOString(),
       personalInfo: '',
+      createdTasks: 0,
+      newTasks: 0,
+      specialization: '',
+      rank: 0,
+      rating: 0,
+      failedTasksCount: 0,
+      completedTasksCount: 0,
     };
-
-    if (user.role === UserRole.Customer) {
-      user = {
-        ...user,
-        createdTasks: 0,
-        newTasks: 0
-      }
-    } else {
-      user = {
-        ...user,
-        specialization: '',
-        rank: 0,
-        rating: 0,
-        failedTasksCount: 0,
-        completedTasksCount: 0,
-      }
-    }
 
     const userAge = dayjs().diff(user.birthDate, 'year');
     if (userAge < AGE_OF_MAJORITY) {
@@ -85,6 +75,8 @@ export class AuthService {
         userId: createdUser._id.toString(),
       });
     }
+
+    createdUser.age =  dayjs().diff(user.birthDate, 'year')
 
     return createdUser;
   }

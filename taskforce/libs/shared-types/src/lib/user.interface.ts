@@ -10,7 +10,8 @@ export interface UserInterface {
   role: UserRole;
   avatar?: string;
   birthDate: Date;
-  registrationDate?: Date;
+  age?: number;
+  registrationDate?: string;
   personalInfo?: string;
   createdTasks?: number;
   newTasks?: number;

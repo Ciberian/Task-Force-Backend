@@ -12,6 +12,12 @@ export class UserEntity implements UserInterface {
   public role: UserRole;
   public avatar?: string;
   public birthDate: Date;
+  public registrationDate?: string;
+  public personalInfo?: string;
+  public createdTasks?: number;
+  public newTasks?: number;
+  public specialization?: string;
+  public rank?: number;
   public rating?: number;
   public failedTasksCount?: number;
   public completedTasksCount?: number;
@@ -31,9 +37,15 @@ export class UserEntity implements UserInterface {
     this.city = user.city;
     this.passwordHash = user.passwordHash;
     this.role = user.role;
-    this.avatar = user?.avatar;
+    this.avatar = user.avatar;
     this.birthDate = user.birthDate;
-    this.rating = user?.rating;
+    this.registrationDate = user.registrationDate;
+    this.personalInfo = user.personalInfo;
+    this.createdTasks = user.createdTasks;
+    this.newTasks = user.newTasks;
+    this.specialization = user.specialization;
+    this.rank = user.rank;
+    this.rating = user.rating;
     this.failedTasksCount = user.failedTasksCount;
     this.completedTasksCount = user.completedTasksCount;
   }
