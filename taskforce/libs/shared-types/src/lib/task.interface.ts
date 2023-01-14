@@ -11,7 +11,9 @@ export interface TaskInterface {
   address?: string;
   tags?: string[];
   status: TaskStatus;
-  userId: string;
-  commentsCount?: number;
+  customerId: string;
+  contractorId?: string;
+  respondedUsers?: string[];
   responsesCount?: number;
+  commentsCount?: number;
 }

@@ -14,7 +14,8 @@ async function fillDb() {
       address: 'Санкт-Петербург, Центральный район',
       tags: ['грузоперевозки'],
       status: 'New',
-      userId: '6385aaacc05cd5e757d37764'
+      customerId: '6385aaacc05cd5e757d37764',
+      respondedUsers: []
     },
   });
   await prisma.task.create({
@@ -29,7 +30,8 @@ async function fillDb() {
         address: 'Санкт-Петербург, Центральный район',
         tags: ['переводы'],
         status: 'AtWork',
-        userId: '6385aaacc05cd5e757d37764'
+        customerId: '6385aaacc05cd5e757d37764',
+        respondedUsers: []
       },
   });
   console.info('🤘️ Database was filled')

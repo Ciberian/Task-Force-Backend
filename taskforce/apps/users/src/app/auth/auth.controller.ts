@@ -106,7 +106,7 @@ export class AuthController {
         ],
       })
     )
-   file: Express.Multer.File) {
+    file: Express.Multer.File) {
     const response = {
       originalname: file.originalname,
       filename: file.filename,

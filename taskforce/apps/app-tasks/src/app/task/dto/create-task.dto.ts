@@ -103,5 +103,5 @@ export class CreateTaskDto {
     example: '6385aaacc05cd5e757d37764',
   })
   @IsMongoId()
-  public userId!: string;
+  public customerId!: string;
 }

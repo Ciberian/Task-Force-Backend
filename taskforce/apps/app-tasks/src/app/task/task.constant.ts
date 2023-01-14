@@ -14,3 +14,6 @@ export const DEFAULT_SORT_TYPE = 'createdAt';
 
 export const RABBITMQ_SERVICE = Symbol('RABBITMQ_SERVICE');
 export const AUTH_USER_EMAIL_NOT_VALID = 'The email is not valid';
+
+export const IMAGE_FILE_TYPE = /.(jpg|jpeg|png)$/;
+export const IMAGE_FILE_MAX_SIZE = 500 * 1024;

@@ -10,9 +10,11 @@ export class TaskEntity implements TaskInterface {
   public address?: string;
   public tags?: string[];
   public status: TaskStatus;
-  public userId: string;
-  public commentsCount: number;
+  public customerId: string;
+  public contractorId?: string;
+  public respondedUsers?: string[];
   public responsesCount: number;
+  public commentsCount: number;
 
   constructor(task: TaskInterface) {
     this.fillEntity(task);
@@ -32,8 +34,10 @@ export class TaskEntity implements TaskInterface {
     this.address = task.address;
     this.tags = task.tags;
     this.status = task.status;
-    this.userId = task.userId;
-    this.commentsCount = task.commentsCount
-    this.responsesCount = task.responsesCount
+    this.customerId = task.customerId;
+    this.contractorId = task.contractorId;
+    this.respondedUsers = task.respondedUsers;
+    this.responsesCount = task.responsesCount;
+    this.commentsCount = task.commentsCount;
   }
 }

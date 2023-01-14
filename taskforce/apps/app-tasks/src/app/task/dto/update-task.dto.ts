@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsOptional,
-  IsMongoId,
   IsISO8601,
   IsString,
   Matches,
@@ -116,12 +115,4 @@ export class UpdateTaskDto {
   @IsOptional()
   @IsEnum(TaskStatus)
   public status?: TaskStatus;
-
-  @ApiProperty({
-    description: 'The uniq user ID',
-    example: '6385aaacc05cd5e757d37764'
-  })
-  @IsOptional()
-  @IsMongoId()
-  public userId: string;
 }
