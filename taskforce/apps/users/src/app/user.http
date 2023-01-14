@@ -36,8 +36,22 @@ Content-Type: application/json
 
 {
   "customerId": "44dc1549485246c0e75315a9",
-  "contractorId": "63c0cfd891de41c6d4dfe95b",
-  "taskId": 7,
+  "contractorId": "63c0e5a18f8ad680e8686ba8",
+  "taskId": 9,
   "reviewText": "He did such a great job and were quick and efficient. Also, our backyard is cleaner now than it was before they came! We would definitely recommend to anyone looking to have their roof replaced.",
   "reviewRating": 1
 }
+
+###
+## Upload user avatar
+POST http://localhost:3350/api/user/avatar HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"
+Content-Type: image/jpg
+
+< avatar.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+###

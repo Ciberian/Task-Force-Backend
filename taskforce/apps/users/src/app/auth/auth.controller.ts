@@ -1,4 +1,18 @@
-import { Controller, Post, Get, Body, Param, HttpStatus, UsePipes, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  HttpStatus,
+  UsePipes,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
+} from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthService } from './auth.service';
@@ -11,6 +25,9 @@ import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewRdo } from './rdo/review.rdo';
 import { MongoidValidationPipe, TrimBodyValuesPipe, UserRole } from '@taskforce/shared-types';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { AVATAR_FILE_MAX_SIZE, AVATAR_FILE_TYPE } from './auth.constant';
 
 @ApiTags('user')
 @Controller('user')
@@ -49,12 +66,12 @@ export class AuthController {
     return this.authService.loginUser(user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User found'
   })
+  @UseGuards(JwtAuthGuard)
   public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
 
@@ -65,15 +82,40 @@ export class AuthController {
     return fillDTO(ContractorRdo, existUser);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('/review')
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new review has been successfully created.'
   })
+  @UseGuards(JwtAuthGuard)
   public async createReview(@Body() dto: CreateReviewDto) {
     const newReview = await this.authService.createReview(dto);
 
     return fillDTO(ReviewRdo, newReview);
+  }
+
+  @Post('/avatar')
+  @UseInterceptors(FileInterceptor('avatar', {storage: diskStorage({destination: './user-avatars'})}))
+  @UseGuards(JwtAuthGuard)
+  public async uploadeAvatar(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({maxSize: AVATAR_FILE_MAX_SIZE}),
+          new FileTypeValidator({fileType: AVATAR_FILE_TYPE}),
+        ],
+      })
+    )
+   file: Express.Multer.File) {
+    const response = {
+      originalname: file.originalname,
+      filename: file.filename,
+    };
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Avatar uploaded successfully!',
+      data: response,
+    };
   }
 }
