@@ -15,7 +15,7 @@ export interface UserInterface {
   personalInfo?: string;
   createdTasks?: number;
   newTasks?: number;
-  specialization?: string;
+  specialization?: string[];
   rank?: number;
   rating?: number;
   failedTasksCount?: number;

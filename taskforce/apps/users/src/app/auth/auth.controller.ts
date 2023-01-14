@@ -1,5 +1,6 @@
 import {
   Controller,
+  Patch,
   Post,
   Get,
   Body,
@@ -28,6 +29,7 @@ import { MongoidValidationPipe, TrimBodyValuesPipe, UserRole } from '@taskforce/
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { AVATAR_FILE_MAX_SIZE, AVATAR_FILE_TYPE } from './auth.constant';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('user')
 @Controller('user')
@@ -82,6 +84,22 @@ export class AuthController {
     return fillDTO(ContractorRdo, existUser);
   }
 
+  @Patch(':id')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User found'
+  })
+  @UseGuards(JwtAuthGuard)
+  public async update(@Param('id', MongoidValidationPipe) userId: string, @Body() dto: UpdateUserDto) {
+    const updatedUser = await this.authService.updateUser(userId, dto);
+
+    if (updatedUser.role === UserRole.Customer) {
+      return fillDTO(CustomerRdo, updatedUser);
+    }
+
+    return fillDTO(ContractorRdo, updatedUser);
+  }
+
   @Post('/review')
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -94,10 +112,11 @@ export class AuthController {
     return fillDTO(ReviewRdo, newReview);
   }
 
-  @Post('/avatar')
+  @Post('/:id/avatar')
   @UseInterceptors(FileInterceptor('avatar', {storage: diskStorage({destination: './user-avatars'})}))
   @UseGuards(JwtAuthGuard)
   public async uploadeAvatar(
+    @Param('id') userId: string,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -111,6 +130,8 @@ export class AuthController {
       originalname: file.originalname,
       filename: file.filename,
     };
+
+    await this.authService.updateUser(userId, {avatar: response.filename})
 
     return {
       status: HttpStatus.OK,

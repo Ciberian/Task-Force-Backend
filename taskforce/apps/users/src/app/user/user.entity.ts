@@ -16,7 +16,7 @@ export class UserEntity implements UserInterface {
   public personalInfo?: string;
   public createdTasks?: number;
   public newTasks?: number;
-  public specialization?: string;
+  public specialization?: string[];
   public rank?: number;
   public rating?: number;
   public failedTasksCount?: number;

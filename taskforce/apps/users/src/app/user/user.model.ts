@@ -68,7 +68,7 @@ export class UserModel extends Document implements UserInterface {
   public newTasks?: number;
 
   @Prop()
-  public specialization?: string;
+  public specialization?: string[];
 
   @Prop({
     min: 0,

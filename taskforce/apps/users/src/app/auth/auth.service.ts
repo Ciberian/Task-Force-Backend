@@ -20,6 +20,7 @@ import {
   RABBITMQ_SERVICE,
   REVIEW_ALREADY_EXISTS
 } from './auth.constant';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +45,7 @@ export class AuthService {
       personalInfo: '',
       createdTasks: 0,
       newTasks: 0,
-      specialization: '',
+      specialization: [],
       rank: 0,
       rating: 0,
       failedTasksCount: 0,
@@ -76,7 +77,7 @@ export class AuthService {
       });
     }
 
-    createdUser.age =  dayjs().diff(user.birthDate, 'year')
+    createdUser.age =  dayjs().diff(user.birthDate, 'year');
 
     return createdUser;
   }
@@ -112,6 +113,31 @@ export class AuthService {
 
   async getUser(id: string) {
     return this.userRepository.findById(id);
+  }
+
+  async updateUser(id: string, dto: UpdateUserDto): Promise<UserInterface> {
+    const userBeforeUpdate = await this.userRepository.findById(id);
+    if (!userBeforeUpdate) {
+      throw new Error(`User with id ${id}, does not exist`);
+    }
+
+    if (dto.birthDate) {
+      const newUserAge = dayjs().diff(dto.birthDate, 'year');
+      if (newUserAge < AGE_OF_MAJORITY) {
+        throw new Error(AUTH_USER_NOT_LEGAL_AGE);
+      }
+    }
+
+    const userEntity = new UserEntity({
+      ...userBeforeUpdate,
+      ...dto,
+      birthDate: dto.birthDate ? dayjs(dto.birthDate).toDate() : false || userBeforeUpdate.birthDate,
+    });
+
+    const updatedUser = await this.userRepository.update(id, userEntity);
+    updatedUser.age = dayjs().diff(updatedUser.birthDate, 'year');
+
+    return updatedUser;
   }
 
   async createReview(dto: CreateReviewDto) {
