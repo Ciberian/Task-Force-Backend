@@ -6,9 +6,10 @@ Content-Type: application/json
   "title": "Тест связи между сервисами комментов и тасков_333",
   "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo.",
   "category": "Перевозки",
-  "address": "Владивосток, Тверская ул, дом 222",
+  "address": "Владивосток, Тверская ул, дом 333",
   "customerId": "6385bbbcc05cd5e757d37764",
-  "tags": ["RabbitMQ"]
+  "tags": ["RabbitMQ"],
+  "deadline": "2022-12-20"
 }
 
 ###

@@ -1,3 +1,4 @@
+import * as dayjs from 'dayjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CommandEvent, CommentsCountUpdateType, TaskInterface } from '@taskforce/shared-types';
@@ -7,7 +8,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { formatTags } from '@taskforce/core';
 import { TaskQuery } from './query/task.query';
-import { RABBITMQ_SERVICE } from './task.constant';
+import { DEADLINE_DATE_NOT_VALID, RABBITMQ_SERVICE } from './task.constant';
 
 @Injectable()
 export class TaskService {
@@ -17,6 +18,12 @@ export class TaskService {
   ) {}
 
   async createTask(dto: CreateTaskDto): Promise<TaskInterface> {
+    if (dto.deadline) {
+      if (dayjs().diff(dto.deadline, 'day') > 0) {
+        throw new Error(DEADLINE_DATE_NOT_VALID);
+      }
+    }
+
     const taskEntity = new TaskEntity({
       ...dto,
       status: "New",
