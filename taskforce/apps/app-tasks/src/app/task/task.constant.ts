@@ -1,5 +1,6 @@
 export const TASK_TITLE_NOT_VALID = 'Title min length is 20, max is 50';
 export const TASK_DESCRIPTION_NOT_VALID = 'Description min length is 100, max is 1024';
+export const TASK_ADDRESS_NOT_VALID = 'Address min length is 10, max is 255';
 export const DEADLINE_DATE_NOT_VALID = 'The deadline date is not valid';
 export const TAGS_NOT_VALID = 'Tegs field must be an array of string';
 export const TAGS_СONTAIN_INVALID_SIMBOLS = 'The tag must start with a letter and not contain spaces';

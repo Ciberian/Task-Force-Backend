@@ -17,11 +17,12 @@ import {
   TASK_TITLE_NOT_VALID,
   TASK_DESCRIPTION_NOT_VALID,
   DEADLINE_DATE_NOT_VALID,
+  TASK_ADDRESS_NOT_VALID,
   TAGS_NOT_VALID,
   MAX_TAGS_COUNT,
   MIN_TAG_LENGTH,
   MAX_TAG_LENGTH,
-  TAGS_СONTAIN_INVALID_SIMBOLS
+  TAGS_СONTAIN_INVALID_SIMBOLS,
 } from '../task.constant';
 
 export class CreateTaskDto {
@@ -31,7 +32,7 @@ export class CreateTaskDto {
   })
   @IsString()
   @Matches(/\S/)
-  @Length(20, 50, { message: TASK_TITLE_NOT_VALID })
+  @Length(20, 50, {message: TASK_TITLE_NOT_VALID})
   public title!: string;
 
   @ApiProperty({
@@ -41,7 +42,7 @@ export class CreateTaskDto {
   })
   @IsString()
   @Matches(/\S/)
-  @Length(100, 1024, { message: TASK_DESCRIPTION_NOT_VALID })
+  @Length(100, 1024, {message: TASK_DESCRIPTION_NOT_VALID})
   public description!: string;
 
   @ApiProperty({
@@ -83,6 +84,8 @@ export class CreateTaskDto {
   })
   @IsOptional()
   @IsString()
+  @Matches(/\S/)
+  @Length(10, 255, {message: TASK_ADDRESS_NOT_VALID})
   public address?: string;
 
   @ApiProperty({

@@ -9,7 +9,7 @@ Content-Type: application/json
   "address": "Владивосток, Тверская ул, дом 333",
   "customerId": "6385bbbcc05cd5e757d37764",
   "tags": ["RabbitMQ"],
-  "deadline": "2022-12-20"
+  "deadline": "2023-01-20"
 }
 
 ###
