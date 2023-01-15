@@ -30,6 +30,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { AVATAR_FILE_MAX_SIZE, AVATAR_FILE_TYPE } from './auth.constant';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @ApiTags('user')
 @Controller('user')
@@ -92,6 +93,22 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   public async update(@Param('id', MongoidValidationPipe) userId: string, @Body() dto: UpdateUserDto) {
     const updatedUser = await this.authService.updateUser(userId, dto);
+
+    if (updatedUser.role === UserRole.Customer) {
+      return fillDTO(CustomerRdo, updatedUser);
+    }
+
+    return fillDTO(ContractorRdo, updatedUser);
+  }
+
+  @Patch(':id/password')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User password changed'
+  })
+  @UseGuards(JwtAuthGuard)
+  public async changePassword(@Param('id', MongoidValidationPipe) userId: string, @Body() dto: ChangePasswordDto) {
+    const updatedUser = await this.authService.changePassword(userId, dto);
 
     if (updatedUser.role === UserRole.Customer) {
       return fillDTO(CustomerRdo, updatedUser);

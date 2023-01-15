@@ -21,6 +21,7 @@ import {
   REVIEW_ALREADY_EXISTS
 } from './auth.constant';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -138,6 +139,22 @@ export class AuthService {
     updatedUser.age = dayjs().diff(updatedUser.birthDate, 'year');
 
     return updatedUser;
+  }
+
+  async changePassword(id: string, dto: ChangePasswordDto): Promise<UserInterface> {
+    const {newPassword, oldPassword} = dto;
+    const userBeforeUpdate = await this.userRepository.findById(id);
+    if (!userBeforeUpdate) {
+      throw new Error(`User with id - ${id}, does not exist`);
+    }
+
+    const userEntity = new UserEntity(userBeforeUpdate);
+    if (!(await userEntity.comparePassword(oldPassword))) {
+      throw new Error(`The old password - ${oldPassword}, is incorrect`);
+    }
+    await userEntity.setPassword(newPassword);
+
+    return this.userRepository.update(id, userEntity);
   }
 
   async createReview(dto: CreateReviewDto) {

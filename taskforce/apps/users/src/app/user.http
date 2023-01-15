@@ -18,7 +18,7 @@ Content-Type: application/json
 
 {
   "email": "test900@gmail.com",
-  "password": "abcdefg"
+  "password": "123456"
 }
 
 ###
@@ -27,6 +27,17 @@ Content-Type: application/json
 # Get user info
 GET http://localhost:3350/api/user/63c31f12e0afa85f84aa73f2 HTTP/1.1
 Authorization: Bearer {{authToken}}
+
+###
+# Change user password
+PATCH http://localhost:3350/api/user/63c31f12e0afa85f84aa73f2/password HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "oldPassword": "abcdefg",
+  "newPassword": "123456"
+}
 
 ###
 # Create user review
