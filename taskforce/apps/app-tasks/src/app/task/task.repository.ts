@@ -4,6 +4,7 @@ import { CRUDRepositoryInterface } from '@taskforce/core';
 import { TaskInterface } from '@taskforce/shared-types';
 import { TaskEntity } from './task.entity';
 import { TaskQuery } from './query/task.query';
+import { PersonalTasksQuery } from './query/personal-tasks.query';
 
 @Injectable()
 export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, number, TaskInterface> {
@@ -330,6 +331,34 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
 
       return tasks.sort((taskA, taskB) => taskB.responsesCount - taskA.responsesCount);
     }
+  }
+
+  public findCustomerTasks(id: string, {status}: PersonalTasksQuery): Promise<TaskInterface[]> {
+    return this.prisma.task.findMany({
+      where: {
+        AND: [
+          {customerId: id},
+          {status: status}
+        ]
+      },
+      orderBy: [
+        {createdAt: 'desc'},
+      ]
+    })
+  }
+
+  public findContractorTasks(id: string, {status}: PersonalTasksQuery): Promise<TaskInterface[]> {
+    return this.prisma.task.findMany({
+      where: {
+        AND: [
+          {contractorId: id},
+          {status: status}
+        ]
+      },
+      orderBy: [
+        {createdAt: 'desc'},
+      ]
+    })
   }
 
   public async findNewTasks() {

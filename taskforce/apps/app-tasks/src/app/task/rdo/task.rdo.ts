@@ -74,10 +74,39 @@ export class TaskRdo {
   public status: TaskStatus;
 
   @ApiProperty({
-    description: 'The uniq user ID',
+    description: 'User ID, who created the task',
     example: '6385aaacc05cd5e757d37764'
   })
-  public userId: string;
+  @Expose()
+  public customerId: string;
+
+  @ApiProperty({
+    description: 'User ID, who performs the task',
+    example: '6385aaacc05cd5e757d37764'
+  })
+  @Expose()
+  public contractorId: string;
+
+  @ApiProperty({
+    description: 'Array of users ID, who responded task',
+    example: ['6385aaacc05cd5e757d37764', '7385cdeabb05cd5e957d37765']
+  })
+  @Expose()
+  public respondedUsers: string[];
+
+  @ApiProperty({
+    description: 'Task responses count',
+    example: 100500
+  })
+  @Expose()
+  public responsesCount: number;
+
+  @ApiProperty({
+    description: 'Task comments count',
+    example: 100500
+  })
+  @Expose()
+  public commentsCount: number;
 
   @ApiProperty({
     description: 'Task created date',
@@ -85,18 +114,4 @@ export class TaskRdo {
   })
   @Expose()
   public createdAt: string;
-
-  @ApiProperty({
-    description: 'Временное решение, для проверки сортировки.',
-    example: 100500
-  })
-  @Expose()
-  public commentsCount: number;
-
-  @ApiProperty({
-    description: 'Временное решение, для проверки сортировки.',
-    example: 100500
-  })
-  @Expose()
-  public responsesCount: number;
 }

@@ -9,6 +9,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { formatTags } from '@taskforce/core';
 import { TaskQuery } from './query/task.query';
 import { DEADLINE_DATE_NOT_VALID, RABBITMQ_SERVICE } from './task.constant';
+import { PersonalTasksQuery } from './query/personal-tasks.query';
 
 @Injectable()
 export class TaskService {
@@ -38,6 +39,20 @@ export class TaskService {
 
   async getTasks(query: TaskQuery): Promise<TaskInterface[]> {
     return this.taskRepository.find(query);
+  }
+
+  async getСustomerTasks(customerId: string, query: PersonalTasksQuery): Promise<TaskInterface[]> {
+    return this.taskRepository.findCustomerTasks(customerId, query);
+  }
+
+  async getСontractorTasks(contractorId: string, query: PersonalTasksQuery): Promise<TaskInterface[]> {
+    const contractorTasks = await this.taskRepository.findContractorTasks(contractorId, query);
+    const newTasks = contractorTasks.filter((task) => task.status === 'New');
+    const atWorkTasks = contractorTasks.filter((task) => task.status === 'AtWork');
+    const completedTasks = contractorTasks.filter((task) => task.status === 'Completed');
+    const failedTasks = contractorTasks.filter((task) => task.status === 'Failed');
+
+    return [...newTasks, ...atWorkTasks, ...completedTasks, ...failedTasks];
   }
 
   async updateTask(id: number, dto: UpdateTaskDto): Promise<TaskInterface> {

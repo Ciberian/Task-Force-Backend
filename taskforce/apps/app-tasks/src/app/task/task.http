@@ -21,6 +21,16 @@ GET http://localhost:3330/api/tasks/ HTTP/1.1
 GET http://localhost:3330/api/tasks/1 HTTP/1.1
 
 ###
+# Get personal tasks
+GET http://localhost:3330/api/tasks/personal?status=AtWork HTTP/1.1
+Content-Type: application/json
+
+{
+  "userId": "1234aaacc05cd5e757d37764",
+  "userRole": "Исполнитель"
+}
+
+###
 # Update task
 PATCH http://localhost:3330/api/tasks/1 HTTP/1.1
 Content-Type: application/json
@@ -31,7 +41,7 @@ Content-Type: application/json
 
 ###
 # Delete task
-DELETE http://localhost:3330/api/tasks/1 HTTP/1.1
+DELETE http://localhost:3330/api/tasks/4 HTTP/1.1
 
 ###
 # Send new tasks on mail

@@ -24,10 +24,12 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { NotifyUserDto } from './dto/notify-user.dto';
 import { UpdateCommentsCountDto } from './dto/update-comments-count.dto';
-import { CommandEvent } from '@taskforce/shared-types';
+import { CommandEvent, UserRole } from '@taskforce/shared-types';
 import { fillDTO } from '@taskforce/core';
 import { TaskQuery } from './query/task.query';
 import { IMAGE_FILE_MAX_SIZE, IMAGE_FILE_TYPE } from './task.constant';
+import { GetPersonalTasksDto } from './dto/get-personal-tasks.dto';
+import { PersonalTasksQuery } from './query/personal-tasks.query';
 
 @Controller('tasks')
 export class TaskController {
@@ -44,16 +46,29 @@ export class TaskController {
     return fillDTO(TaskRdo, newTask);
   }
 
-  @Get('/:id')
-  public async show(@Param('id', ParseIntPipe) id: number) {
-    const task = await this.taskService.getTask(id);
-    return fillDTO(TaskRdo, task);
-  }
-
   @Get('/')
   public async index(@Query() query: TaskQuery) {
     const tasks = await this.taskService.getTasks(query);
     return fillDTO(TaskRdo, tasks);
+  }
+
+  @Get('/personal')
+  async showPersonal(@Query() query: PersonalTasksQuery, @Body() dto: GetPersonalTasksDto) {
+    const {userId, userRole} = dto;
+
+    if (userRole === UserRole.Contractor) {
+      const personalTasks = await this.taskService.getСontractorTasks(userId, query);
+      return fillDTO(TaskRdo, personalTasks);
+    }
+
+    const personalTasks = await this.taskService.getСustomerTasks(userId, query);
+    return fillDTO(TaskRdo, personalTasks);
+  }
+
+  @Get('/:id')
+  public async show(@Param('id', ParseIntPipe) id: number) {
+    const task = await this.taskService.getTask(id);
+    return fillDTO(TaskRdo, task);
   }
 
   @Patch('/:id')
