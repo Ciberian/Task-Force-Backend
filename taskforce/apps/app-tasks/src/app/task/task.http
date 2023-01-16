@@ -3,18 +3,22 @@ POST http://localhost:3330/api/tasks/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Тест связи между сервисами комментов и тасков_333",
+  "title": "Тест связи между сервисами комментов и 555",
   "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo.",
-  "category": "Перевозки",
-  "address": "Владивосток, Тверская ул, дом 333",
+  "category": "Программирование",
+  "address": "Москва, Тверская ул, дом 333",
   "customerId": "6385bbbcc05cd5e757d37764",
   "tags": ["RabbitMQ"],
-  "deadline": "2023-01-20"
+  "deadline": "2024-01-20"
 }
 
 ###
 # Get tasks
 GET http://localhost:3330/api/tasks/ HTTP/1.1
+
+###
+# Get new tasks
+GET http://localhost:3330/api/tasks/new?tags=RabbitMQ&city=Владивосток HTTP/1.1
 
 ###
 # Get task info

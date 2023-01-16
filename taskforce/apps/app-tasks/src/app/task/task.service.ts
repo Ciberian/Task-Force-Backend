@@ -41,6 +41,13 @@ export class TaskService {
     return this.taskRepository.find(query);
   }
 
+  async getNewTasks(query: TaskQuery): Promise<TaskInterface[]> {
+    const allTasks = await this.taskRepository.find(query);
+    const newTasks = allTasks.filter((task) => task.status === 'New');
+
+    return newTasks;
+  }
+
   async getСustomerTasks(customerId: string, query: PersonalTasksQuery): Promise<TaskInterface[]> {
     return this.taskRepository.findCustomerTasks(customerId, query);
   }

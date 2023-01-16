@@ -1,10 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CRUDRepositoryInterface } from '@taskforce/core';
+import { CRUDRepositoryInterface, formatTags } from '@taskforce/core';
 import { TaskInterface } from '@taskforce/shared-types';
 import { TaskEntity } from './task.entity';
 import { TaskQuery } from './query/task.query';
 import { PersonalTasksQuery } from './query/personal-tasks.query';
+import {
+  DEFAULT_PAGE,
+  DEFAULT_SORT_DIRECTION,
+  DEFAULT_SORT_TYPE,
+  DEFAULT_TASK_COUNT_LIMIT,
+} from './task.constant';
 
 @Injectable()
 export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, number, TaskInterface> {
@@ -22,7 +28,19 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
     });
   }
 
-  public async find({limit, page, sortDirection, sortType, category, tags, city}: TaskQuery): Promise<TaskInterface[]> {
+  public async find({
+    page = DEFAULT_PAGE,
+    limit = DEFAULT_TASK_COUNT_LIMIT,
+    sortDirection = DEFAULT_SORT_DIRECTION,
+    sortType = DEFAULT_SORT_TYPE,
+    category,
+    tags,
+    city,
+  }: TaskQuery): Promise<TaskInterface[]> {
+    if (tags) {
+      tags = formatTags(tags);
+    }
+
     if (sortType === 'createdAt') {
       if (category && city) {
         return this.prisma.task.findMany({
@@ -32,9 +50,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
               {address: {contains: city}}
             ]
           },
-          orderBy: [
-            {createdAt: sortDirection},
-          ],
+          orderBy: [{createdAt: sortDirection}],
           take: limit,
           skip: page > 0 ? limit * (page - 1) : undefined,
         });
@@ -45,12 +61,10 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
           where: {
             AND: [
               {category: category},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined},
             ]
           },
-          orderBy: [
-            {createdAt: sortDirection},
-          ],
+          orderBy: [{createdAt: sortDirection}],
           take: limit,
           skip: page > 0 ? limit * (page - 1) : undefined,
         });
@@ -61,12 +75,10 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
           where: {
             AND: [
               {address: {contains: city}},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined},
             ]
           },
-          orderBy: [
-            {createdAt: sortDirection},
-          ],
+          orderBy: [{createdAt: sortDirection}],
           take: limit,
           skip: page > 0 ? limit * (page - 1) : undefined,
         });
@@ -78,12 +90,10 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
             AND: [
               {category: category},
               {address: {contains: city}},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined}
             ]
           },
-          orderBy: [
-            {createdAt: sortDirection},
-          ],
+          orderBy: [{createdAt: sortDirection}],
           take: limit,
           skip: page > 0 ? limit * (page - 1) : undefined,
         });
@@ -95,21 +105,17 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
             OR: [
               {category: category},
               {address: {contains: city}},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined}
             ]
           },
-          orderBy: [
-            {createdAt: sortDirection},
-          ],
+          orderBy: [{createdAt: sortDirection}],
           take: limit,
           skip: page > 0 ? limit * (page - 1) : undefined,
         });
       }
 
       return this.prisma.task.findMany({
-        orderBy: [
-          {createdAt: sortDirection},
-        ],
+        orderBy: [{createdAt: sortDirection}],
         take: limit,
         skip: page > 0 ? limit * (page - 1) : undefined,
       });
@@ -140,7 +146,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
           where: {
             AND: [
               {category: category},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined},
             ]
           },
           take: limit,
@@ -159,7 +165,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
           where: {
             AND: [
               {address: {contains: city}},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined},
             ]
           },
           take: limit,
@@ -179,7 +185,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
             AND: [
               {category: category},
               {address: {contains: city}},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined},
             ]
           },
           take: limit,
@@ -199,7 +205,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
             OR: [
               {category: category},
               {address: {contains: city}},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined},
             ]
           },
           take: limit,
@@ -214,9 +220,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
       }
 
       return this.prisma.task.findMany({
-        orderBy: [
-          {createdAt: sortDirection},
-        ],
+        orderBy: [{createdAt: sortDirection}],
         take: limit,
         skip: page > 0 ? limit * (page - 1) : undefined,
       });
@@ -247,7 +251,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
           where: {
             AND: [
               {category: category},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined},
             ]
           },
           take: limit,
@@ -266,7 +270,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
           where: {
             AND: [
               {address: {contains: city}},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined},
             ]
           },
           take: limit,
@@ -286,7 +290,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
             AND: [
               {category: category},
               {address: {contains: city}},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined},
             ]
           },
           take: limit,
@@ -306,7 +310,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
             OR: [
               {category: category},
               {address: {contains: city}},
-              {tags: {hasSome: tags}}
+              {tags: tags ? {hasSome: tags} : undefined},
             ]
           },
           take: limit,
@@ -341,9 +345,7 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
           {status: status}
         ]
       },
-      orderBy: [
-        {createdAt: 'desc'},
-      ]
+      orderBy: [{createdAt: 'desc'}]
     })
   }
 
@@ -355,16 +357,14 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
           {status: status}
         ]
       },
-      orderBy: [
-        {createdAt: 'desc'},
-      ]
+      orderBy: [{createdAt: 'desc'}],
     })
   }
 
   public async findNewTasks() {
     return this.prisma.task.findMany({
       where: {status: 'New'},
-      select: {title: true}
+      select: {title: true},
     });
   }
 

@@ -52,6 +52,12 @@ export class TaskController {
     return fillDTO(TaskRdo, tasks);
   }
 
+  @Get('/new')
+  public async showNewTasks(@Query() query: TaskQuery) {
+    const tasks = await this.taskService.getNewTasks(query);
+    return fillDTO(TaskRdo, tasks);
+  }
+
   @Get('/personal')
   async showPersonal(@Query() query: PersonalTasksQuery, @Body() dto: GetPersonalTasksDto) {
     const {userId, userRole} = dto;
