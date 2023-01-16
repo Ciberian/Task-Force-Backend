@@ -6,6 +6,7 @@ import { TaskEntity } from './task.entity';
 import { TaskRepository } from './task.repository';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { AddResponseDto } from './dto/add-response.dto';
 import { formatTags } from '@taskforce/core';
 import { TaskQuery } from './query/task.query';
 import { DEADLINE_DATE_NOT_VALID, RABBITMQ_SERVICE } from './task.constant';
@@ -72,6 +73,21 @@ export class TaskService {
       ...taskBeforeUpdate,
       ...dto,
       tags: formatTags(dto?.tags)
+    });
+
+    return this.taskRepository.update(id, taskEntity);
+  }
+
+  async addResponse(id: number, dto: AddResponseDto): Promise<TaskInterface> {
+    const taskBeforeUpdate = await this.taskRepository.findById(id);
+    if (!taskBeforeUpdate) {
+      throw new Error(`Task with id ${id}, does not exist`);
+    }
+
+    const taskEntity = new TaskEntity({
+      ...taskBeforeUpdate,
+      respondedUsers: [...taskBeforeUpdate.respondedUsers, dto.contractorId],
+      responsesCount: taskBeforeUpdate.responsesCount + 1
     });
 
     return this.taskRepository.update(id, taskEntity);

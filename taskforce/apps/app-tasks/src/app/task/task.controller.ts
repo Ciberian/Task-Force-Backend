@@ -30,6 +30,7 @@ import { TaskQuery } from './query/task.query';
 import { IMAGE_FILE_MAX_SIZE, IMAGE_FILE_TYPE } from './task.constant';
 import { GetPersonalTasksDto } from './dto/get-personal-tasks.dto';
 import { PersonalTasksQuery } from './query/personal-tasks.query';
+import { AddResponseDto } from './dto/add-response.dto';
 
 @Controller('tasks')
 export class TaskController {
@@ -83,6 +84,15 @@ export class TaskController {
     @Body() dto: UpdateTaskDto
   ) {
     const updatedTask = await this.taskService.updateTask(id, dto);
+    return fillDTO(TaskRdo, updatedTask)
+  }
+
+  @Patch('/:id/response')
+  public async addNewResponse(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: AddResponseDto
+  ) {
+    const updatedTask = await this.taskService.addResponse(id, dto);
     return fillDTO(TaskRdo, updatedTask)
   }
 
