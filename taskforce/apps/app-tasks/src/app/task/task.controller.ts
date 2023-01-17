@@ -25,9 +25,9 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { NotifyUserDto } from './dto/notify-user.dto';
 import { UpdateCommentsCountDto } from './dto/update-comments-count.dto';
 import { CommandEvent, UserRole } from '@taskforce/shared-types';
-import { fillDTO } from '@taskforce/core';
+import { fillDTO, getExtention, makeId } from '@taskforce/core';
 import { TaskQuery } from './query/task.query';
-import { IMAGE_FILE_MAX_SIZE, IMAGE_FILE_TYPE } from './task.constant';
+import { FILE_NAME_LENGTH, IMAGE_FILE_MAX_SIZE, IMAGE_FILE_TYPE } from './task.constant';
 import { GetPersonalTasksDto } from './dto/get-personal-tasks.dto';
 import { PersonalTasksQuery } from './query/personal-tasks.query';
 import { AddResponseDto } from './dto/add-response.dto';
@@ -113,7 +113,13 @@ export class TaskController {
   }
 
   @Post('/:id/image')
-  @UseInterceptors(FileInterceptor('image', {storage: diskStorage({destination: './task-images'})}))
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: './task-images',
+      filename: (_req, file, cb) => {
+        cb(null, `${makeId(FILE_NAME_LENGTH)}.${getExtention(file.originalname)}`)
+      }})
+  }))
   public async uploadeAvatar(
     @Param('id') taskId: number,
     @UploadedFile(

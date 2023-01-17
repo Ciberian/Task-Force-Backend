@@ -31,3 +31,18 @@ export function formatTags(tags: string[] = []): string[] {
     .map((tag) => tag.toLowerCase())
     .filter((tag, index, arr) => index === arr.indexOf(tag))
 }
+
+export function makeId(idLength) {
+  let id = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (let i = 0; i < idLength; i++) {
+    id += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return id;
+}
+
+export function getExtention (filename) {
+  return /[.]/.exec(filename) ? /[^.]+$/.exec(filename)[0] : undefined;
+}

@@ -7,6 +7,7 @@ export const TAGS_СONTAIN_INVALID_SIMBOLS = 'The tag must start with a letter a
 export const MAX_TAGS_COUNT = 5;
 export const MIN_TAG_LENGTH = 3;
 export const MAX_TAG_LENGTH = 10;
+export const FILE_NAME_LENGTH = 32;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_TASK_COUNT_LIMIT = 25;

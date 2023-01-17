@@ -17,20 +17,20 @@ import {
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthService } from './auth.service';
-import { fillDTO } from '@taskforce/core';
+import { fillDTO, getExtention, makeId } from '@taskforce/core';
 import { ContractorRdo } from './rdo/contractor.rdo';
 import { CustomerRdo } from './rdo/customer.rdo';
+import { ReviewRdo } from './rdo/review.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { ReviewRdo } from './rdo/review.rdo';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { MongoidValidationPipe, TrimBodyValuesPipe, UserRole } from '@taskforce/shared-types';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { AVATAR_FILE_MAX_SIZE, AVATAR_FILE_TYPE } from './auth.constant';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
+import { AVATAR_FILE_MAX_SIZE, AVATAR_FILE_TYPE, FILE_NAME_LENGTH } from './auth.constant';
 
 @ApiTags('user')
 @Controller('user')
@@ -130,7 +130,13 @@ export class AuthController {
   }
 
   @Post('/:id/avatar')
-  @UseInterceptors(FileInterceptor('avatar', {storage: diskStorage({destination: './user-avatars'})}))
+  @UseInterceptors(FileInterceptor('avatar', {
+    storage: diskStorage({
+      destination: './user-avatars',
+      filename: (_req, file, cb) => {
+        cb(null, `${makeId(FILE_NAME_LENGTH)}.${getExtention(file.originalname)}`)
+      }})
+  }))
   @UseGuards(JwtAuthGuard)
   public async uploadeAvatar(
     @Param('id') userId: string,
@@ -148,7 +154,7 @@ export class AuthController {
       filename: file.filename,
     };
 
-    await this.authService.updateUser(userId, {avatar: response.filename})
+    await this.authService.updateUser(userId, {avatar: response.filename});
 
     return {
       status: HttpStatus.OK,
