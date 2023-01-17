@@ -1,7 +1,6 @@
 import * as dayjs from 'dayjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CommandEvent, CommentsCountUpdateType, TaskInterface } from '@taskforce/shared-types';
 import { TaskEntity } from './task.entity';
 import { TaskRepository } from './task.repository';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -9,8 +8,19 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { AddResponseDto } from './dto/add-response.dto';
 import { formatTags } from '@taskforce/core';
 import { TaskQuery } from './query/task.query';
-import { DEADLINE_DATE_NOT_VALID, RABBITMQ_SERVICE } from './task.constant';
+import { CommandEvent, CommentsCountUpdateType, TaskInterface } from '@taskforce/shared-types';
 import { PersonalTasksQuery } from './query/personal-tasks.query';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { TaskStatus } from '@prisma/client';
+import {
+  CONTRACTOR_IS_BUSY,
+  CONTRACTOR_CANNOT_BE_SELECTED,
+  CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS,
+  CUSTOMER_NOT_CREATED_THIS_TASK,
+  DEADLINE_DATE_NOT_VALID,
+  RABBITMQ_SERVICE,
+  CONTRACTOR_NOT_FOUND,
+} from './task.constant';
 
 @Injectable()
 export class TaskService {
@@ -76,6 +86,89 @@ export class TaskService {
     });
 
     return this.taskRepository.update(id, taskEntity);
+  }
+
+  async updateTaskStatus(id: number, dto: UpdateTaskStatusDto): Promise<TaskInterface> {
+    const {newStatus, customerId, contractorId} = dto;
+    const taskBeforeUpdate = await this.taskRepository.findById(id);
+
+    if (newStatus === TaskStatus.AtWork) {
+      if(taskBeforeUpdate.status !== TaskStatus.New) {
+        throw new Error(CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS);
+      }
+
+      if(taskBeforeUpdate.customerId !== customerId) {
+        throw new Error(CUSTOMER_NOT_CREATED_THIS_TASK);
+      }
+
+      const contractorActiveTasks = await this.taskRepository.findContractorActiveTasks(contractorId, TaskStatus.AtWork);
+      if (contractorActiveTasks.length) {
+        throw new Error(CONTRACTOR_IS_BUSY);
+      }
+
+      if (!taskBeforeUpdate.respondedUsers.includes(contractorId)) {
+        throw new Error(CONTRACTOR_CANNOT_BE_SELECTED);
+      }
+
+      const taskEntity = new TaskEntity({
+        ...taskBeforeUpdate,
+        contractorId,
+        status: TaskStatus.AtWork
+      });
+
+      return this.taskRepository.update(id, taskEntity);
+    }
+
+    if (newStatus === TaskStatus.Cancelled) {
+      if(taskBeforeUpdate.status !== TaskStatus.New) {
+        throw new Error(CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS);
+      }
+
+      if(taskBeforeUpdate.customerId !== customerId) {
+        throw new Error(CUSTOMER_NOT_CREATED_THIS_TASK);
+      }
+
+      const taskEntity = new TaskEntity({
+        ...taskBeforeUpdate,
+        status: TaskStatus.Cancelled
+      });
+
+      return this.taskRepository.update(id, taskEntity);
+    }
+
+    if (newStatus === TaskStatus.Completed) {
+      if(taskBeforeUpdate.status !== TaskStatus.AtWork) {
+        throw new Error(CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS);
+      }
+
+      if(taskBeforeUpdate.customerId !== customerId) {
+        throw new Error(CUSTOMER_NOT_CREATED_THIS_TASK);
+      }
+
+      const taskEntity = new TaskEntity({
+        ...taskBeforeUpdate,
+        status: TaskStatus.Completed
+      });
+
+      return this.taskRepository.update(id, taskEntity);
+    }
+
+    if (newStatus === TaskStatus.Failed) {
+      if(taskBeforeUpdate.status !== TaskStatus.AtWork) {
+        throw new Error(CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS);
+      }
+
+      if(taskBeforeUpdate.contractorId !== contractorId) {
+        throw new Error(CONTRACTOR_NOT_FOUND);
+      }
+
+      const taskEntity = new TaskEntity({
+        ...taskBeforeUpdate,
+        status: TaskStatus.Failed
+      });
+
+      return this.taskRepository.update(id, taskEntity);
+    }
   }
 
   async addResponse(id: number, dto: AddResponseDto): Promise<TaskInterface> {

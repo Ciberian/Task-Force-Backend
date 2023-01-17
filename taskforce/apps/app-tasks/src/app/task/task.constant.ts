@@ -15,6 +15,11 @@ export const DEFAULT_SORT_TYPE = 'createdAt';
 
 export const RABBITMQ_SERVICE = Symbol('RABBITMQ_SERVICE');
 export const AUTH_USER_EMAIL_NOT_VALID = 'The email is not valid';
+export const CUSTOMER_NOT_CREATED_THIS_TASK = 'The customer can only change the status of his tasks';
+export const CONTRACTOR_IS_BUSY = 'The selected user, already has a task at work';
+export const CONTRACTOR_CANNOT_BE_SELECTED = 'You can select only those contractors who are on the list of those who responded to the task';
+export const CONTRACTOR_NOT_FOUND = 'Only task contractor can change task to "Failed" status';
+export const CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS = 'The current status is not compatible with the new status';
 
 export const IMAGE_FILE_TYPE = /.(jpg|jpeg|png)$/;
 export const IMAGE_FILE_MAX_SIZE = 500 * 1024;

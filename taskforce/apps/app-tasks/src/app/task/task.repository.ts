@@ -11,6 +11,7 @@ import {
   DEFAULT_SORT_TYPE,
   DEFAULT_TASK_COUNT_LIMIT,
 } from './task.constant';
+import { TaskStatus } from '@prisma/client';
 
 @Injectable()
 export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, number, TaskInterface> {
@@ -358,6 +359,17 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
         ]
       },
       orderBy: [{createdAt: 'desc'}],
+    })
+  }
+
+  public findContractorActiveTasks(id: string, status: TaskStatus): Promise<TaskInterface[]> {
+    return this.prisma.task.findMany({
+      where: {
+        AND: [
+          {contractorId: id},
+          {status: status}
+        ]
+      }
     })
   }
 
