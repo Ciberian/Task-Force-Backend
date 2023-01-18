@@ -2,13 +2,14 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-import { getRabbitMqConfig } from './config/rabbitmq.config';
+import { getRabbitMqConfig, NotifyQueue } from './config/rabbitmq.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get<ConfigService>(ConfigService);
-  app.connectMicroservice(getRabbitMqConfig(configService));
+  app.connectMicroservice(getRabbitMqConfig(configService, NotifyQueue.Subscribers));
+  app.connectMicroservice(getRabbitMqConfig(configService, NotifyQueue.Comments));
 
   await app.startAllMicroservices();
   Logger.log(`🚀 Notify service is running on`);

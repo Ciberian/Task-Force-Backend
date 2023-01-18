@@ -34,7 +34,10 @@ class EnvironmentsConfig {
   public RABBIT_HOST: string;
 
   @IsString({message: EnvValidationMessage.RMQSubscriberQueue})
-  public RABBIT_NOTIFY_SERVICE_QUEUE: string;
+  public RABBIT_NOTIFY_SERVICE_COMMENTS_QUEUE: string;
+
+  @IsString({message: EnvValidationMessage.RMQSubscriberQueue})
+  public RABBIT_NOTIFY_SERVICE_SUBSCRIBERS_QUEUE: string;
 
 
   @IsString({message: EnvValidationMessage.DBNameRequired})

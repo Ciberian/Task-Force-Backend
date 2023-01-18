@@ -6,7 +6,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentRdo } from './rdo/comment.rdo';
 
 @ApiTags('comments')
-@Controller('tasks')
+@Controller('comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
@@ -22,7 +22,7 @@ export class CommentController {
     return fillDTO(CommentRdo, newComment);
   }
 
-  @Get(':taskId/comments')
+  @Get(':taskId')
   @ApiResponse({
     type: CommentRdo,
     status: HttpStatus.OK,
@@ -34,7 +34,7 @@ export class CommentController {
     return fillDTO(CommentRdo, comments);
   }
 
-  @Delete(':taskId/comments')
+  @Delete(':taskId/task-comments')
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Comments were successfully deleted'
@@ -45,7 +45,7 @@ export class CommentController {
     return `Comments for task with ID - ${taskId}, has been deleted`;
   }
 
-  @Delete(':taskId/comments/:commentId')
+  @Delete('/:commentId')
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Comment was successfully deleted'
