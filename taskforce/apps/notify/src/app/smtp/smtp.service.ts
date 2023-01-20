@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { SubscriberInterface } from '@taskforce/shared-types';
-import { EMAIL_ADD_SUBSCRIBER_SUBJECT, EMAIL_NEW_TASKS_SUBJECT } from './smtp.constant';
 import { NewTasksDto } from '../email-subscriber/dto/new-tasks.dto';
+import { EMAIL_ADD_SUBSCRIBER_SUBJECT, EMAIL_NEW_TASKS_SUBJECT } from './smtp.constant';
 
 @Injectable()
 export class SmtpService {
