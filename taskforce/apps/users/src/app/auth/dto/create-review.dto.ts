@@ -1,10 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Length, IsNumber, Min, Max } from 'class-validator';
-import {
-  MAX_REVIEW_RATING_NOT_VALID,
-  MIN_REVIEW_RATING_NOT_VALID,
-  REVIEW_TEXT_NOT_VALID,
-} from '../auth.constant';
+import { ReviewValidationMessage } from '../../review/review.constant';
 
 export class CreateReviewDto {
   @ApiProperty({
@@ -33,7 +29,7 @@ export class CreateReviewDto {
     example: 'He did such a great job and were quick and efficient',
   })
   @IsString()
-  @Length(50, 500, { message: REVIEW_TEXT_NOT_VALID })
+  @Length(50, 500, {message: ReviewValidationMessage.ReviewTextNotValid})
   public reviewText!: string;
 
   @ApiProperty({
@@ -41,7 +37,7 @@ export class CreateReviewDto {
     example: 5,
   })
   @IsNumber()
-  @Min(1, { message: MIN_REVIEW_RATING_NOT_VALID })
-  @Max(5, { message: MAX_REVIEW_RATING_NOT_VALID })
+  @Min(1, {message: ReviewValidationMessage.MinReviewRatingNotValid})
+  @Max(5, {message: ReviewValidationMessage.MaxReviewRatingNotValid})
   public reviewRating!: number;
 }

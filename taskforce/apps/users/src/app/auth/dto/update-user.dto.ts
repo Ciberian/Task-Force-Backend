@@ -1,5 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { City } from '@taskforce/shared-types';
 import {
   IsISO8601,
   IsString,
@@ -10,13 +8,10 @@ import {
   IsArray,
   ArrayMaxSize
 } from 'class-validator';
-import {
-  AUTH_USER_BIRTH_DATE_NOT_VALID,
-  AUTH_USER_NAME_NOT_VALID,
-  MAX_SPECIALIZATIONS_COUNT,
-  SPECIALIZATION_NOT_VALID,
-  USER_PERSONAL_INFO_NOT_VALID
-} from '../auth.constant';
+import { ApiProperty } from '@nestjs/swagger';
+import { City } from '@taskforce/shared-types';
+import { MAX_SPECIALIZATIONS_COUNT } from '../auth.constant';
+import { UserValidationMessage } from '../../user/user.constant';
 
 export class UpdateUserDto {
   @ApiProperty({
@@ -25,7 +20,7 @@ export class UpdateUserDto {
   })
   @IsOptional()
   @IsString()
-  @Length(3, 50, {message: AUTH_USER_NAME_NOT_VALID})
+  @Length(3, 50, {message: UserValidationMessage.NameLengthNotValid})
   public name?: string;
 
   @ApiProperty({
@@ -33,7 +28,7 @@ export class UpdateUserDto {
     example: '2002-02-20'
   })
   @IsOptional()
-  @IsISO8601({message: AUTH_USER_BIRTH_DATE_NOT_VALID})
+  @IsISO8601({message: UserValidationMessage.BirthDateNotValid})
   public birthDate?: string;
 
   @ApiProperty({
@@ -43,7 +38,7 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   @Matches(/\S/)
-  @Length(0, 300, {message: USER_PERSONAL_INFO_NOT_VALID})
+  @Length(0, 300, {message: UserValidationMessage.PersonalInfoMaxLengthNotValid})
   public personalInfo?: string;
 
   @ApiProperty({
@@ -53,7 +48,7 @@ export class UpdateUserDto {
   @IsOptional()
   @IsArray()
   @ArrayMaxSize(MAX_SPECIALIZATIONS_COUNT)
-  @IsString({each: true, message: SPECIALIZATION_NOT_VALID})
+  @IsString({each: true, message: UserValidationMessage.SpecializationNotValid})
   public specialization?: string[];
 
   @ApiProperty({

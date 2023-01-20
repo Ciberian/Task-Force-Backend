@@ -1,27 +1,20 @@
 import * as dayjs from 'dayjs';
 import mongoose from 'mongoose';
+import { JwtService } from '@nestjs/jwt';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UserInterface, CommandEvent, UserRole, ReviewInterface } from '@taskforce/shared-types';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { ReviewRepository } from '../review/review.repository';
 import { UserRepository } from '../user/user.repository';
 import { ReviewEntity } from '../review/review.entity';
 import { UserEntity } from '../user/user.entity';
-import { JwtService } from '@nestjs/jwt';
-import {
-  AGE_OF_MAJORITY,
-  AUTH_USER_EXISTS,
-  AUTH_USER_NOT_FOUND,
-  AUTH_USER_PASSWORD_WRONG,
-  AUTH_USER_NOT_LEGAL_AGE,
-  RABBITMQ_SERVICE,
-  REVIEW_ALREADY_EXISTS
-} from './auth.constant';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
+import { UserInterface, CommandEvent, UserRole, ReviewInterface } from '@taskforce/shared-types';
+import { AGE_OF_MAJORITY, RABBITMQ_SERVICE, UserUpdateErrorMessage } from './auth.constant';
+import { ReviewValidationMessage } from '../review/review.constant';
 
 @Injectable()
 export class AuthService {
@@ -55,12 +48,12 @@ export class AuthService {
 
     const userAge = dayjs().diff(user.birthDate, 'year');
     if (userAge < AGE_OF_MAJORITY) {
-      throw new Error(AUTH_USER_NOT_LEGAL_AGE);
+      throw new Error(UserUpdateErrorMessage.UserNotInLegalAge);
     }
 
     const existUser = await this.userRepository.findByEmail(email);
     if (existUser) {
-      throw new Error(AUTH_USER_EXISTS);
+      throw new Error(UserUpdateErrorMessage.UserAlreadyExist);
     }
 
     const userEntity = await new UserEntity(user).setPassword(password);
@@ -88,12 +81,12 @@ export class AuthService {
     const existUser = await this.userRepository.findByEmail(email);
 
     if (!existUser) {
-      throw new UnauthorizedException(AUTH_USER_NOT_FOUND);
+      throw new UnauthorizedException(UserUpdateErrorMessage.UserNotFound);
     }
 
     const userEntity = new UserEntity(existUser);
     if (! await userEntity.comparePassword(password)) {
-      throw new UnauthorizedException(AUTH_USER_PASSWORD_WRONG);
+      throw new UnauthorizedException(UserUpdateErrorMessage.UserPasswordWrong);
     }
 
     return userEntity.toObject();
@@ -125,7 +118,7 @@ export class AuthService {
     if (dto.birthDate) {
       const newUserAge = dayjs().diff(dto.birthDate, 'year');
       if (newUserAge < AGE_OF_MAJORITY) {
-        throw new Error(AUTH_USER_NOT_LEGAL_AGE);
+        throw new Error(UserUpdateErrorMessage.UserNotInLegalAge);
       }
     }
 
@@ -169,7 +162,7 @@ export class AuthService {
 
     const existReview = await this.reviewRepository.findByTaskId(review.taskId);
     if (existReview) {
-      throw new Error(REVIEW_ALREADY_EXISTS);
+      throw new Error(ReviewValidationMessage.ReviewAlreadyExist);
     }
 
     const reviewEntity = new ReviewEntity(review);

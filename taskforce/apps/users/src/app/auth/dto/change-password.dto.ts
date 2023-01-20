@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsAlphanumeric, Length } from 'class-validator';
-import { AUTH_USER_PASSWORD_NOT_VALID } from '../auth.constant';
+import { UserValidationMessage } from '../../user/user.constant';
 
 export class ChangePasswordDto {
   @ApiProperty({
@@ -8,7 +8,7 @@ export class ChangePasswordDto {
     example: 'abcdef123'
   })
   @IsAlphanumeric()
-  @Length(6, 12, {message: AUTH_USER_PASSWORD_NOT_VALID})
+  @Length(6, 12, {message: UserValidationMessage.PasswordNotValid})
   public oldPassword: string;
 
   @ApiProperty({
@@ -16,7 +16,7 @@ export class ChangePasswordDto {
     example: '321fedcba'
   })
   @IsAlphanumeric()
-  @Length(6, 12, {message: AUTH_USER_PASSWORD_NOT_VALID})
+  @Length(6, 12, {message: UserValidationMessage.PasswordNotValid})
   public newPassword: string;
 }
 

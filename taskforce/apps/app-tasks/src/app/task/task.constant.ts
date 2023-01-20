@@ -40,7 +40,7 @@ export enum Tag {
 }
 
 export const Image = {
-  NameLength: 32,
-  FileMaxSize: 500 * 1024,
+  DefaultNameLength: 32,
+  FileMaxSize: 1000 * 1024,
   FileType: /.(jpg|jpeg|png)$/
 } as const

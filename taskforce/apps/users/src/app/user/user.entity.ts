@@ -1,7 +1,6 @@
 import { City, UserInterface, UserRole } from '@taskforce/shared-types';
 import { genSalt, compare, hash } from 'bcrypt';
-
-const SALT_ROUNDS = 10;
+import { SALT_ROUNDS } from './user.constant';
 
 export class UserEntity implements UserInterface {
   public _id: string;

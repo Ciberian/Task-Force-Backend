@@ -1,5 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { City, UserRole } from '@taskforce/shared-types';
 import {
   IsEmail,
   IsISO8601,
@@ -9,12 +7,9 @@ import {
   Length,
   IsEnum
 } from 'class-validator';
-import {
-  AUTH_USER_EMAIL_NOT_VALID,
-  AUTH_USER_PASSWORD_NOT_VALID,
-  AUTH_USER_BIRTH_DATE_NOT_VALID,
-  AUTH_USER_NAME_NOT_VALID
-} from '../auth.constant';
+import { ApiProperty } from '@nestjs/swagger';
+import { City, UserRole } from '@taskforce/shared-types';
+import { UserValidationMessage } from '../../user/user.constant';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -22,14 +17,14 @@ export class CreateUserDto {
     example: 'Вася'
   })
   @IsString()
-  @Length(3, 50, {message: AUTH_USER_NAME_NOT_VALID})
+  @Length(3, 50, {message: UserValidationMessage.NameLengthNotValid})
   public name!: string;
 
   @ApiProperty({
     description: 'User unique email',
     example: 'user@user.ru'
   })
-  @IsEmail({}, {message: AUTH_USER_EMAIL_NOT_VALID})
+  @IsEmail({}, {message: UserValidationMessage.EmailNotValid})
   public email!: string;
 
   @ApiProperty({
@@ -44,7 +39,7 @@ export class CreateUserDto {
     example: 'qwerty12345'
   })
   @IsAlphanumeric()
-  @Length(6, 12, {message: AUTH_USER_PASSWORD_NOT_VALID})
+  @Length(6, 12, {message: UserValidationMessage.PasswordNotValid})
   public password!: string;
 
   @ApiProperty({
@@ -66,6 +61,6 @@ export class CreateUserDto {
     description: 'User birth date',
     example: '2002-02-20'
   })
-  @IsISO8601({message: AUTH_USER_BIRTH_DATE_NOT_VALID})
+  @IsISO8601({message: UserValidationMessage.BirthDateNotValid})
   public birthDate!: string;
 }

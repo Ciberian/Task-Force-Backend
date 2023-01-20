@@ -1,24 +1,21 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { City, UserInterface, UserRole } from '@taskforce/shared-types';
-
-const MIN_NAME_LENGTH = 3;
-const MAX_NAME_LENGTH = 50;
-const MAX_PERSONAL_INFO_LENGTH = 300;
+import { User, UserValidationMessage } from './user.constant';
 
 @Schema({collection: 'users'})
 export class UserModel extends Document implements UserInterface {
   @Prop({
     required: true,
-    minlength: [MIN_NAME_LENGTH, 'Min length for the name is 3 simbol'],
-    maxlength: [MAX_NAME_LENGTH, 'Max length for the name is 50 simbols'],
+    minlength: [User.MinNameLength, UserValidationMessage.NameMinLengthNotValid],
+    maxlength: [User.MaxNameLength, UserValidationMessage.NameMaxLengthNotValid],
   })
   public name: string;
 
   @Prop({
     required: true,
     unique: true,
-    match: [/^([\w-\\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Email is incorrect']
+    match: [/^([\w-\\.]+@([\w-]+\.)+[\w-]{2,4})?$/, UserValidationMessage.EmailNotValid]
   })
   public email: string;
 
@@ -44,7 +41,7 @@ export class UserModel extends Document implements UserInterface {
   public role: UserRole;
 
   @Prop({
-    match: [/^(?:.*\.(?=(jpg|jpeg|png)$))?[^.]*$/i, 'Only jpg/jpeg or png format is allowed']
+    match: [/^(?:.*\.(?=(jpg|jpeg|png)$))?[^.]*$/i, UserValidationMessage.ImageFormatNotValid]
   })
   public avatar: string;
 
@@ -57,7 +54,7 @@ export class UserModel extends Document implements UserInterface {
   public registrationDate: string;
 
   @Prop({
-    maxlength: [MAX_PERSONAL_INFO_LENGTH, 'Max length for the name is 300 simbols'],
+    maxlength: [User.MaxPersonalInfoLength, UserValidationMessage.PersonalInfoMaxLengthNotValid],
   })
   public personalInfo: string;
 

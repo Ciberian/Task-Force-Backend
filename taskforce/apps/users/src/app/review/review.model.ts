@@ -1,11 +1,7 @@
 import mongoose, { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ReviewInterface } from '@taskforce/shared-types';
-
-const MIN_REVIEW_TEXT_LENGTH = 50;
-const MAX_REVIEW_TEXT_LENGTH = 500;
-const MIN_REVIEW_RATING = 1;
-const MAX_REVIEW_RATING = 5;
+import { Review, ReviewValidationMessage } from './review.constant';
 
 @Schema({collection: 'reviews'})
 export class ReviewModel extends Document implements ReviewInterface {
@@ -20,15 +16,15 @@ export class ReviewModel extends Document implements ReviewInterface {
 
   @Prop({
     required: true,
-    minlength: [MIN_REVIEW_TEXT_LENGTH, 'Min length for the review text is 50 simbol'],
-    maxlength: [MAX_REVIEW_TEXT_LENGTH, 'Max length for the review text is 500 simbols'],
+    minlength: [Review.MinTextLength, ReviewValidationMessage.TextMinLengthNotValid],
+    maxlength: [Review.MaxTextLength, ReviewValidationMessage.TextMaxLengthNotValid],
   })
   public reviewText: string;
 
   @Prop({
     required: true,
-    min: MIN_REVIEW_RATING,
-    max: MAX_REVIEW_RATING
+    min: Review.MinReviewRating,
+    max: Review.MaxReviewRating,
   })
   public reviewRating: number;
 }

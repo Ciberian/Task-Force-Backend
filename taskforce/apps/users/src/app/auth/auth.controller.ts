@@ -14,23 +14,23 @@ import {
   MaxFileSizeValidator,
   FileTypeValidator,
 } from '@nestjs/common';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
+import { ApiTags, ApiResponse} from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { AuthService } from './auth.service';
-import { fillDTO, getExtention, makeId } from '@taskforce/core';
+import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ContractorRdo } from './rdo/contractor.rdo';
 import { CustomerRdo } from './rdo/customer.rdo';
 import { ReviewRdo } from './rdo/review.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthService } from './auth.service';
+import { fillDTO, getExtention, makeId } from '@taskforce/core';
 import { MongoidValidationPipe, TrimBodyValuesPipe, UserRole } from '@taskforce/shared-types';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { AVATAR_FILE_MAX_SIZE, AVATAR_FILE_TYPE, FILE_NAME_LENGTH } from './auth.constant';
+import { Image } from './auth.constant';
 
 @ApiTags('user')
 @Controller('user')
@@ -134,7 +134,7 @@ export class AuthController {
     storage: diskStorage({
       destination: './user-avatars',
       filename: (_req, file, cb) => {
-        cb(null, `${makeId(FILE_NAME_LENGTH)}.${getExtention(file.originalname)}`)
+        cb(null, `${makeId(Image.DefaultNameLength)}.${getExtention(file.originalname)}`)
       }})
   }))
   @UseGuards(JwtAuthGuard)
@@ -143,8 +143,8 @@ export class AuthController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({maxSize: AVATAR_FILE_MAX_SIZE}),
-          new FileTypeValidator({fileType: AVATAR_FILE_TYPE}),
+          new MaxFileSizeValidator({maxSize: Image.FileMaxSize}),
+          new FileTypeValidator({fileType: Image.FileType}),
         ],
       })
     )

@@ -1,7 +1,5 @@
 import * as Joi from 'joi';
-
-const DEFAULT_MONGO_DB_PORT = 27017;
-const DEFAULT_RABBIT_PORT = 5672;
+import { DEFAULT_MONGO_DB_PORT, DEFAULT_RABBIT_PORT } from './app.constant';
 
 export default Joi.object({
   MONGO_DB: Joi
