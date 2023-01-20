@@ -27,17 +27,17 @@ export enum TaskStatus {
   Failed = "Failed"
 }
 
-export enum Task {
-  DefaultCountLimit = 25,
-  DefaultSortDirection = 'desc',
-  DefaultSortType = 'createdAt',
-}
-
 export enum Tag {
   MaxCount = 5,
   MinLength = 3,
   MaxLength = 10,
 }
+
+export const Task = {
+  DefaultCountLimit: 25,
+  DefaultSortDirection: 'desc',
+  DefaultSortType: 'createdAt',
+} as const
 
 export const Image = {
   DefaultNameLength: 32,

@@ -117,7 +117,7 @@ export class TaskController {
     storage: diskStorage({
       destination: './task-images',
       filename: (_req, file, cb) => {
-        cb(null, `${makeId(Image.NameLength)}.${getExtention(file.originalname)}`)
+        cb(null, `${makeId(Image.DefaultNameLength)}.${getExtention(file.originalname)}`)
       }})
   }))
   public async uploadeAvatar(

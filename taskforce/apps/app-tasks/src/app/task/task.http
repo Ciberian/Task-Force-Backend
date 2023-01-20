@@ -3,8 +3,8 @@ POST http://localhost:3330/api/tasks/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Задание для проверку смены статуса",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius tortor nibh, sit amet tempor nibh finibus et. Aenean eu enim justo.",
+  "title": "Задание для проверку валидации данных",
+  "description": "Lorem ipsum dolor sit amet.",
   "category": "Программирование",
   "address": "Москва, Тверская ул, дом 333",
   "customerId": "6385bbbcc05cd5e757d37764",
