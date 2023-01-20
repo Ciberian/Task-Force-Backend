@@ -4,9 +4,7 @@ import { CommandEvent, CommentInterface, CommentsCountUpdateType } from '@taskfo
 import { CommentRepository } from './comment.repository';
 import { CommentEntity } from './comment.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { RABBITMQ_SERVICE } from './comments.constant';
-
-const COMMENTS_COUNT = 50;
+import { RABBITMQ_SERVICE, Comment } from './comments.constant';
 
 @Injectable()
 export class CommentService {
@@ -44,7 +42,7 @@ export class CommentService {
   async getTaskComments(taskId: string) {
     const allComments = await this.commentRepository.find(taskId);
 
-    return allComments.slice(0, COMMENTS_COUNT)
+    return allComments.slice(0, Comment.DefaultCountLimit)
   }
 
   async deleteComment(id: string) {
