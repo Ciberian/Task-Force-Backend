@@ -13,13 +13,9 @@ import { PersonalTasksQuery } from './query/personal-tasks.query';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { TaskStatus } from '@prisma/client';
 import {
-  CONTRACTOR_IS_BUSY,
-  CONTRACTOR_CANNOT_BE_SELECTED,
-  CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS,
-  CUSTOMER_NOT_CREATED_THIS_TASK,
-  DEADLINE_DATE_NOT_VALID,
+  TaskValidationMessage,
+  StatusUpdateErrorMessage,
   RABBITMQ_SERVICE,
-  CONTRACTOR_NOT_FOUND,
 } from './task.constant';
 
 @Injectable()
@@ -32,7 +28,7 @@ export class TaskService {
   async createTask(dto: CreateTaskDto): Promise<TaskInterface> {
     if (dto.deadline) {
       if (dayjs().diff(dto.deadline, 'day') > 0) {
-        throw new Error(DEADLINE_DATE_NOT_VALID);
+        throw new Error(TaskValidationMessage.DeadlineDateNotValid);
       }
     }
 
@@ -94,20 +90,20 @@ export class TaskService {
 
     if (newStatus === TaskStatus.AtWork) {
       if(taskBeforeUpdate.status !== TaskStatus.New) {
-        throw new Error(CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS);
+        throw new Error(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
       }
 
       if(taskBeforeUpdate.customerId !== customerId) {
-        throw new Error(CUSTOMER_NOT_CREATED_THIS_TASK);
+        throw new Error(StatusUpdateErrorMessage.CustomerNotCreatedThisTask);
       }
 
       const contractorActiveTasks = await this.taskRepository.findContractorActiveTasks(contractorId, TaskStatus.AtWork);
       if (contractorActiveTasks.length) {
-        throw new Error(CONTRACTOR_IS_BUSY);
+        throw new Error(StatusUpdateErrorMessage.ContractorIsBusy);
       }
 
       if (!taskBeforeUpdate.respondedUsers.includes(contractorId)) {
-        throw new Error(CONTRACTOR_CANNOT_BE_SELECTED);
+        throw new Error(StatusUpdateErrorMessage.ContractorCannotBeSelected);
       }
 
       const taskEntity = new TaskEntity({
@@ -121,11 +117,11 @@ export class TaskService {
 
     if (newStatus === TaskStatus.Cancelled) {
       if(taskBeforeUpdate.status !== TaskStatus.New) {
-        throw new Error(CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS);
+        throw new Error(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
       }
 
       if(taskBeforeUpdate.customerId !== customerId) {
-        throw new Error(CUSTOMER_NOT_CREATED_THIS_TASK);
+        throw new Error(StatusUpdateErrorMessage.CustomerNotCreatedThisTask);
       }
 
       const taskEntity = new TaskEntity({
@@ -138,11 +134,11 @@ export class TaskService {
 
     if (newStatus === TaskStatus.Completed) {
       if(taskBeforeUpdate.status !== TaskStatus.AtWork) {
-        throw new Error(CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS);
+        throw new Error(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
       }
 
       if(taskBeforeUpdate.customerId !== customerId) {
-        throw new Error(CUSTOMER_NOT_CREATED_THIS_TASK);
+        throw new Error(StatusUpdateErrorMessage.CustomerNotCreatedThisTask);
       }
 
       const taskEntity = new TaskEntity({
@@ -155,11 +151,11 @@ export class TaskService {
 
     if (newStatus === TaskStatus.Failed) {
       if(taskBeforeUpdate.status !== TaskStatus.AtWork) {
-        throw new Error(CURRENT_STATUS_NOT_COMPATIBLE_WITH_NEW_STATUS);
+        throw new Error(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
       }
 
       if(taskBeforeUpdate.contractorId !== contractorId) {
-        throw new Error(CONTRACTOR_NOT_FOUND);
+        throw new Error(StatusUpdateErrorMessage.ContractorNotFound);
       }
 
       const taskEntity = new TaskEntity({

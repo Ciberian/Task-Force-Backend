@@ -1,26 +1,26 @@
 import { City } from '@taskforce/shared-types';
 import { Transform } from 'class-transformer';
 import { IsArray, IsEnum, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
-import { DEFAULT_TASK_COUNT_LIMIT, DEFAULT_SORT_DIRECTION, DEFAULT_SORT_TYPE, DEFAULT_PAGE } from '../task.constant';
+import { DEFAULT_PAGE, Task } from '../task.constant';
 
 export class TaskQuery {
-  @Transform(({value}) => +value || DEFAULT_TASK_COUNT_LIMIT)
+  @Transform(({value}) => +value || Task.DefaultCountLimit)
   @IsNumber()
   @IsOptional()
-  public limit = DEFAULT_TASK_COUNT_LIMIT;
+  public limit = Task.DefaultCountLimit;
 
-  @Transform(({value}) => +value)
+  @Transform(({value}) => +value || DEFAULT_PAGE)
   @IsNumber()
   @IsOptional()
-  public page: number = DEFAULT_PAGE;
+  public page?: number = DEFAULT_PAGE;
 
   @IsIn(['asc', 'desc'])
   @IsOptional()
-  public sortDirection?: 'desc' | 'asc' = DEFAULT_SORT_DIRECTION;
+  public sortDirection?: 'desc' | 'asc' = Task.DefaultSortDirection;
 
   @IsString()
   @IsOptional()
-  public sortType?: 'createdAt' | 'commentsCount' | 'responsesCount' = DEFAULT_SORT_TYPE;
+  public sortType?: 'createdAt' | 'commentsCount' | 'responsesCount' = Task.DefaultSortType;
 
   @IsString()
   @IsOptional()

@@ -5,12 +5,7 @@ import { TaskInterface } from '@taskforce/shared-types';
 import { TaskEntity } from './task.entity';
 import { TaskQuery } from './query/task.query';
 import { PersonalTasksQuery } from './query/personal-tasks.query';
-import {
-  DEFAULT_PAGE,
-  DEFAULT_SORT_DIRECTION,
-  DEFAULT_SORT_TYPE,
-  DEFAULT_TASK_COUNT_LIMIT,
-} from './task.constant';
+import { DEFAULT_PAGE, Task } from './task.constant';
 import { TaskStatus } from '@prisma/client';
 
 @Injectable()
@@ -31,9 +26,9 @@ export class TaskRepository implements CRUDRepositoryInterface<TaskEntity, numbe
 
   public async find({
     page = DEFAULT_PAGE,
-    limit = DEFAULT_TASK_COUNT_LIMIT,
-    sortDirection = DEFAULT_SORT_DIRECTION,
-    sortType = DEFAULT_SORT_TYPE,
+    limit = Task.DefaultCountLimit,
+    sortDirection = Task.DefaultSortDirection,
+    sortType = Task.DefaultSortType,
     category,
     tags,
     city,

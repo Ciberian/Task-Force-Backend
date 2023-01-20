@@ -19,19 +19,19 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadedFile, UseInterceptors } from '@nestjs/common/decorators';
 import { diskStorage } from 'multer';
 import { TaskService } from './task.service';
+import { TaskQuery } from './query/task.query';
+import { PersonalTasksQuery } from './query/personal-tasks.query';
 import { TaskRdo } from './rdo/task.rdo';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { NotifyUserDto } from './dto/notify-user.dto';
+import { AddResponseDto } from './dto/add-response.dto';
+import { GetPersonalTasksDto } from './dto/get-personal-tasks.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { UpdateCommentsCountDto } from './dto/update-comments-count.dto';
 import { CommandEvent, UserRole } from '@taskforce/shared-types';
 import { fillDTO, getExtention, makeId } from '@taskforce/core';
-import { TaskQuery } from './query/task.query';
-import { FILE_NAME_LENGTH, IMAGE_FILE_MAX_SIZE, IMAGE_FILE_TYPE } from './task.constant';
-import { GetPersonalTasksDto } from './dto/get-personal-tasks.dto';
-import { PersonalTasksQuery } from './query/personal-tasks.query';
-import { AddResponseDto } from './dto/add-response.dto';
-import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { Image } from './task.constant';
 
 @Controller('tasks')
 export class TaskController {
@@ -117,7 +117,7 @@ export class TaskController {
     storage: diskStorage({
       destination: './task-images',
       filename: (_req, file, cb) => {
-        cb(null, `${makeId(FILE_NAME_LENGTH)}.${getExtention(file.originalname)}`)
+        cb(null, `${makeId(Image.NameLength)}.${getExtention(file.originalname)}`)
       }})
   }))
   public async uploadeAvatar(
@@ -125,8 +125,8 @@ export class TaskController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({maxSize: IMAGE_FILE_MAX_SIZE}),
-          new FileTypeValidator({fileType: IMAGE_FILE_TYPE}),
+          new MaxFileSizeValidator({maxSize: Image.FileMaxSize}),
+          new FileTypeValidator({fileType: Image.FileType}),
         ],
       })
     )

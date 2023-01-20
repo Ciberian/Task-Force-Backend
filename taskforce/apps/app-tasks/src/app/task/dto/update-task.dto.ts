@@ -13,24 +13,7 @@ import {
   Min,
   ArrayMaxSize,
 } from 'class-validator';
-import {
-  TASK_TITLE_NOT_VALID,
-  TASK_DESCRIPTION_NOT_VALID,
-  DEADLINE_DATE_NOT_VALID,
-  TAGS_NOT_VALID,
-  MAX_TAGS_COUNT,
-  MIN_TAG_LENGTH,
-  MAX_TAG_LENGTH,
-  TAGS_СONTAIN_INVALID_SIMBOLS
-} from '../task.constant';
-
-enum TaskStatus {
-  New = "New",
-  Cancelled = "Cancelled",
-  AtWork = "AtWork",
-  Completed = "Completed",
-  Failed = "Failed"
-}
+import { TaskValidationMessage, Tag, TaskStatus } from '../task.constant';
 
 export class UpdateTaskDto {
   @ApiProperty({
@@ -40,7 +23,7 @@ export class UpdateTaskDto {
   @IsOptional()
   @IsString()
   @Matches(/\S/)
-  @Length(20, 50, {message: TASK_TITLE_NOT_VALID})
+  @Length(20, 50, {message: TaskValidationMessage.TitleNotValid})
   public title?: string;
 
   @ApiProperty({
@@ -50,7 +33,7 @@ export class UpdateTaskDto {
   @IsOptional()
   @IsString()
   @Matches(/\S/)
-  @Length(100, 1024, {message: TASK_DESCRIPTION_NOT_VALID})
+  @Length(100, 1024, {message: TaskValidationMessage.DescriptionNotValid})
   public description?: string;
 
   @ApiProperty({
@@ -76,7 +59,7 @@ export class UpdateTaskDto {
     example: '2022-12-22'
   })
   @IsOptional()
-  @IsISO8601({message: DEADLINE_DATE_NOT_VALID})
+  @IsISO8601({message: TaskValidationMessage.DeadlineDateNotValid})
   public deadline?: string;
 
   @ApiProperty({
@@ -101,11 +84,11 @@ export class UpdateTaskDto {
   })
   @IsOptional()
   @IsArray()
-  @ArrayMaxSize(MAX_TAGS_COUNT)
-  @MinLength(MIN_TAG_LENGTH, {each: true})
-  @MaxLength(MAX_TAG_LENGTH, {each: true})
-  @IsString({each: true, message: TAGS_NOT_VALID})
-  @Matches(/^[a-zа-яё][a-zа-яё0-9-]+$/i, {each: true, message: TAGS_СONTAIN_INVALID_SIMBOLS})
+  @ArrayMaxSize(Tag.MaxCount)
+  @MinLength(Tag.MinLength, {each: true})
+  @MaxLength(Tag.MaxLength, {each: true})
+  @IsString({each: true, message: TaskValidationMessage.TagsNotValid})
+  @Matches(/^[a-zа-яё][a-zа-яё0-9-]+$/i, {each: true, message: TaskValidationMessage.TagsContainInvalidSymbols})
   public tags?: string[];
 
   @ApiProperty({
