@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { EmailSubscriberRepository } from './email-subscriber.repository';
 import { SubscriberValidationMessage } from './email-subscriber.constant';
@@ -18,7 +18,7 @@ export class EmailSubscriberService {
     const existsSubscriber = await this.emailSubscriberRepository.findByEmail(email);
 
     if (existsSubscriber) {
-      throw new Error(SubscriberValidationMessage.EmailNotUnique);
+      throw new ConflictException(SubscriberValidationMessage.EmailNotUnique);
     }
 
     this.smtpService.sendNotifyNewSubscriber(subscriber);
