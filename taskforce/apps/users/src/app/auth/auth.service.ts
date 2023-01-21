@@ -1,7 +1,15 @@
 import * as dayjs from 'dayjs';
 import mongoose from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  ForbiddenException,
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -48,12 +56,12 @@ export class AuthService {
 
     const userAge = dayjs().diff(user.birthDate, 'year');
     if (userAge < AGE_OF_MAJORITY) {
-      throw new Error(UserUpdateErrorMessage.UserNotInLegalAge);
+      throw new ForbiddenException(UserUpdateErrorMessage.UserNotInLegalAge);
     }
 
     const existUser = await this.userRepository.findByEmail(email);
     if (existUser) {
-      throw new Error(UserUpdateErrorMessage.UserAlreadyExist);
+      throw new ConflictException(UserUpdateErrorMessage.UserAlreadyExist);
     }
 
     const userEntity = await new UserEntity(user).setPassword(password);
@@ -106,19 +114,26 @@ export class AuthService {
   }
 
   async getUser(id: string) {
-    return this.userRepository.findById(id);
+    const user = await this.userRepository.findById(id);
+    if (!user) {
+      throw new NotFoundException(`User with id - ${id}, not found`);
+    }
+
+    user.age = dayjs().diff(user.birthDate, 'year');
+
+    return user;
   }
 
   async updateUser(id: string, dto: UpdateUserDto): Promise<UserInterface> {
     const userBeforeUpdate = await this.userRepository.findById(id);
     if (!userBeforeUpdate) {
-      throw new Error(`User with id ${id}, does not exist`);
+      throw new NotFoundException(`User with id - ${id}, does not exist`);
     }
 
     if (dto.birthDate) {
       const newUserAge = dayjs().diff(dto.birthDate, 'year');
       if (newUserAge < AGE_OF_MAJORITY) {
-        throw new Error(UserUpdateErrorMessage.UserNotInLegalAge);
+        throw new ForbiddenException(UserUpdateErrorMessage.UserNotInLegalAge);
       }
     }
 
@@ -138,12 +153,12 @@ export class AuthService {
     const {newPassword, oldPassword} = dto;
     const userBeforeUpdate = await this.userRepository.findById(id);
     if (!userBeforeUpdate) {
-      throw new Error(`User with id - ${id}, does not exist`);
+      throw new NotFoundException(`User with id - ${id}, not found`);
     }
 
     const userEntity = new UserEntity(userBeforeUpdate);
     if (!(await userEntity.comparePassword(oldPassword))) {
-      throw new Error(`The old password - ${oldPassword}, is incorrect`);
+      throw new BadRequestException(`The old password - ${oldPassword}, is incorrect`);
     }
     await userEntity.setPassword(newPassword);
 
@@ -162,7 +177,7 @@ export class AuthService {
 
     const existReview = await this.reviewRepository.findByTaskId(review.taskId);
     if (existReview) {
-      throw new Error(ReviewValidationMessage.ReviewAlreadyExist);
+      throw new ConflictException(ReviewValidationMessage.ReviewAlreadyExist);
     }
 
     const reviewEntity = new ReviewEntity(review);

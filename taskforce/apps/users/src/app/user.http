@@ -4,11 +4,11 @@ Content-Type: application/json
 
 {
   "name": "Зыгмунд Зыгмунтович",
-  "email": "test963@gmail.com",
+  "email": "test93@gmail.com",
   "city": "Москва",
   "password": "abcdefg",
   "role": "Исполнитель",
-  "birthDate": "1993-01-01"
+  "birthDate": "2000-01-01"
 }
 
 ###
@@ -18,14 +18,14 @@ Content-Type: application/json
 
 {
   "email": "test900@gmail.com",
-  "password": "123456"
+  "password": "123456789"
 }
 
 ###
 @authToken = {{login.response.body.access_token}}
 
 # Get user info
-GET http://localhost:3350/api/user/63c31f12e0afa85f84aa73f2 HTTP/1.1
+GET http://localhost:3350/api/user/63c0e2868fd7f4b785d6d228 HTTP/1.1
 Authorization: Bearer {{authToken}}
 
 ###
@@ -35,8 +35,8 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "oldPassword": "abcdefg",
-  "newPassword": "123456"
+  "oldPassword": "123456",
+  "newPassword": "123456789"
 }
 
 ###
@@ -55,13 +55,14 @@ Content-Type: application/json
 
 ###
 # Update user
-PATCH http://localhost:3350/api/user/63c322e18ab55c27692d85ba HTTP/1.1
+PATCH http://localhost:3350/api/user/63c0e2868fd7f4b785d6d228 HTTP/1.1
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
   "personalInfo": "A biography, or simply bio, is a detailed description of a person's life. It involves more than just the basic facts like education, work, relationships, and death; it portrays a person's experience of these life events.",
-  "birthDate": "2002-01-01"
+  "birthDate": "1999-01-01",
+  "specialization": ["master", "devops"]
 }
 
 ###
