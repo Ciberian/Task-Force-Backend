@@ -22,7 +22,7 @@ GET http://localhost:3330/api/tasks/new?tags=RabbitMQ&city=Владивосто�
 
 ###
 # Get task full information
-GET http://localhost:3330/api/tasks/7 HTTP/1.1
+GET http://localhost:3330/api/tasks/10 HTTP/1.1
 
 ###
 # Get personal tasks
@@ -44,8 +44,8 @@ Content-Type: application/json
 }
 
 ###
-# Change task status from New to AtWork
-PATCH http://localhost:3330/api/tasks/7/status HTTP/1.1
+# Change task status
+PATCH http://localhost:3330/api/tasks/10/status HTTP/1.1
 Content-Type: application/json
 
 {
@@ -66,11 +66,11 @@ Content-Type: application/json
 
 ###
 # Add new response
-PATCH http://localhost:3330/api/tasks/6/response HTTP/1.1
+PATCH http://localhost:3330/api/tasks/10/response HTTP/1.1
 Content-Type: application/json
 
 {
-  "contractorId": "6385bbbcc05cd5e757d37764"
+  "contractorId": "63ba8f0aa99e326258f2ea6a"
 }
 
 ###

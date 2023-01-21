@@ -1,5 +1,5 @@
 import * as dayjs from 'dayjs';
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { TaskEntity } from './task.entity';
 import { TaskRepository } from './task.repository';
@@ -28,7 +28,7 @@ export class TaskService {
   async createTask(dto: CreateTaskDto): Promise<TaskInterface> {
     if (dto.deadline) {
       if (dayjs().diff(dto.deadline, 'day') > 0) {
-        throw new Error(TaskValidationMessage.DeadlineDateNotValid);
+        throw new BadRequestException(TaskValidationMessage.DeadlineDateNotValid);
       }
     }
 
@@ -41,7 +41,12 @@ export class TaskService {
   }
 
   async getTask(id: number): Promise<TaskInterface> {
-    return this.taskRepository.findById(id);
+    const task = await this.taskRepository.findById(id);
+    if (!task) {
+      throw new NotFoundException(`Task with id - ${id}, not found`);
+    }
+
+    return task;
   }
 
   async getTasks(query: TaskQuery): Promise<TaskInterface[]> {
@@ -72,7 +77,7 @@ export class TaskService {
   async updateTask(id: number, dto: UpdateTaskDto): Promise<TaskInterface> {
     const taskBeforeUpdate = await this.taskRepository.findById(id);
     if (!taskBeforeUpdate) {
-      throw new Error(`Task with id ${id}, does not exist`);
+      throw new NotFoundException(`Task with id ${id}, not found`);
     }
 
     const taskEntity = new TaskEntity({
@@ -87,23 +92,26 @@ export class TaskService {
   async updateTaskStatus(id: number, dto: UpdateTaskStatusDto): Promise<TaskInterface> {
     const {newStatus, customerId, contractorId} = dto;
     const taskBeforeUpdate = await this.taskRepository.findById(id);
+    if (newStatus === 'New') {
+      return taskBeforeUpdate;
+    }
 
     if (newStatus === TaskStatus.AtWork) {
       if(taskBeforeUpdate.status !== TaskStatus.New) {
-        throw new Error(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
+        throw new ConflictException(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
       }
 
       if(taskBeforeUpdate.customerId !== customerId) {
-        throw new Error(StatusUpdateErrorMessage.CustomerNotCreatedThisTask);
+        throw new ConflictException(StatusUpdateErrorMessage.CustomerNotCreatedThisTask);
       }
 
       const contractorActiveTasks = await this.taskRepository.findContractorActiveTasks(contractorId, TaskStatus.AtWork);
       if (contractorActiveTasks.length) {
-        throw new Error(StatusUpdateErrorMessage.ContractorIsBusy);
+        throw new ConflictException(StatusUpdateErrorMessage.ContractorIsBusy);
       }
 
       if (!taskBeforeUpdate.respondedUsers.includes(contractorId)) {
-        throw new Error(StatusUpdateErrorMessage.ContractorCannotBeSelected);
+        throw new NotFoundException(StatusUpdateErrorMessage.ContractorCannotBeSelected);
       }
 
       const taskEntity = new TaskEntity({
@@ -117,11 +125,11 @@ export class TaskService {
 
     if (newStatus === TaskStatus.Cancelled) {
       if(taskBeforeUpdate.status !== TaskStatus.New) {
-        throw new Error(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
+        throw new ConflictException(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
       }
 
       if(taskBeforeUpdate.customerId !== customerId) {
-        throw new Error(StatusUpdateErrorMessage.CustomerNotCreatedThisTask);
+        throw new ConflictException(StatusUpdateErrorMessage.CustomerNotCreatedThisTask);
       }
 
       const taskEntity = new TaskEntity({
@@ -134,11 +142,11 @@ export class TaskService {
 
     if (newStatus === TaskStatus.Completed) {
       if(taskBeforeUpdate.status !== TaskStatus.AtWork) {
-        throw new Error(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
+        throw new ConflictException(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
       }
 
       if(taskBeforeUpdate.customerId !== customerId) {
-        throw new Error(StatusUpdateErrorMessage.CustomerNotCreatedThisTask);
+        throw new ConflictException(StatusUpdateErrorMessage.CustomerNotCreatedThisTask);
       }
 
       const taskEntity = new TaskEntity({
@@ -151,11 +159,11 @@ export class TaskService {
 
     if (newStatus === TaskStatus.Failed) {
       if(taskBeforeUpdate.status !== TaskStatus.AtWork) {
-        throw new Error(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
+        throw new ConflictException(StatusUpdateErrorMessage.CurrentStatusNotCompatibleWithNewStatus);
       }
 
       if(taskBeforeUpdate.contractorId !== contractorId) {
-        throw new Error(StatusUpdateErrorMessage.ContractorNotFound);
+        throw new NotFoundException(StatusUpdateErrorMessage.ContractorNotFound);
       }
 
       const taskEntity = new TaskEntity({
@@ -170,7 +178,7 @@ export class TaskService {
   async addResponse(id: number, dto: AddResponseDto): Promise<TaskInterface> {
     const taskBeforeUpdate = await this.taskRepository.findById(id);
     if (!taskBeforeUpdate) {
-      throw new Error(`Task with id ${id}, does not exist`);
+      throw new NotFoundException(`Task with id ${id}, not found`);
     }
 
     const taskEntity = new TaskEntity({
@@ -204,7 +212,7 @@ export class TaskService {
   async changeCommentsCount(id: number, updateType: string): Promise<TaskInterface> {
     const taskBeforeUpdate = await this.taskRepository.findById(id);
     if (!taskBeforeUpdate) {
-      throw new Error(`Task with id ${id}, does not exist`);
+      throw new NotFoundException(`Task with id ${id}, not found`);
     }
 
     if (updateType === CommentsCountUpdateType.Increase) {
