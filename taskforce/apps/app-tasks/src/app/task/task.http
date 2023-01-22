@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "title": "Задание для проверку валидации данных",
-  "description": "Lorem ipsum dolor sit amet.",
+  "description": "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.",
   "category": "Программирование",
   "address": "Москва, Тверская ул, дом 333",
   "customerId": "6385bbbcc05cd5e757d37764",
@@ -18,7 +18,7 @@ GET http://localhost:3330/api/tasks/ HTTP/1.1
 
 ###
 # Get new tasks
-GET http://localhost:3330/api/tasks/new?tags=RabbitMQ&city=Владивосток HTTP/1.1
+GET http://localhost:3330/api/tasks/new?tags=RabbitMQ&city=Москва HTTP/1.1
 
 ###
 # Get task full information

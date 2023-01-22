@@ -3,8 +3,8 @@ POST http://localhost:3350/api/user/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Зыгмунд Зыгмунтович",
-  "email": "test93@gmail.com",
+  "name": "Иван Иваныч",
+  "email": "test9371@gmail.com",
   "city": "Москва",
   "password": "abcdefg",
   "role": "Исполнитель",
